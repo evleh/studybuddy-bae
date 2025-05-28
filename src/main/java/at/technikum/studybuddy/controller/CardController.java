@@ -25,9 +25,16 @@ public class CardController {
         return null;
     }
 
-    @PutMapping{"/{id}"}
+    @PutMapping("/{id}")
     public Card update(@PathVariable int id, @RequestBody Card card){
         return null;
     }
+
+    @DeleteMapping("/{id}")
+    public Card delete(@PathVariable int id){
+        return null;
+    }
+
+
 
 }
