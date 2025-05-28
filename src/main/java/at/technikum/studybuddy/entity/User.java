@@ -2,11 +2,13 @@ package at.technikum.studybuddy.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.net.URL;
 import java.time.Instant;
 
 @Entity
+@Table(name = "studybuddy_user")
 public class User {
     @Id
     private int id;
