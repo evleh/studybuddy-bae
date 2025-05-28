@@ -7,26 +7,32 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.Instant;
 
 @Entity
-public class BoxComment {
+public class Box {
+    // aka "Kartei"
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // doLater: comment is created by a user
-    // doLater: comment is related to specific Box
 
     @CreatedDate
     private Instant createdAt;
     @LastModifiedDate
     private Instant updatedAt;
 
+    // doLater: box belongs to a user
+    // doLater: box has Cards
+    // doLater: box has comments
+    // doLater: box has subscribers
+
+
     private String title;
-    // as per https://www.baeldung.com/jpa-size-length-column-differences
     @Column(length = 2048)
-    private String text;
+    private String description;
+
+    private Boolean isPublic;
 
     public Long getId() {
+
         return id;
     }
 
@@ -50,14 +56,6 @@ public class BoxComment {
         this.updatedAt = updatedAt;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -65,6 +63,20 @@ public class BoxComment {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
 }
-
-
