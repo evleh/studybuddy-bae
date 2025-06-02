@@ -11,7 +11,7 @@ import java.time.Instant;
 @Table(name = "studybuddy_user")
 public class User {
     @Id
-    private int id;
+    private long id;
     private boolean isAdmin;
     private String username;
     private URL foto;
@@ -31,7 +31,7 @@ public class User {
     }
 
     // full constructor
-    public User(int id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant lastEdit) {
+    public User(long id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant lastEdit) {
         this.id = id;
         this.isAdmin = isAdmin;
         this.username = username;
@@ -48,7 +48,7 @@ public class User {
     }
 
     // getters
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -102,7 +102,7 @@ public class User {
 
     //setters
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
