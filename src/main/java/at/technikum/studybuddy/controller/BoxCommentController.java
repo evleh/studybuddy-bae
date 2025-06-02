@@ -31,8 +31,9 @@ public class BoxCommentController {
     }
 
     @PostMapping
-    public BoxCommentDto createBoxComment(@Valid @RequestBody BoxCommentDto boxComment) {
-        return boxComment;
+    public BoxComment createBoxComment(@Valid @RequestBody BoxCommentDto boxCommentDto) {
+        // returning dto or entity itself? currently no reason wrap it that I can see.
+        return this.boxCommentService.createBoxComment(boxCommentDto);
     }
 
     @PutMapping("/{id}")
