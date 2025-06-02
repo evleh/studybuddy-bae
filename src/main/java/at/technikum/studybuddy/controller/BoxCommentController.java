@@ -36,6 +36,7 @@ public class BoxCommentController {
 
     @PutMapping("/{id}")
     public BoxComment updateBoxComment(@PathVariable Long id, @Valid @RequestBody BoxComment boxComment) {
+        /* to be refactored to the service; but until service exists this is a workaround for a swagger behaviour */
         if (boxComment.getId().equals(id) && id != 0) {
             return boxComment;
         } else {
