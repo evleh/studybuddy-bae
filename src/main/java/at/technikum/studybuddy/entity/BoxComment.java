@@ -1,6 +1,7 @@
 package at.technikum.studybuddy.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -23,6 +24,7 @@ public class BoxComment {
 
     // as per https://www.baeldung.com/jpa-size-length-column-differences
     @Column(length = 2048)
+    @NotBlank
     private String text;
 
     public Long getId() {
