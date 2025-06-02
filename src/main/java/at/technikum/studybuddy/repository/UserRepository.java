@@ -1,4 +1,7 @@
 package at.technikum.studybuddy.repository;
 
-public interface UserRepository {
+import at.technikum.studybuddy.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long>{
 }

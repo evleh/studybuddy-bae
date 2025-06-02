@@ -8,7 +8,7 @@ import java.time.Instant;
 @Entity
 public class Subscription {
     @Id
-    private int id;
+    private long id;
     // private User subscriber;
     // private Box box;
     private Instant added;
@@ -20,7 +20,7 @@ public class Subscription {
 
     //full constructor
 
-    public Subscription(int id, Instant added) {
+    public Subscription(long id, Instant added) {
         this.id = id;
         this.added = added;
     }

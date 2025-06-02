@@ -1,4 +1,8 @@
 package at.technikum.studybuddy.repository;
 
-public interface SubscriptionRepository {
+import at.technikum.studybuddy.entity.Subscription;
+import at.technikum.studybuddy.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 }
