@@ -21,26 +21,26 @@ public class CardProgressController {
         return cardProgressService.readAll();
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @GetMapping("/{id}")
-    public CardProgress read(@PathVariable long id){
+    public CardProgress read(@PathVariable long id){ // wirft 404
         return cardProgressService.read(id);
     }
 
+    @ResponseStatus(HttpStatus.CREATED) // 202
     @PostMapping
     public CardProgress create(@RequestBody CardProgress cardProgress){
         return this.cardProgressService.create(cardProgress);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+
     @PutMapping("/{id}")
-    public CardProgress update(@PathVariable long id, @RequestBody CardProgress cardProgress){
+    public CardProgress update(@PathVariable long id, @RequestBody CardProgress cardProgress){ // wirft 404
         return this.cardProgressService.update(id, cardProgress);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+
     @DeleteMapping("/{id}")
-    public CardProgress delete(@PathVariable long id){
+    public CardProgress delete(@PathVariable long id){ // wirft 404
         return this.cardProgressService.delete(id);
     }
 

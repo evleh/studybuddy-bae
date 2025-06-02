@@ -12,8 +12,11 @@
  Dabei funktioniert `@Id` hauptsächlich als tag und mit `@GeneratedValue` kann man definieren *wie* der primary key generiert wird. 
  Aktuell verwenden wir die Strategie: `@GeneratedValue(strategy = GenerationType.IDENTITY)`. 
  Mehr Infos: https://www.javaguides.net/2023/07/jpa-id-and-generatedvalue-annotations.html
- 
+- `@UpdateTimestamp` und `@CreationTimestamp`: Hibernate Annotationen die tracking ermöglichen, nur Datentypen die einem TimeStamp entsprechen dürfen diese Annotation haben. https://www.baeldung.com/hibernate-creationtimestamp-updatetimestamp
 
+## Verwendete Annotationen für Validation
+- `@NotBlank`
+- @Email
 
 
 ## Naming
@@ -26,10 +29,13 @@ Die Angabe schreibt:
 
 Vorschlag wäre das gleich als Naming-Convention zu verwenden: createdAt und updatedAt  
 
-## Validation
-- @UpdateTimestamp https://www.baeldung.com/hibernate-creationtimestamp-updatetimestamp
-- @CreatedTimestamp
-- @Email
-- @Column(length = 2048)
-- @NotBlank
+
+
+
+## Dokumentation Allgemein: 
+### Instance vs. LocalDateTime
+Wir verwenden die `Instance` Klasse für alle Sachen die mit Zeit zutun haben. 
+Instance ist ein spezifischer Zeitpunkt auf einer Timeline mit Unix epoch time als offset. `LocalDateTime` verwendet diesen 
+Offset nicht. Beide haben allgemeine Rechenoperationen und schwierigkeiten mit Time Zones. 
+Für uns ist es vermutlich egal was wir verwenden. https://www.baeldung.com/java-instant-vs-localdatetime
 

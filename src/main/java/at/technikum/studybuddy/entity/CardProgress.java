@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
 
@@ -13,21 +15,20 @@ public class CardProgress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    // private long userId
-    // private long cardId
+
+    // ToDo: private long userId
+    // ToDo: private long cardId
     @NotBlank
     private int stage; // Possible stages: 1-4
-    private Instant showAgain;
-    private Instant lastSeen;
+
+    @CreationTimestamp
+    private Instant createdAt;
+    @LastModifiedDate
+    private Instant updatedAt;
+    private Instant showAgain; // Wieso keine Annotationen: Zeitpunkte abhängig von Logik gesetzt. Daher sind bisher verwendete Annotationen für Zeit unpassend.
+
 
     public CardProgress() {
-    }
-
-    public CardProgress(long id, int stage, Instant showAgain, Instant lastSeen) {
-        this.id = id;
-        this.stage = stage;
-        this.showAgain = showAgain;
-        this.lastSeen = lastSeen;
     }
 
     public long getId() {
@@ -46,19 +47,27 @@ public class CardProgress {
         this.stage = stage;
     }
 
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public Instant getShowAgain() {
         return showAgain;
     }
 
     public void setShowAgain(Instant showAgain) {
         this.showAgain = showAgain;
-    }
-
-    public Instant getLastSeen() {
-        return lastSeen;
-    }
-
-    public void setLastSeen(Instant lastSeen) {
-        this.lastSeen = lastSeen;
     }
 }

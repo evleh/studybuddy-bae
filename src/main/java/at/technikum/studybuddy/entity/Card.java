@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
@@ -24,21 +24,20 @@ public class Card {
 
     private String media;
 
-    @CreatedDate
-    private Instant created;
+    @CreationTimestamp
+    private Instant createdAt;
     @LastModifiedDate
-    private Instant lastEdit;
+    private Instant updatedAt;
 
     public Card() {
     }
 
-    public Card(long id, String question, String answer, String media, Instant created, Instant lastEdit) {
-        this.id = id;
+    public Card(String question, String answer, String media, Instant createdAt, Instant updatedAt) {
         this.question = question;
         this.answer = answer;
         this.media = media;
-        this.created = created;
-        this.lastEdit = lastEdit;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public long getId() {
@@ -73,19 +72,19 @@ public class Card {
         this.media = media;
     }
 
-    public Instant getCreated() {
-        return created;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated(Instant created) {
-        this.created = created;
+    public void setCreatedAt(Instant created) {
+        this.createdAt = created;
     }
 
-    public Instant getLastEdit() {
-        return lastEdit;
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setLastEdit(Instant lastEdit) {
-        this.lastEdit = lastEdit;
+    public void setUpdatedAt(Instant lastEdit) {
+        this.updatedAt = lastEdit;
     }
 }

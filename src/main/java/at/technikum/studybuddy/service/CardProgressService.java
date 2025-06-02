@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 public class CardProgressService {
-    private CardProgressRepository cardProgressRepository;
+    private final CardProgressRepository cardProgressRepository;
 
     public CardProgressService(CardProgressRepository cardProgressRepository) {
         this.cardProgressRepository = cardProgressRepository;
@@ -20,7 +20,7 @@ public class CardProgressService {
         return this.cardProgressRepository.findAll();
     }
 
-    public CardProgress read(long id){
+    public CardProgress read(long id) throws ResourceNotFoundException {
         Optional<CardProgress> cardProgress = cardProgressRepository.findById(id);
 
         if(cardProgress.isEmpty()){
@@ -34,7 +34,7 @@ public class CardProgressService {
         return this.cardProgressRepository.save(cardProgress);
     }
 
-    public CardProgress update(long id, CardProgress cardProgress){
+    public CardProgress update(long id, CardProgress cardProgress) throws ResourceNotFoundException{
         Optional<CardProgress> findCardProgress = cardProgressRepository.findById(id); // nur save wenn es schon existiert
         if(findCardProgress.isEmpty()){
             throw new ResourceNotFoundException();
@@ -44,7 +44,7 @@ public class CardProgressService {
         return findCardProgress.get();
     }
 
-    public CardProgress delete(long id){
+    public CardProgress delete(long id) throws ResourceNotFoundException{
         Optional<CardProgress> cardProgress = cardProgressRepository.findById(id);
 
         if(cardProgress.isEmpty()){

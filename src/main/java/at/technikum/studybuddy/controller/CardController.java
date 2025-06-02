@@ -3,6 +3,8 @@ package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.entity.Card;
 import at.technikum.studybuddy.service.CardService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,24 +26,24 @@ public class CardController {
     @GetMapping("/{id}")
     public Card get(@PathVariable long id){
         return this.cardService.get(id);
-    }
+    } // wirft 404
 
+    @ResponseStatus(HttpStatus.CREATED) // 202
     @PostMapping
-    public Card create(Card card){
+    public Card create(@RequestBody @Valid Card card){
         return this.cardService.create(card);
     }
 
     // ToDo: Achtung hier nicht einfach übernehmen. In service wird save-methode aufgerufen.
-    //  Grundsätzlich kann die auch update machen aber funktioniert nicht mit dem id-Parameter.
     @PutMapping("/{id}")
-    public Card update(@PathVariable long id, @RequestBody Card card){
+    public Card update(@PathVariable long id, @RequestBody @Valid Card card){
         return this.cardService.update(id, card);
     }
 
     @DeleteMapping("/{id}")
     public Card delete(@PathVariable long id){
         return this.cardService.delete(id);
-    }
+    } // wirft 404
 
 
 

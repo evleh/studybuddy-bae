@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 public class CardService {
-    private CardRepository cardRepository;
+    private final CardRepository cardRepository;
 
     public CardService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
@@ -20,7 +20,7 @@ public class CardService {
         return this.cardRepository.findAll();
     }
 
-    public Card get(long id){
+    public Card get(long id) throws ResourceNotFoundException{
         Optional<Card> card = this.cardRepository.findById(id);
         if(card.isEmpty()){
             throw new ResourceNotFoundException();
@@ -38,7 +38,7 @@ public class CardService {
         return this.cardRepository.save(card);
     }
 
-    public Card delete(long id){
+    public Card delete(long id) throws ResourceNotFoundException{
         Optional<Card> card = this.cardRepository.findById(id);
         if(card.isEmpty()){
             throw new ResourceNotFoundException();
