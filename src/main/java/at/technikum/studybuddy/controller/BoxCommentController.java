@@ -37,18 +37,14 @@ public class BoxCommentController {
     }
 
     @PutMapping("/{id}")
-    public BoxCommentDto updateBoxComment(@PathVariable Long id, @Valid @RequestBody BoxCommentDto boxCommentDto) {
-        /* to be refactored to the service; but until service exists this is a workaround for a swagger behaviour */
-        if (boxCommentDto.getId().equals(id) && id != 0) {
-            return boxCommentDto;
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ids in url and body params don't match.");
-        }
+    public BoxComment updateBoxComment(@PathVariable Long id, @Valid @RequestBody BoxCommentDto boxCommentDto) {
+        // if an id is in the dto/requestBody, the service-behaviour is "ignore"
+        return this.boxCommentService.updateBoxComment(id, boxCommentDto);
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteBoxCommentById(@PathVariable Long id) {
-        return id;
+    public BoxComment deleteBoxCommentById(@PathVariable Long id) {
+        return this.boxCommentService.deleteBoxComment(id);
     }
 
 }
