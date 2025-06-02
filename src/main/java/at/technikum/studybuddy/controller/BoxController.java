@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.controller;
 
+import at.technikum.studybuddy.dto.BoxDto;
 import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.service.BoxService;
 import jakarta.validation.Valid;
@@ -19,26 +20,25 @@ public class BoxController {
 
     @GetMapping
     public List<Box> getAllBoxes() {
-        return null;
+        return boxService.getAllBoxes();
     }
 
     @GetMapping("/{id}")
-    public Box getBoxById(@PathVariable Long id) {
-        return null;
-    }
+    public Box getBoxById(@PathVariable Long id) { return boxService.getBoxById(id); }
 
     @PostMapping
-    public Box createBox(@Valid @RequestBody Box  box) {
-        return box;
+    public Box createBox(@Valid @RequestBody BoxDto  boxDto) {
+        return this.boxService.createBox(boxDto);
     }
 
+
     @PutMapping("/{id}")
-    public Box updateBox(@PathVariable Long id, @Valid @RequestBody Box box) {
-        return box;
+    public Box updateBox(@PathVariable Long id, @Valid @RequestBody BoxDto boxDto) {
+        return boxService.updateBox(id,boxDto);
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteBoxById(@PathVariable Long id) {
-        return id;
+    public Box deleteBoxById(@PathVariable Long id) {
+        return boxService.deleteBox(id);
     }
 }

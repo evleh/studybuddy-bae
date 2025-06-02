@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.entity;
 
+import at.technikum.studybuddy.dto.BoxDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Entity
 public class Box {
@@ -34,6 +36,22 @@ public class Box {
     private String description;
 
     private Boolean isPublic;
+
+    public Box() {
+    }
+
+    public Box(String title, String description, Boolean isPublic) {
+        this.title = title;
+        this.description = description;
+        this.isPublic = isPublic;
+    }
+
+    public Box updateFromBoxDto(BoxDto boxDto) {
+        title = boxDto.getTitle()==null?title:boxDto.getTitle();
+        description = boxDto.getDescription()==null?description:boxDto.getTitle();
+        isPublic = boxDto.getPublic()==null?isPublic:boxDto.getPublic();
+        return this;
+    }
 
     public Long getId() {
 
