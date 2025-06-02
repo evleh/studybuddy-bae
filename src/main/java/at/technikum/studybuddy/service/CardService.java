@@ -35,7 +35,7 @@ public class CardService {
 
 
     public Card update(long id, Card card){
-        return null;
+        return this.cardRepository.save(card);
     }
 
     public Card delete(long id){

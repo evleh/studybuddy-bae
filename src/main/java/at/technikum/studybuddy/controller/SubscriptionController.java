@@ -13,22 +13,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/subscriptions")
 public class SubscriptionController {
+    private SubscriptionService subscriptionService;
 
+    public SubscriptionController(SubscriptionService subscriptionService) {
+        this.subscriptionService = subscriptionService;
+    }
 
     @GetMapping
     public List<Subscription> readAll() {
-        return null;
+        return this.subscriptionService.getAll();
     }
 
     @GetMapping("/{id}")
     public Subscription read(@PathVariable int id) {
-        return null;
+        return this.subscriptionService.get(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Subscription create (@RequestBody @Valid Subscription subscription) {
-        return null;
+        return this.subscriptionService.create(subscription);
     }
 
     @PutMapping("/{id}")
@@ -36,11 +40,11 @@ public class SubscriptionController {
             @PathVariable int id,
             @RequestBody Subscription subscription
     ) {
-        return null;
+        return this.subscriptionService.update(id,subscription);
     }
 
     @DeleteMapping("/{id}")
     public Subscription delete (@PathVariable int id){
-        return null;
+        return this.subscriptionService.delete(id);
     }
 }
