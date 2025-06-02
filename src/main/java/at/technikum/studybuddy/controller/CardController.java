@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cards")
 public class CardController {
-    private CardService cardService;
+    private final CardService cardService;
 
     public CardController(CardService cardService) {
         this.cardService = cardService;
