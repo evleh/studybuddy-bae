@@ -21,8 +21,8 @@ public class BoxCommentController {
     }
 
     @GetMapping
-    public List<BoxCommentDto> getBoxComments() {
-        return null;
+    public List<BoxComment> getBoxComments() {
+        return this.boxCommentService.getAllBoxComments();
     }
 
     @GetMapping("/{id}")

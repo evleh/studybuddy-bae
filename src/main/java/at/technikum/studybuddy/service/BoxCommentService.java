@@ -5,6 +5,8 @@ import at.technikum.studybuddy.entity.BoxComment;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BoxCommentService {
 
@@ -17,5 +19,9 @@ public class BoxCommentService {
         BoxComment boxComment = new BoxComment();
         boxComment.setText(boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
+    }
+
+    public List<BoxComment> getAllBoxComments() {
+        return this.boxCommentRepository.findAll();
     }
 }
