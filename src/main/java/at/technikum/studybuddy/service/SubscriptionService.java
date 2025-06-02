@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.service;
 
+import at.technikum.studybuddy.entity.CardProgress;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.SubscriptionRepository;
 import at.technikum.studybuddy.entity.Subscription;
@@ -33,7 +34,13 @@ public class SubscriptionService {
     }
 
     public Subscription update(long id, Subscription subscription){
-        return null;
+        Optional<Subscription> findSubscription = subscriptionRepository.findById(id); // nur save wenn es schon existiert
+        if(findSubscription.isEmpty()){
+            throw new ResourceNotFoundException();
+        }
+
+        this.subscriptionRepository.save(subscription);
+        return findSubscription.get();
     }
 
     public Subscription delete(long id) {

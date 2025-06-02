@@ -19,7 +19,7 @@
 ### Timestamps
 
 Die Angabe schreibt:
-> Every data entry has "created at" and "updated at" (...) [Moodle: Project Description Page](https://moodle.technikum-wien.at/mod/page/view.php?id=1963792).  
+> Every data entry has "createdAt at" and "updated at" (...) [Moodle: Project Description Page](https://moodle.technikum-wien.at/mod/page/view.php?id=1963792).  
 
 
 Vorschlag wäre das gleich als Naming-Convention zu verwenden: createdAt und updatedAt  

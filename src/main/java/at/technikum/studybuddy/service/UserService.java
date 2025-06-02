@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.service;
 
+import at.technikum.studybuddy.entity.CardProgress;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
 import at.technikum.studybuddy.entity.User;
@@ -33,7 +34,13 @@ public class UserService {
     }
 
     public User update(long id, User user) {
-        return null;
+        Optional<User> findUser = userRepository.findById(id); // nur save wenn es schon existiert
+        if(findUser.isEmpty()){
+            throw new ResourceNotFoundException();
+        }
+
+        this.userRepository.save(user);
+        return findUser.get();
     }
 
     public User delete(long id){
