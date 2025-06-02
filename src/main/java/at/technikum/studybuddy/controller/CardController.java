@@ -31,6 +31,8 @@ public class CardController {
         return this.cardService.create(card);
     }
 
+    // ToDo: Achtung hier nicht einfach übernehmen. In service wird save-methode aufgerufen.
+    //  Grundsätzlich kann die auch update machen aber funktioniert nicht mit dem id-Parameter.
     @PutMapping("/{id}")
     public Card update(@PathVariable long id, @RequestBody Card card){
         return this.cardService.update(id, card);
