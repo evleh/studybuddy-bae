@@ -21,7 +21,6 @@ public class BoxComment {
     @LastModifiedDate
     private Instant updatedAt;
 
-    private String title;
     // as per https://www.baeldung.com/jpa-size-length-column-differences
     @Column(length = 2048)
     private String text;
@@ -58,13 +57,7 @@ public class BoxComment {
         this.text = text;
     }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }
 
 
