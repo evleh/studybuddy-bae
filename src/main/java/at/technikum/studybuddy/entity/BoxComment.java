@@ -21,7 +21,6 @@ public class BoxComment {
     @LastModifiedDate
     private Instant updatedAt;
 
-    private String title;
     // as per https://www.baeldung.com/jpa-size-length-column-differences
     @Column(length = 2048)
     private String text;
