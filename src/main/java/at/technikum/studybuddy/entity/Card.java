@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -16,8 +17,11 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Definiert Strategie wie PK generiert wird.
     private long id;
     // private long boxId;
+    @NotBlank
     private String question;
+    @NotBlank
     private String answer;
+
     private String media;
 
     @CreatedDate

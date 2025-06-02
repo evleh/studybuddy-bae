@@ -14,6 +14,8 @@
  Mehr Infos: https://www.javaguides.net/2023/07/jpa-id-and-generatedvalue-annotations.html
  
 
+
+
 ## Naming
 
 ### Timestamps
@@ -23,4 +25,11 @@ Die Angabe schreibt:
 
 
 Vorschlag wäre das gleich als Naming-Convention zu verwenden: createdAt und updatedAt  
+
+## Validation
+- @UpdateTimestamp https://www.baeldung.com/hibernate-creationtimestamp-updatetimestamp
+- @CreatedTimestamp
+- @Email
+- @Column(length = 2048)
+- @NotBlank
 
