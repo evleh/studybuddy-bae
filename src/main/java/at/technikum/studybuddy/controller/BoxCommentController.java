@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.controller;
 
+import at.technikum.studybuddy.dto.BoxCommentDto;
 import at.technikum.studybuddy.entity.BoxComment;
 import at.technikum.studybuddy.service.BoxCommentService;
 import jakarta.validation.Valid;
@@ -20,25 +21,25 @@ public class BoxCommentController {
     }
 
     @GetMapping
-    public List<BoxComment> getBoxComments() {
+    public List<BoxCommentDto> getBoxComments() {
         return null;
     }
 
     @GetMapping("/{id}")
-    public BoxComment getBoxCommentById(@PathVariable Long id) {
+    public BoxCommentDto getBoxCommentById(@PathVariable Long id) {
         return null;
     }
 
     @PostMapping
-    public BoxComment createBoxComment(@Valid @RequestBody BoxComment boxComment) {
+    public BoxCommentDto createBoxComment(@Valid @RequestBody BoxCommentDto boxComment) {
         return boxComment;
     }
 
     @PutMapping("/{id}")
-    public BoxComment updateBoxComment(@PathVariable Long id, @Valid @RequestBody BoxComment boxComment) {
+    public BoxCommentDto updateBoxComment(@PathVariable Long id, @Valid @RequestBody BoxCommentDto boxCommentDto) {
         /* to be refactored to the service; but until service exists this is a workaround for a swagger behaviour */
-        if (boxComment.getId().equals(id) && id != 0) {
-            return boxComment;
+        if (boxCommentDto.getId().equals(id) && id != 0) {
+            return boxCommentDto;
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ids in url and body params don't match.");
         }
