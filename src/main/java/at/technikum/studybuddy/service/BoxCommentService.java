@@ -2,6 +2,7 @@ package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.BoxCommentDto;
 import at.technikum.studybuddy.entity.BoxComment;
+import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +24,15 @@ public class BoxCommentService {
 
     public List<BoxComment> getAllBoxComments() {
         return this.boxCommentRepository.findAll();
+    }
+
+    public BoxComment getBoxCommentById(Long id) {
+        return this.boxCommentRepository.findById(id)
+                .orElseThrow(ResourceNotFoundException::new);
+        /* note:
+          ResourceNotFoundException::new
+          is an ide-suggest replacement for () -> new ResourceNotFoundException
+          which is shorthand for if(..isempty()) ... etc
+        */
     }
 }
