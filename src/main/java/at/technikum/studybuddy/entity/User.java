@@ -1,8 +1,10 @@
 package at.technikum.studybuddy.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.net.URL;
 import java.time.Instant;
@@ -11,19 +13,28 @@ import java.time.Instant;
 @Table(name = "studybuddy_user")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private boolean isAdmin;
     private String username;
     private URL foto;
+    @Email
     private String email;
+    @NotBlank
     private String gender;
+    @NotBlank
     private String firstname;
+    @NotBlank
     private String lastname;
+    @NotBlank
     private String password;
+    @NotBlank
     private String country;
     private Instant lastLogin;
-    private Instant created;
-    private Instant lastEdit;
+    @CreationTimestamp
+    private Instant createdAt;
+    @UpdateTimestamp
+    private Instant updatedAt;
 
     // empty constructor
     public User() {
@@ -31,7 +42,7 @@ public class User {
     }
 
     // full constructor
-    public User(long id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant lastEdit) {
+    public User(long id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant updatedAt) {
         this.id = id;
         this.isAdmin = isAdmin;
         this.username = username;
@@ -43,8 +54,8 @@ public class User {
         this.password = password;
         this.country = country;
         this.lastLogin = lastLogin;
-        this.created = created;
-        this.lastEdit = lastEdit;
+        this.createdAt = created;
+        this.updatedAt = updatedAt;
     }
 
     // getters
@@ -92,12 +103,12 @@ public class User {
         return lastLogin;
     }
 
-    public Instant getCreated() {
-        return created;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public Instant getLastEdit() {
-        return lastEdit;
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
     //setters
@@ -146,11 +157,11 @@ public class User {
         this.lastLogin = lastLogin;
     }
 
-    public void setCreated(Instant created) {
-        this.created = created;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public void setLastEdit(Instant lastEdit) {
-        this.lastEdit = lastEdit;
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
