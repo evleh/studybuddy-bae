@@ -2,8 +2,8 @@ package at.technikum.studybuddy.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
@@ -17,9 +17,9 @@ public class BoxComment {
     // doLater: comment is created by a user
     // doLater: comment is related to specific Box
 
-    @CreatedDate
+    @CreationTimestamp
     private Instant createdAt;
-    @LastModifiedDate
+    @UpdateTimestamp
     private Instant updatedAt;
 
     // as per https://www.baeldung.com/jpa-size-length-column-differences

@@ -1,8 +1,10 @@
 package at.technikum.studybuddy.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
@@ -14,9 +16,9 @@ public class Box {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreatedDate
+    @CreationTimestamp
     private Instant createdAt;
-    @LastModifiedDate
+    @UpdateTimestamp
     private Instant updatedAt;
 
     // doLater: box belongs to a user
@@ -25,6 +27,8 @@ public class Box {
     // doLater: box has subscribers
 
 
+    @NotBlank
+    @Size(min = 5, max = 200)
     private String title;
     @Column(length = 2048)
     private String description;
