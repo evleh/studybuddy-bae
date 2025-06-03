@@ -40,7 +40,7 @@ let line_for_box = function(id) {
 let line_for_box_comment = function(id) {
     if (id == null) { console.log("should not happen?"); return "eeeek"; } else {
         var comment = boxcomments_by_id[id];
-        return `    Text: '${comment.text}'`;
+        return `    Text: '${comment.text}' -- Id of comment: ${comment.id}`;
     }
 }
 
@@ -55,4 +55,5 @@ sort_comments_by.forEach(function(box_id_or_null) {
     comments_with_boxid(box_id_or_null).forEach(function(comment) {
         console.log(line_for_box_comment(comment.id));
     })
+    console.log()
 });
