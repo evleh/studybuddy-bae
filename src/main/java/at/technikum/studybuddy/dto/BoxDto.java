@@ -1,8 +1,11 @@
 package at.technikum.studybuddy.dto;
 
 import at.technikum.studybuddy.entity.Box;
+import at.technikum.studybuddy.entity.BoxComment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 public class BoxDto {
 
@@ -16,6 +19,7 @@ public class BoxDto {
     private Boolean isPublic;
 
     // missing here too: comments, cards, all connections ofc.
+    private List<Long> commentIds ;
 
     public BoxDto() {
         // empty
@@ -26,6 +30,9 @@ public class BoxDto {
         this.title = box.getTitle();
         this.description = box.getDescription();
         this.isPublic = box.getPublic();
+        if (box.getComments() != null) {
+            this.commentIds = box.getComments().stream().map(BoxComment::getId).toList();
+        }
     }
 
     public Box makeAndGetBoxForCreation() { // the name "getBoxFor..." would confuse the framework.
@@ -66,5 +73,9 @@ public class BoxDto {
 
     public void setPublic(Boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public List<Long> getCommentIds() {
+        return commentIds;
     }
 }
