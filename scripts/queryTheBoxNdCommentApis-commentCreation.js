@@ -3,7 +3,7 @@ var mychaindebugger = function(input) {
     console.log(input);
     return(input);
 }
-var debug_the_everything = true;
+var debug_the_everything = false;
 if (!debug_the_everything) { mychaindebugger = (data) => {return data;} }
 
 

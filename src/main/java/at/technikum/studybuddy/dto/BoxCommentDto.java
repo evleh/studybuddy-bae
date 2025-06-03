@@ -22,11 +22,14 @@ public class BoxCommentDto {
         super();
     }
 
-    BoxCommentDto(BoxComment boxComment) {
+    public BoxCommentDto(BoxComment boxComment) {
         this();
         if (boxComment != null) {
             this.id = boxComment.getId();
             this.text = boxComment.getText();
+            if (boxComment.getBox() != null) {
+                this.boxId = boxComment.getBox().getId();
+            }
         }
     }
 

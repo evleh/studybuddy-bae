@@ -1,7 +1,6 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.BoxDto;
-import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.service.BoxService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,18 +28,18 @@ public class BoxController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Box createBox(@Valid @RequestBody BoxDto  boxDto) {
-        return this.boxService.createBox(boxDto);
+    public BoxDto createBox(@Valid @RequestBody BoxDto  boxDto) {
+        return new BoxDto(this.boxService.createBox(boxDto));
     }
 
 
     @PutMapping("/{id}")
-    public Box updateBox(@PathVariable Long id, @Valid @RequestBody BoxDto boxDto) {
-        return boxService.updateBox(id,boxDto);
+    public BoxDto updateBox(@PathVariable Long id, @Valid @RequestBody BoxDto boxDto) {
+        return new BoxDto(boxService.updateBox(id,boxDto));
     }
 
     @DeleteMapping("/{id}")
-    public Box deleteBoxById(@PathVariable Long id) {
-        return boxService.deleteBox(id);
+    public BoxDto deleteBoxById(@PathVariable Long id) {
+        return new BoxDto(boxService.deleteBox(id));
     }
 }
