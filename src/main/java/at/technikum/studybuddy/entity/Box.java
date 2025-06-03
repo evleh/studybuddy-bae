@@ -28,8 +28,11 @@ public class Box {
     // doLater: box has Cards
     // doLater: box has subscribers
 
-    @OneToMany
-    private List<BoxComment> boxComments ;
+
+    // comment: if I read https://www.baeldung.com/hibernate-one-to-many right
+    // mappedBy specifies, as a string, the *name* of the property in the other Class that refers to here
+    @OneToMany(mappedBy = "box")
+    private List<BoxComment> comments;
 
 
     @NotBlank
@@ -56,13 +59,7 @@ public class Box {
         return this;
     }
 
-    public List<BoxComment> getBoxComments() {
-        return boxComments;
-    }
 
-    public void setBoxComments(List<BoxComment> boxComments) {
-        this.boxComments = boxComments;
-    }
 
     public Long getId() {
 
