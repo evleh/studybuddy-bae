@@ -1,9 +1,7 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.entity.Subscription;
-import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.service.SubscriptionService;
-import at.technikum.studybuddy.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +19,12 @@ public class SubscriptionController {
 
     @GetMapping
     public List<Subscription> readAll() {
-        return this.subscriptionService.getAll();
+        return this.subscriptionService.readAll();
     }
 
     @GetMapping("/{id}")
     public Subscription read(@PathVariable int id) {
-        return this.subscriptionService.get(id);
+        return this.subscriptionService.read(id);
     }
 
     @PostMapping

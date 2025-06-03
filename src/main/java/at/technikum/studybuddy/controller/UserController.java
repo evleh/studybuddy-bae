@@ -19,12 +19,12 @@ public class UserController {
 
     @GetMapping
     public List<User> readAll() {
-        return this.userService.getAll();
+        return this.userService.readAll();
     }
 
     @GetMapping("/{id}")
     public User read(@PathVariable long id) {
-        return this.userService.get(id);
+        return this.userService.read(id);
     }
 
     @PostMapping

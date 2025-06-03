@@ -26,6 +26,7 @@ public class BoxCommentController {
     @GetMapping("/{id}")
     public BoxCommentDto readBoxCommentById(@PathVariable Long id) {
         return new BoxCommentDto(this.boxCommentService.readBoxCommentById(id));
+
     }
 
     @PostMapping

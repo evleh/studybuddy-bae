@@ -40,3 +40,18 @@ Instance ist ein spezifischer Zeitpunkt auf einer Timeline mit Unix epoch time a
 Offset nicht. Beide haben allgemeine Rechenoperationen und schwierigkeiten mit Time Zones. 
 Für uns ist es vermutlich egal was wir verwenden. https://www.baeldung.com/java-instant-vs-localdatetime
 
+
+### HTTP Response Status Codes:
+Geben an ob HTTP Request erfolgreich abgeschlossen wurde. In 5 Klassen aufgeteilt
+Default verhalten von spring:
+- 200 wen CRUD Methoden zu keiner Exception führen
+- man kann einen ResponseStatus durch die `@ResponseStatus` Annotation zu Exceptions mappen.
+  In der Controller Methode brauche ich dann keine `@ResponseStatus`Annotation.
+
+Wichtigste HTTP Codes:
+
+| Nummer  | Erklärung | Wann verwendet|
+|---------|-----------|---------------|
+| **200** | OK        | default für erfolgreiche CRUD Methoden in Spring |
+| **201** | Created   | create-CRUD |
+| **404** | Not Found | ResourceNotFoundException |

@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class BoxService {
 
-    private BoxRepository boxRepository;
+    private final BoxRepository boxRepository;
 
     BoxService(BoxRepository boxRepository) {
         this.boxRepository = boxRepository;
