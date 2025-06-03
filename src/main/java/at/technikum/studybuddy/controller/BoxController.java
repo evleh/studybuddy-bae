@@ -20,12 +20,12 @@ public class BoxController {
     }
 
     @GetMapping
-    public List<Box> getAllBoxes() {
-        return boxService.getAllBoxes();
+    public List<Box> readAllBoxes() {
+        return boxService.readAllBoxes();
     }
 
     @GetMapping("/{id}")
-    public Box getBoxById(@PathVariable Long id) { return boxService.getBoxById(id); }
+    public Box readBoxById(@PathVariable Long id) { return boxService.readBoxById(id); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

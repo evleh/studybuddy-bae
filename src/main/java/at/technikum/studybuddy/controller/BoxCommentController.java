@@ -6,7 +6,6 @@ import at.technikum.studybuddy.service.BoxCommentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,13 +20,13 @@ public class BoxCommentController {
     }
 
     @GetMapping
-    public List<BoxComment> getBoxComments() {
-        return this.boxCommentService.getAllBoxComments();
+    public List<BoxComment> readAllBoxComments() {
+        return this.boxCommentService.readAllBoxComments();
     }
 
     @GetMapping("/{id}")
-    public BoxComment getBoxCommentById(@PathVariable Long id) {
-        return this.boxCommentService.getBoxCommentById(id);
+    public BoxComment readBoxCommentById(@PathVariable Long id) {
+        return this.boxCommentService.readBoxCommentById(id);
     }
 
     @PostMapping

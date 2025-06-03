@@ -2,7 +2,7 @@ package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.BoxCommentDto;
 import at.technikum.studybuddy.entity.BoxComment;
-    import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
+import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +23,11 @@ public class BoxCommentService {
         return boxCommentRepository.save(boxComment);
     }
 
-    public List<BoxComment> getAllBoxComments() {
+    public List<BoxComment> readAllBoxComments() {
         return this.boxCommentRepository.findAll();
     }
 
-    public BoxComment getBoxCommentById(Long id) {
+    public BoxComment readBoxCommentById(Long id) {
         return this.boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
         /* note:
@@ -38,7 +38,7 @@ public class BoxCommentService {
     }
 
     public BoxComment updateBoxComment(Long id, BoxCommentDto boxCommentDto) {
-        BoxComment boxComment = getBoxCommentById(id);
+        BoxComment boxComment = readBoxCommentById(id);
         boxComment.setText(boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
     }
