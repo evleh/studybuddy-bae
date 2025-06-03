@@ -18,11 +18,11 @@ public class BoxService {
         this.boxRepository = boxRepository;
     }
 
-    public List<Box> getAllBoxes() {
+    public List<Box> readAllBoxes() {
         return boxRepository.findAll();
     }
 
-    public Box getBoxById(Long id) {
+    public Box readBoxById(Long id) {
         return boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 

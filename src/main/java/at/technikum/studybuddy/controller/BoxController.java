@@ -19,12 +19,12 @@ public class BoxController {
     }
 
     @GetMapping
-    public List<BoxDto> getAllBoxes() {
-        return boxService.getAllBoxes().stream().map(BoxDto::new).toList();
+    public List<BoxDto> readAllBoxes() {
+        return boxService.readAllBoxes().stream().map(BoxDto::new).toList();
     }
 
     @GetMapping("/{id}")
-    public BoxDto getBoxById(@PathVariable Long id) { return new BoxDto(boxService.getBoxById(id)); }
+    public BoxDto readBoxById(@PathVariable Long id) { return new BoxDto(boxService.readBoxById(id)); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

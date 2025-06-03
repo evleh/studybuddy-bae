@@ -22,15 +22,15 @@ public class BoxCommentService {
     public BoxComment createBoxComment(BoxCommentDto boxCommentDto) {
         BoxComment boxComment = new BoxComment();
         boxComment.setText(boxCommentDto.getText());
-        boxComment.setBox(boxService.getBoxById(boxCommentDto.getBoxId())); // if not found, boxService should throw.
+        boxComment.setBox(boxService.readBoxById(boxCommentDto.getBoxId())); // if not found, boxService should throw.
         return boxCommentRepository.save(boxComment);
     }
 
-    public List<BoxComment> getAllBoxComments() {
+    public List<BoxComment> readAllBoxComments() {
         return this.boxCommentRepository.findAll();
     }
 
-    public BoxComment getBoxCommentById(Long id) {
+    public BoxComment readBoxCommentById(Long id) {
         return this.boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
         /* note:
@@ -41,7 +41,7 @@ public class BoxCommentService {
     }
 
     public BoxComment updateBoxComment(Long id, BoxCommentDto boxCommentDto) {
-        BoxComment boxComment = getBoxCommentById(id);
+        BoxComment boxComment = readBoxCommentById(id);
         boxComment.setText(boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
     }

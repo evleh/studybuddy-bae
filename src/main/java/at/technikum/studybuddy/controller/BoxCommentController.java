@@ -19,13 +19,13 @@ public class BoxCommentController {
     }
 
     @GetMapping
-    public List<BoxCommentDto> getBoxComments() {
-        return this.boxCommentService.getAllBoxComments().stream().map(BoxCommentDto::new).toList();
+    public List<BoxCommentDto> readBoxComments() {
+        return this.boxCommentService.readAllBoxComments().stream().map(BoxCommentDto::new).toList();
     }
 
     @GetMapping("/{id}")
-    public BoxCommentDto getBoxCommentById(@PathVariable Long id) {
-        return new BoxCommentDto(this.boxCommentService.getBoxCommentById(id));
+    public BoxCommentDto readBoxCommentById(@PathVariable Long id) {
+        return new BoxCommentDto(this.boxCommentService.readBoxCommentById(id));
     }
 
     @PostMapping
