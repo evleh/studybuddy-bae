@@ -39,7 +39,6 @@ var makeRandomBoxForPost = function() {
     }
 }
 
-mychaindebugger(makeRandomBoxForPost());
 
 fetch(makeABoxApiFetchRequestObject(makeRandomBoxForPost()))
     .then((response) => response.json())

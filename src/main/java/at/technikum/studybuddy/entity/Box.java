@@ -8,7 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Box {
@@ -25,8 +26,13 @@ public class Box {
 
     // doLater: box belongs to a user
     // doLater: box has Cards
-    // doLater: box has comments
     // doLater: box has subscribers
+
+
+    // comment: if I read https://www.baeldung.com/hibernate-one-to-many right
+    // mappedBy specifies, as a string, the *name* of the property in the other Class that refers to here
+    @OneToMany(mappedBy = "box")
+    private List<BoxComment> comments ;
 
 
     @NotBlank
@@ -52,6 +58,8 @@ public class Box {
         isPublic = boxDto.getPublic()==null?isPublic:boxDto.getPublic();
         return this;
     }
+
+
 
     public Long getId() {
 
@@ -100,5 +108,13 @@ public class Box {
 
     public void setPublic(Boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public List<BoxComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<BoxComment> comments) {
+        this.comments = comments;
     }
 }

@@ -15,7 +15,9 @@ public class BoxComment {
     private Long id;
 
     // doLater: comment is created by a user
-    // doLater: comment is related to specific Box
+    @ManyToOne
+    @JoinColumn(name = "box_id")
+    Box box ;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -26,6 +28,14 @@ public class BoxComment {
     @Column(length = 2048)
     @NotBlank
     private String text;
+
+    public Box getBox() {
+        return box;
+    }
+
+    public void setBox(Box box) {
+        this.box = box;
+    }
 
     public Long getId() {
         return id;

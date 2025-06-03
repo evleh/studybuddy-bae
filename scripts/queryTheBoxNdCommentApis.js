@@ -1,12 +1,9 @@
 
-
-console.log("helloworld")
-
 var mychaindebugger = function(input) {
     console.log(input);
     return(input);
 }
-var debug_the_everything = false;
+var debug_the_everything = true;
 if (!debug_the_everything) { mychaindebugger = (data) => {return data;} }
 
 

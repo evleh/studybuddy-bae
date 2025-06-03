@@ -13,19 +13,23 @@ public class BoxCommentDto {
     private String text;
 
     // no user as of now
-    // no box as of now
     // t.odo: displaydate als string?
+
+    private Long boxId ;
 
 
     BoxCommentDto() {
         super();
     }
 
-    BoxCommentDto(BoxComment boxComment) {
+    public BoxCommentDto(BoxComment boxComment) {
         this();
         if (boxComment != null) {
             this.id = boxComment.getId();
             this.text = boxComment.getText();
+            if (boxComment.getBox() != null) {
+                this.boxId = boxComment.getBox().getId();
+            }
         }
     }
 
@@ -45,4 +49,11 @@ public class BoxCommentDto {
         this.text = text;
     }
 
+    public Long getBoxId() {
+        return boxId;
+    }
+
+    public void setBoxId(Long boxId) {
+        this.boxId = boxId;
+    }
 }

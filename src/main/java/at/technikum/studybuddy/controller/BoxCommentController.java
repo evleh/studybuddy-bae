@@ -1,7 +1,6 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.BoxCommentDto;
-import at.technikum.studybuddy.entity.BoxComment;
 import at.technikum.studybuddy.service.BoxCommentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,31 +19,30 @@ public class BoxCommentController {
     }
 
     @GetMapping
-    public List<BoxComment> readAllBoxComments() {
-        return this.boxCommentService.readAllBoxComments();
+    public List<BoxCommentDto> readBoxComments() {
+        return this.boxCommentService.readAllBoxComments().stream().map(BoxCommentDto::new).toList();
     }
 
     @GetMapping("/{id}")
-    public BoxComment readBoxCommentById(@PathVariable Long id) {
-        return this.boxCommentService.readBoxCommentById(id);
+    public BoxCommentDto readBoxCommentById(@PathVariable Long id) {
+        return new BoxCommentDto(this.boxCommentService.readBoxCommentById(id));
+
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BoxComment createBoxComment(@Valid @RequestBody BoxCommentDto boxCommentDto) {
-        // returning dto or entity itself? currently no reason wrap it that I can see.
-        return this.boxCommentService.createBoxComment(boxCommentDto);
+    public BoxCommentDto createBoxComment(@Valid @RequestBody BoxCommentDto boxCommentDto) {
+        return new BoxCommentDto(this.boxCommentService.createBoxComment(boxCommentDto));
     }
 
     @PutMapping("/{id}")
-    public BoxComment updateBoxComment(@PathVariable Long id, @Valid @RequestBody BoxCommentDto boxCommentDto) {
-        // if an id is in the dto/requestBody, the service-behaviour is "ignore"
-        return this.boxCommentService.updateBoxComment(id, boxCommentDto);
+    public BoxCommentDto updateBoxComment(@PathVariable Long id, @Valid @RequestBody BoxCommentDto boxCommentDto) {
+        return new BoxCommentDto(this.boxCommentService.updateBoxComment(id, boxCommentDto));
     }
 
     @DeleteMapping("/{id}")
-    public BoxComment deleteBoxCommentById(@PathVariable Long id) {
-        return this.boxCommentService.deleteBoxComment(id);
+    public BoxCommentDto deleteBoxCommentById(@PathVariable Long id) {
+        return new BoxCommentDto(this.boxCommentService.deleteBoxComment(id));
     }
 
 }

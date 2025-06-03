@@ -13,13 +13,16 @@ import java.util.Optional;
 public class BoxCommentService {
 
     private final BoxCommentRepository boxCommentRepository;
-    public BoxCommentService(BoxCommentRepository boxCommentRepository) {
+    private final BoxService boxService;
+    public BoxCommentService(BoxCommentRepository boxCommentRepository, BoxService boxService) {
         this.boxCommentRepository = boxCommentRepository;
+        this.boxService = boxService;
     }
 
     public BoxComment createBoxComment(BoxCommentDto boxCommentDto) {
         BoxComment boxComment = new BoxComment();
         boxComment.setText(boxCommentDto.getText());
+        boxComment.setBox(boxService.readBoxById(boxCommentDto.getBoxId())); // if not found, boxService should throw.
         return boxCommentRepository.save(boxComment);
     }
 
