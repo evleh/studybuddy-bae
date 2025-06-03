@@ -17,6 +17,7 @@
 ## Verwendete Annotationen für Validation
 - `@NotBlank`
 - @Email
+- `@Size` (siehe zb: `@Size(min = 5, max = 2000)` in BoxCommentDto; für Strings)
 
 
 ## Naming
