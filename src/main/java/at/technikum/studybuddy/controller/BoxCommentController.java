@@ -31,6 +31,7 @@ public class BoxCommentController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public BoxComment createBoxComment(@Valid @RequestBody BoxCommentDto boxCommentDto) {
         // returning dto or entity itself? currently no reason wrap it that I can see.
         return this.boxCommentService.createBoxComment(boxCommentDto);

@@ -4,6 +4,7 @@ import at.technikum.studybuddy.dto.BoxDto;
 import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.service.BoxService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class BoxController {
     public Box getBoxById(@PathVariable Long id) { return boxService.getBoxById(id); }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Box createBox(@Valid @RequestBody BoxDto  boxDto) {
         return this.boxService.createBox(boxDto);
     }
