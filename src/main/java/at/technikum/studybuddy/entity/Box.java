@@ -8,7 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Box {
@@ -25,8 +26,10 @@ public class Box {
 
     // doLater: box belongs to a user
     // doLater: box has Cards
-    // doLater: box has comments
     // doLater: box has subscribers
+
+    @OneToMany
+    private List<BoxComment> boxComments ;
 
 
     @NotBlank
@@ -51,6 +54,14 @@ public class Box {
         description = boxDto.getDescription()==null?description:boxDto.getTitle();
         isPublic = boxDto.getPublic()==null?isPublic:boxDto.getPublic();
         return this;
+    }
+
+    public List<BoxComment> getBoxComments() {
+        return boxComments;
+    }
+
+    public void setBoxComments(List<BoxComment> boxComments) {
+        this.boxComments = boxComments;
     }
 
     public Long getId() {

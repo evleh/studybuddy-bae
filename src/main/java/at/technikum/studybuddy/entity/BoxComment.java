@@ -29,12 +29,12 @@ public class BoxComment {
     @NotBlank
     private String text;
 
-    public Box getForBox() {
-        return forBox;
+    public Box getBox() {
+        return box;
     }
 
-    public void setForBox(Box forBox) {
-        this.forBox = forBox;
+    public void setBox(Box box) {
+        this.box = box;
     }
 
     public Long getId() {
