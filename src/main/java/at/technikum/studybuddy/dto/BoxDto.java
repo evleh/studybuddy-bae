@@ -17,11 +17,11 @@ public class BoxDto {
 
     // missing here too: comments, cards, all connections ofc.
 
-    BoxDto() {
+    public BoxDto() {
         // empty
     }
 
-    BoxDto(Box box) {
+    public BoxDto(Box box) {
         this.id = box.getId();
         this.title = box.getTitle();
         this.description = box.getDescription();

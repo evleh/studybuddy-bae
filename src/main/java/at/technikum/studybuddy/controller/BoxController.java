@@ -20,8 +20,8 @@ public class BoxController {
     }
 
     @GetMapping
-    public List<Box> getAllBoxes() {
-        return boxService.getAllBoxes();
+    public List<BoxDto> getAllBoxes() {
+        return boxService.getAllBoxes().stream().map(BoxDto::new).toList();
     }
 
     @GetMapping("/{id}")
