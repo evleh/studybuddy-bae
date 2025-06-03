@@ -32,7 +32,7 @@ public class Box {
     // comment: if I read https://www.baeldung.com/hibernate-one-to-many right
     // mappedBy specifies, as a string, the *name* of the property in the other Class that refers to here
     @OneToMany(mappedBy = "box")
-    private List<BoxComment> comments;
+    private List<BoxComment> comments ;
 
 
     @NotBlank
@@ -108,5 +108,13 @@ public class Box {
 
     public void setPublic(Boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public List<BoxComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<BoxComment> comments) {
+        this.comments = comments;
     }
 }
