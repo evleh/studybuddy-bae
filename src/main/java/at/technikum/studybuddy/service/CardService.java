@@ -16,11 +16,11 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
-    public List<Card> getAll(){
+    public List<Card> readAll(){
         return this.cardRepository.findAll();
     }
 
-    public Card get(long id) throws ResourceNotFoundException{
+    public Card read(long id) throws ResourceNotFoundException{
         Optional<Card> card = this.cardRepository.findById(id);
         if(card.isEmpty()){
             throw new ResourceNotFoundException();
@@ -33,8 +33,13 @@ public class CardService {
         return this.cardRepository.save(card);
     }
 
-
     public Card update(long id, Card card){
+        Optional<Card> cardRepo = this.cardRepository.findById(id);
+        // Eventuell InputMismatchException wenn id-Paramater und card-id nicht übereinstimmen
+
+        if(cardRepo.isEmpty()){
+            throw new ResourceNotFoundException();
+        }
         return this.cardRepository.save(card);
     }
 

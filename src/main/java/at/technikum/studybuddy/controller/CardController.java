@@ -19,13 +19,13 @@ public class CardController {
     }
 
     @GetMapping
-    public List<Card> getAll(){
-        return this.cardService.getAll();
+    public List<Card> readAll(){
+        return this.cardService.readAll();
     }
 
     @GetMapping("/{id}")
-    public Card get(@PathVariable long id){
-        return this.cardService.get(id);
+    public Card read(@PathVariable long id){
+        return this.cardService.read(id);
     } // wirft 404
 
     @ResponseStatus(HttpStatus.CREATED) // 202
