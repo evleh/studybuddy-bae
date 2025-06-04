@@ -1,6 +1,5 @@
 package at.technikum.studybuddy.service;
 
-import at.technikum.studybuddy.entity.CardProgress;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
 import at.technikum.studybuddy.entity.User;
@@ -11,17 +10,17 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAll(){
+    public List<User> readAll(){
         return this.userRepository.findAll();
     }
 
-    public User get(long id) {
+    public User read(long id) {
         Optional<User> user = this.userRepository.findById(id);
         if(user.isEmpty()){
             throw new ResourceNotFoundException();

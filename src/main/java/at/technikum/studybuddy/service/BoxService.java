@@ -12,17 +12,17 @@ import java.util.List;
 @Service
 public class BoxService {
 
-    private BoxRepository boxRepository;
+    private final BoxRepository boxRepository;
 
     BoxService(BoxRepository boxRepository) {
         this.boxRepository = boxRepository;
     }
 
-    public List<Box> getAllBoxes() {
+    public List<Box> readAllBoxes() {
         return boxRepository.findAll();
     }
 
-    public Box getBoxById(Long id) {
+    public Box readBoxById(Long id) {
         return boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
