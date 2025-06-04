@@ -19,27 +19,27 @@ public class BoxController {
     }
 
     @GetMapping
-    public List<BoxDto> readAllBoxes() {
+    public List<BoxDto> readAll() {
         return boxService.readAllBoxes().stream().map(BoxDto::new).toList();
     }
 
     @GetMapping("/{id}")
-    public BoxDto readBoxById(@PathVariable Long id) { return new BoxDto(boxService.readBoxById(id)); }
+    public BoxDto readById(@PathVariable Long id) { return new BoxDto(boxService.readBoxById(id)); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BoxDto createBox(@Valid @RequestBody BoxDto  boxDto) {
+    public BoxDto create(@Valid @RequestBody BoxDto  boxDto) {
         return new BoxDto(this.boxService.createBox(boxDto));
     }
 
 
     @PutMapping("/{id}")
-    public BoxDto updateBox(@PathVariable Long id, @Valid @RequestBody BoxDto boxDto) {
+    public BoxDto update(@PathVariable Long id, @Valid @RequestBody BoxDto boxDto) {
         return new BoxDto(boxService.updateBox(id,boxDto));
     }
 
     @DeleteMapping("/{id}")
-    public BoxDto deleteBoxById(@PathVariable Long id) {
+    public BoxDto deleteById(@PathVariable Long id) {
         return new BoxDto(boxService.deleteBox(id));
     }
 }

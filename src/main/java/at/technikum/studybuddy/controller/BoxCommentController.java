@@ -19,29 +19,29 @@ public class BoxCommentController {
     }
 
     @GetMapping
-    public List<BoxCommentDto> readBoxComments() {
+    public List<BoxCommentDto> readAll() {
         return this.boxCommentService.readAllBoxComments().stream().map(BoxCommentDto::new).toList();
     }
 
     @GetMapping("/{id}")
-    public BoxCommentDto readBoxCommentById(@PathVariable Long id) {
+    public BoxCommentDto readById(@PathVariable Long id) {
         return new BoxCommentDto(this.boxCommentService.readBoxCommentById(id));
 
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BoxCommentDto createBoxComment(@Valid @RequestBody BoxCommentDto boxCommentDto) {
+    public BoxCommentDto create(@Valid @RequestBody BoxCommentDto boxCommentDto) {
         return new BoxCommentDto(this.boxCommentService.createBoxComment(boxCommentDto));
     }
 
     @PutMapping("/{id}")
-    public BoxCommentDto updateBoxComment(@PathVariable Long id, @Valid @RequestBody BoxCommentDto boxCommentDto) {
+    public BoxCommentDto update(@PathVariable Long id, @Valid @RequestBody BoxCommentDto boxCommentDto) {
         return new BoxCommentDto(this.boxCommentService.updateBoxComment(id, boxCommentDto));
     }
 
     @DeleteMapping("/{id}")
-    public BoxCommentDto deleteBoxCommentById(@PathVariable Long id) {
+    public BoxCommentDto deleteById(@PathVariable Long id) {
         return new BoxCommentDto(this.boxCommentService.deleteBoxComment(id));
     }
 
