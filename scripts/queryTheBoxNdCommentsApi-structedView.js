@@ -7,12 +7,12 @@ var debug_the_everything = true;
 if (!debug_the_everything) { mychaindebugger = (data) => {return data;} }
 
 
-let boxresponse = await fetch("http://localhost:8080/box");
+let boxresponse = await fetch("http://localhost:8080/boxes");
 let boxjson = await boxresponse.json();
 console.log(`got ${boxjson.length} entries when asking the api for boxes`)
 
 
-let commentresponse = await fetch("http://localhost:8080/boxcomment");
+let commentresponse = await fetch("http://localhost:8080/boxcomments");
 let commentjson = await commentresponse.json();
 console.log(`got ${commentjson.length} entries when asking the api for comments`);
 

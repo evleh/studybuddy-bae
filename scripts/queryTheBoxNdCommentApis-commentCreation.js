@@ -7,12 +7,12 @@ var debug_the_everything = false;
 if (!debug_the_everything) { mychaindebugger = (data) => {return data;} }
 
 
-let boxresponse = await fetch("http://localhost:8080/box");
+let boxresponse = await fetch("http://localhost:8080/boxes");
 let boxjson = await boxresponse.json();
 console.log(`got ${boxjson.length} entries when asking the api for boxes`)
 
 
-let commentresponse = await fetch("http://localhost:8080/boxcomment");
+let commentresponse = await fetch("http://localhost:8080/boxcomments");
 let commentjson = await commentresponse.json();
 console.log(`got ${commentjson.length} entries when asking the api for comments`);
 
@@ -29,7 +29,7 @@ let randomBoxCommentForRandomBoxPostBody = function() { return {
 
 let postARandomCommentForRandomBox = function() {
     let reqBody = randomBoxCommentForRandomBoxPostBody()
-    let request = new Request("http://localhost:8080/boxcomment", {
+    let request = new Request("http://localhost:8080/boxcomments", {
         method: "POST",
         body: JSON.stringify(reqBody),
         headers: {

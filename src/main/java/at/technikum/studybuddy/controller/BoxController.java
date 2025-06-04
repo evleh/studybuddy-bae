@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/box")
+@RequestMapping("/boxes")
 public class BoxController {
 
     private final BoxService boxService;

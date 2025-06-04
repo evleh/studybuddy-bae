@@ -6,7 +6,7 @@ var mychaindebugger = function(input) {
 var debug_the_everything = false;
 if (!debug_the_everything) { mychaindebugger = (data) => {return data;} }
 
-fetch("http://localhost:8080/box")
+fetch("http://localhost:8080/boxes")
     .then((response) => response.json())
     .then((data) => mychaindebugger(data))
     .then((data) => {
@@ -14,7 +14,7 @@ fetch("http://localhost:8080/box")
     }); // this is not await
 
 
-fetch("http://localhost:8080/boxcomment")
+fetch("http://localhost:8080/boxcomments")
     .then((response) => response.json())
     .then((data) => mychaindebugger(data))
     .then((data) => {
