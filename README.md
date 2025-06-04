@@ -16,7 +16,8 @@
 
 ## Verwendete Annotationen für Validation
 - `@NotBlank`
-- @Email
+- `@Min(1)` & `@Max(4)`
+- `@Email`
 - `@Size` (siehe zb: `@Size(min = 5, max = 2000)` in BoxCommentDto; für Strings)
 
 
@@ -48,7 +49,7 @@ Default verhalten von spring:
 - man kann einen ResponseStatus durch die `@ResponseStatus` Annotation zu Exceptions mappen.
   In der Controller Methode brauche ich dann keine `@ResponseStatus`Annotation.
 
-Wichtigste HTTP Codes:
+Verwendete HTTP Codes:
 
 | Nummer  | Erklärung | Wann verwendet|
 |---------|-----------|---------------|

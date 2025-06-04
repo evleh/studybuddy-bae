@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,14 +20,20 @@ public class CardProgress {
 
     // ToDo: private long userId
     // ToDo: private long cardId
+
     @NotBlank
+    @Min(1)
+    @Max(4)
     private int stage; // Possible stages: 1-4
 
     @CreationTimestamp
     private Instant createdAt;
     @LastModifiedDate
     private Instant updatedAt;
-    private Instant showAgain; // Wieso keine Annotationen: Zeitpunkte abhängig von Logik gesetzt. Daher sind bisher verwendete Annotationen für Zeit unpassend.
+
+    // Wieso keine Annotationen: Zeitpunkte abhängig von Logik gesetzt.
+    // Daher sind bisher verwendete Annotationen für Zeit unpassend.
+    private Instant showAgain;
 
 
     public CardProgress() {
