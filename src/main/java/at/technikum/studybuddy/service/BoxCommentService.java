@@ -46,7 +46,7 @@ public class BoxCommentService {
         return boxCommentRepository.save(boxComment);
     }
 
-    public BoxComment deleteBoxComment(Long id) {
+    public BoxCommentDto deleteBoxComment(Long id) {
         Optional<BoxComment> boxComment = this.boxCommentRepository.findById(id);
         boxComment.orElseThrow(ResourceNotFoundException::new);
         // comment for line above: orElseThrow does not return an optional, so no chaining :(
@@ -61,7 +61,7 @@ public class BoxCommentService {
             throw new ResourceNotFoundException();
         }
         // assuming everything went smooth, then:
-        return boxComment.get();
+        return new BoxCommentDto(boxComment.get());
 
     }
 

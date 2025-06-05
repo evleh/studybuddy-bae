@@ -36,10 +36,12 @@ public class BoxService {
         return boxRepository.save(box.updateFromBoxDto(boxDto));
     }
 
-    public Box deleteBox(Long id) {
+    // change to return dto, to (hopefully) avoid the org.hibernate.LazyInitializationException
+    public BoxDto deleteBox(Long id) {
         Box box = boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        BoxDto boxDto = new BoxDto(box);
         boxRepository.delete(box);
-        return box;
+        return boxDto;
     }
 
 }
