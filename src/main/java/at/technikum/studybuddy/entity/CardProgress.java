@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -21,10 +22,10 @@ public class CardProgress {
     // ToDo: private long userId
     // ToDo: private long cardId
 
-    @NotBlank
+    @NotNull
     @Min(1)
     @Max(4)
-    private int stage; // Possible stages: 1-4
+    private Integer stage; // Possible stages: 1-4
 
     @CreationTimestamp
     private Instant createdAt;
@@ -47,11 +48,11 @@ public class CardProgress {
         this.id = id;
     }
 
-    public int getStage() {
+    public Integer getStage() {
         return stage;
     }
 
-    public void setStage(int stage) {
+    public void setStage(Integer stage) {
         this.stage = stage;
     }
 
