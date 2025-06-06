@@ -13,7 +13,7 @@ import java.time.Instant;
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     // private User subscriber;
     // private Box box;
 
@@ -29,14 +29,9 @@ public class Subscription {
 
     //full constructor
 
-    public Subscription(long id, Instant createdAt, Instant updatedAt) {
-        this.id = id;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
     //getters
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -50,7 +45,7 @@ public class Subscription {
 
     //Setters
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
