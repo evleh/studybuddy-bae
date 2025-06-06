@@ -14,7 +14,7 @@ import java.time.Instant;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private boolean isAdmin;
     private String username;
     private URL foto;
@@ -113,7 +113,7 @@ public class User {
 
     //setters
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
