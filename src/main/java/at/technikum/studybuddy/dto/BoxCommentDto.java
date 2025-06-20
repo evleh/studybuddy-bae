@@ -33,12 +33,25 @@ public class BoxCommentDto {
         }
     }
 
-    public Object getUser() {
+    public Object getUser() throws NoSuchFieldException, IllegalAccessException {
         Object result = new Object() {
-            public String getName() { return "ihr username hier"; };
+            public String getName() { return "ihr username hier"+text; };
             public String getId() { return "the userId ist ... 15!"; }
+            public String getClassNameCustom = "";
         };
+        //result.getClassNameCustom = "hello";
+        result.getClass().getDeclaredField("getClassNameCustom").set(result,"hello2");
+        result.getClass().getDeclaredField("getClassNameCustom").set(result,result.getClass().toString());
         return result;
+    }
+
+    public record MyUserDtoRecord (
+        String foo, String id
+    ){};
+
+    public MyUserDtoRecord getMyUserDtoRecord() {
+        MyUserDtoRecord res = new MyUserDtoRecord("fooString", "idString");
+        return res;
     }
 
     public Long getId() {
