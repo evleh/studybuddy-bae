@@ -33,6 +33,14 @@ public class BoxCommentDto {
         }
     }
 
+    public Object getUser() {
+        Object result = new Object() {
+            public String getName() { return "ihr username hier"; };
+            public String getId() { return "the userId ist ... 15!"; }
+        };
+        return result;
+    }
+
     public Long getId() {
         return id;
     }
