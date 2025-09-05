@@ -58,6 +58,10 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public String getRole() {
+        return "sure";
+    }
+
     // getters
     public long getId() {
         return id;
