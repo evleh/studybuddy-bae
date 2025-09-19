@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.controller;
 
+import at.technikum.studybuddy.dto.Registration;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.service.UserService;
 import jakarta.validation.Valid;
@@ -12,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -30,8 +31,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User create (@RequestBody @Valid User user) {
-        return this.userService.create(user);
+    public User create (@RequestBody @Valid Registration registration) {
+        return this.userService.register(registration);
     }
 
     @PutMapping("/{id}")
