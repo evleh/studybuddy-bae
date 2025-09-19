@@ -1,8 +1,12 @@
 package at.technikum.studybuddy.service;
 
+import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
+import at.technikum.studybuddy.exceptions.EntityNotFoundException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
 import at.technikum.studybuddy.entity.User;
+import at.technikum.studybuddy.dto.Registration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +14,14 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -26,10 +35,6 @@ public class UserService {
             throw new ResourceNotFoundException();
         }
         return user.get();
-    }
-
-    public User create(User user){
-        return this.userRepository.save(user);
     }
 
     public User update(long id, User user) {
@@ -50,4 +55,20 @@ public class UserService {
         this.userRepository.deleteById(id);
         return user.get();
     }
+
+    public User register(Registration registration) {
+        userRepository.findByUsername(registration.getUsername())
+                .ifPresent(user -> {throw new EntityAlreadyExistsException();});
+
+        User user = new User();
+        user.setUsername(registration.getUsername());
+        user.setPassword(passwordEncoder.encode(registration.getPassword()));
+
+        return userRepository.save(user);
+    }
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
 }
