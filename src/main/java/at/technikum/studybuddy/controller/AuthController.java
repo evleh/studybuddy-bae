@@ -4,11 +4,9 @@ import at.technikum.studybuddy.dto.Token;
 import at.technikum.studybuddy.dto.TokenRequest;
 import at.technikum.studybuddy.service.AuthService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
