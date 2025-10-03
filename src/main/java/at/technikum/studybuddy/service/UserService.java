@@ -63,6 +63,11 @@ public class UserService {
         User user = new User();
         user.setUsername(registration.getUsername());
         user.setPassword(passwordEncoder.encode(registration.getPassword()));
+        user.setEmail(registration.getEmail());
+        user.setGender(registration.getGender());
+        user.setLastname(registration.getLastname());
+        user.setFirstname(registration.getFirstname());
+        user.setCountry(registration.getCountry());
 
         return userRepository.save(user);
     }
