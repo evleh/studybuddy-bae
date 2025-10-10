@@ -18,7 +18,7 @@ public class Token {
     }
 
     public void setUserId(String userId) {
-        this.userId = this.userId;
+        this.userId = userId;
     }
 
 }
