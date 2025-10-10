@@ -32,6 +32,7 @@ public class AuthService {
         // real JWT here
         Token token = new Token();
         token.setAccessToken(userPrincipal.getUserId());
+        token.setUserId(userPrincipal.getUserId());
         return token;
     }
 }
