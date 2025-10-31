@@ -3,6 +3,7 @@
 Ausgangssituation und Zielgruppe
 Individual Reise: 
 + Entdecken des Reiseziels basierend auf den eigenen Intressen und Vorlieben 
++ ich kann spontan auf neue gegebenheiten reagieren und in das nette Cafe an der Ecke gehen 
 - Viel Zeit, Aufwand und Stress um individuelle Wünsche an Reise zu planen und durchzuführen  
 Problemstellung Reisegruppe:
 - variable Kosten
@@ -20,16 +21,31 @@ Die Lösung: Agiles Reisen
 #2
 Der Lebenszyklus von Reisen für die Organistor:innen: 
 -1: Analyse: Was kann man am Reiseziel erleben (Need <-> Requirement <-> Feature)
-  - 
-    die großen Städte sehen
+-2: Design: Wie führe ich meine Reise durch (ein großer Reise bus, mehrere kleine Autos, alle fahren mit dem Zug, wo schlafen... )
+-3: Implementierung: Einen konkreten Reiseplan entwickeln 
+-4: Testing: Testlauf der Reise 
+-5: Deployment: Die Reise kann im Reisebüro gekauft werden und wird von uns durchgeführt 
+    - Beim besuch eines reiseziels konsumieren Teilnehmer:innen ein inkrement der Reise.  
+-6: Maintenance: Nach jeder Reise wird die Reise analysiert (wie ist es gelaufen) und gewartet (das Hotel ist seit letztem mal schlechter geworden, wir brauchen ein neues) und aktualisiert (gibt es neue Museen/Ausstellungen oder ist eine Sehenswürdigkeit für länger geschlossen z.b.: wird renoviert. )
+-> jede Reise ist eine ITERATION
+
+??? passt das als Lebenszyklus, teil Predictive ??? 
+
+
+#3
+Unsere Reise -> To Do Lebenszyklus beispiele finden
+-1 Analyse: 
+die großen Städte sehen
     die Naturlandschaften (Nationalparks, Wüsten, Canyons, etc..) erleben
     und evtl. Vergnügungs-parks, und -orte besuchen
 
--2: Design: Umweldb
+...
 
-#3
+#4 Wie führen wir unsere Reise durch um die Welt der individual Reise und der Reisegruppe zu verbinden? 
 
-#4
+Die drei Wöchige Reise wird in 3 Sprints unterteilt. 
+Reiseleitung übernehmen Aufgaben von Product Owner und Scrum Master 
+
 
 #5
 
