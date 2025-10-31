@@ -19,7 +19,7 @@ Die Lösung: Agiles Reisen
 + das Reiseziel individuell wie bei einer individual Reise entdecken 
 
 #2
-Der Lebenszyklus von Reisen für die Organistor:innen: 
+Der Lebenszyklus von Reisen für die Organistor:innen: jede Reise eine Iteration  
 -1: Analyse: Was kann man am Reiseziel erleben (Need <-> Requirement <-> Feature)
 -2: Design: Wie führe ich meine Reise durch (ein großer Reise bus, mehrere kleine Autos, alle fahren mit dem Zug, wo schlafen... )
 -3: Implementierung: Einen konkreten Reiseplan entwickeln 
@@ -27,29 +27,72 @@ Der Lebenszyklus von Reisen für die Organistor:innen:
 -5: Deployment: Die Reise kann im Reisebüro gekauft werden und wird von uns durchgeführt 
     - Beim besuch eines reiseziels konsumieren Teilnehmer:innen ein inkrement der Reise.  
 -6: Maintenance: Nach jeder Reise wird die Reise analysiert (wie ist es gelaufen) und gewartet (das Hotel ist seit letztem mal schlechter geworden, wir brauchen ein neues) und aktualisiert (gibt es neue Museen/Ausstellungen oder ist eine Sehenswürdigkeit für länger geschlossen z.b.: wird renoviert. )
--> jede Reise ist eine ITERATION
-
-??? passt das als Lebenszyklus, teil Predictive ??? 
-
 
 #3
-Unsere Reise -> To Do Lebenszyklus beispiele finden
--1 Analyse: 
+Unsere Reise -> TODO: Welche Aufgaben erfüllen wir in welchem Schritt des Lebenszyklus
+-1 Analyse: Was wollen Teilnehmer:innen sehen?
 die großen Städte sehen
     die Naturlandschaften (Nationalparks, Wüsten, Canyons, etc..) erleben
     und evtl. Vergnügungs-parks, und -orte besuchen
 
 ...
 
-#4 Wie führen wir unsere Reise durch um die Welt der individual Reise und der Reisegruppe zu verbinden? 
+#4 Aber wie individual Reise und der Reisegruppe verbinden?: Agilität als Antwort für ein komplexes Problem
 
-Die drei Wöchige Reise wird in 3 Sprints unterteilt. 
-Reiseleitung übernehmen Aufgaben von Product Owner und Scrum Master 
+Die Idee - AGILEReiseleitung: 
+- Der unterschied zur klassischen Reisegruppe: welche Reiseziele besucht werden ist eine individuelle entscheidung und ist flexibel (Kosten/Aufwand und Zeit der Reise ist fix) 
+Das Mindset - Das Agile Manifest & agile Grundwerte
+TODO ausarbeiten 
 
 
 #5
 
+Die Umsetzung: Scrum-Rollen und Events 
+
+Scrum-Werte: Commitment, Fokus, Offenheit, Respekt und Mut als Anforderung an Teilnehmer:innen und Reiseleitung
+Reiseleitung und Reiseteilnehmer:innen als Team (basierend auf Scrum Rollen)
+
+Wer ist wer und hat welche Aufgaben: 
+Die Reiseleitung 
+- Product Owner: Reiseplanung durch Product-Backlog-Managment (= einzelne Elemente der Reise)
+    - Definiert Reise-Ziele und kommuniziert diese 
+    -  Product-Backlog.Einträge: Macht Recherche und Planung  und Kommunikation der einzelnen möglichen Reiseziele (bsp.: San Francisco: besuch des Charmed Hauses, Queer History, Queeres Leben heute, Flohmärkte, die Brücke)
+    - Teilnehmer:innen können neue Vorschläge für Reiseziele bei Product Owner einbringen 
+- Scrum Master: Reisedurchführung  
+    - Stellt sicher, dass sich Teilnehmende Grundprinzipien und abläufe der Agilen Reise verstehen
+    - Stellt sicher das Events der agilen Reise effektif durchgeführt werden  
+    - hilft bei der beseitigung von Hindernissen des Reiseteams und hilft Leuten bei Eigenverantwortlichen aspekten der Reise (e.g.: was muss ich gesehen haben das ich bei einem Reiseziel glück lich war?)
+
+Die Reisegruppe: 
+- Developer:innen und Stakeholder in einem 
+    - Plan: Wählt individuell interessante Reiseziele aus dem Backlog aus 
+    - Verantwortung für Qualität: definiert persönliche "Must haves" die für einen zufriedenstellenden Besuch erfüllt sein müssen 
+    - Flexibilität: täglicher Plan zum erreichen des Spriint ziels kann angepasst werden 
+ 
+Der Ablauf: 
+
+Die drei Wöchige Reise wird in 3 Sprints unterteilt. (To do besser unterteilen )
+Sprint 1: die großen Städte sehen
+ - Sprint Planning
+        - Thema 1: Warum ist Planpunkt der Reise relevant für Reise (e.g.: Wir fahren nach San Francisco; Wieso ist SF relevant für die Westküste)
+        - Thema 2: was wird genau besucht (Teilnehmende wählen einzelne Reiseziele aus und können individuell neue einbringen)   
+        - Thema 3: Wie werden Reiseziele besucht ? (Alleine, klein Gruppen, Öffis und wenn ja welche, Ticket kauf wenn ja wie?)
+- Daily Scrum: Abends(!) kommen alle 15 min zusammen (auch online möglich) und überlegen was sie am nächsten tag machen wollen und ob was angepasst werden soll 
+- Sprint Review: Was hat man die letzte Woche gemacht und wie hat sich Umfeld verändert? Product Backlog wird angepasst um neue Möglichkeiten wahrzunehmen 
+- Sprint Retrospektive: Wie war die letzte Woche und sind alle happy? Was war gut/schlecht? Wie wurden Probleme gelöst ? 
+
+Sprint 2: die Naturlandschaften (Nationalparks, Wüsten, Canyons, etc..) erleben
+Sprint 3: Vergnügungs-parks, und -orte besuchen
+
+Das Medium - ein Kanban board 
+
+TODO: Beispelhafte Planung von mindestens einem Sprint und visualisierung am Kanban Board 
+
 #6
+Ausgangsbedingugnen und Grenzen der agilen Reise
+- 1. Teilnehmende sind Kund:innen: Niemand kann zur Teilnahme an Events gezwungen werden
+- 2. Starke Abhängigkeit von Umweldbedingungen und Grundgerüt der Reise muss eingehalten werden (z.b.: ich kann bei Sprint-Planung nicht spontan 1. Tag länger / kürzer bleiben weil Hotels und Weiterreise vorher geplant sein muss)
+- 3. Abhängigkeit von Kund:innen: sie müssen gelichzeitig Eigenverantwortung aber müssen Rahmenbedingungen einhalten
 
 #7
 
