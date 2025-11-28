@@ -1,6 +1,8 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.Registration;
+import at.technikum.studybuddy.dto.UserDto;
+import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.service.UserService;
 import jakarta.validation.Valid;
@@ -20,13 +22,16 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> readAll() {
-        return this.userService.readAll();
+    public List<UserDto> readAll() {
+        return this.userService.readAll().stream()
+                .map(UserDtoPrivilegedInfo::new)
+                .map(UserDtoPrivilegedInfo::downCastToAbstract)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public User read(@PathVariable long id) {
-        return this.userService.read(id);
+    public UserDto read(@PathVariable long id) {
+        return new UserDtoPrivilegedInfo(this.userService.read(id));
     }
 
     @PostMapping
