@@ -10,11 +10,11 @@ public class CardDto {
     private Long boxId;
 
     @NotBlank
-    @Size(min = 5, max = 2000) // to match the db-varchar length
+    @Size(min = 1, max = 2000) // to match the db-varchar length
     private String question;
 
     @NotBlank
-    @Size(min = 5, max = 2000) // to match the db-varchar length
+    @Size(min = 1, max = 2000) // to match the db-varchar length
     private String answer;
 
     CardDto() {

@@ -2,6 +2,7 @@ package at.technikum.studybuddy.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -15,8 +16,10 @@ public class Card {
     private long id;
     // private long boxId;
     @NotBlank
+    @Size(min = 1, max = 2000)
     private String question;
     @NotBlank
+    @Size(min = 1, max = 2000)
     private String answer;
 
     private String media;
