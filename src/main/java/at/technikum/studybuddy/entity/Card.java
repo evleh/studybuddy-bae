@@ -1,9 +1,6 @@
 package at.technikum.studybuddy.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,6 +21,10 @@ public class Card {
 
     private String media;
 
+    @ManyToOne
+    @JoinColumn(name = "box_id")
+    Box box ;
+
     @CreationTimestamp
     private Instant createdAt;
     @LastModifiedDate
@@ -32,12 +33,13 @@ public class Card {
     public Card() {
     }
 
-    public Card(String question, String answer, String media, Instant createdAt, Instant updatedAt) {
+    public Card(String question, String answer, String media, Box box, Instant createdAt, Instant updatedAt) {
         this.question = question;
         this.answer = answer;
         this.media = media;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.box = box;
     }
 
     public long getId() {
@@ -86,5 +88,13 @@ public class Card {
 
     public void setUpdatedAt(Instant lastEdit) {
         this.updatedAt = lastEdit;
+    }
+
+    public Box getBox() {
+        return box;
+    }
+
+    public void setBox(Box box) {
+        this.box = box;
     }
 }
