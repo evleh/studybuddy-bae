@@ -56,3 +56,8 @@ Verwendete HTTP Codes:
 | **200** | OK        | default für erfolgreiche CRUD Methoden in Spring |
 | **201** | Created   | create-CRUD |
 | **404** | Not Found | ResourceNotFoundException |
+
+
+### Checkstyle
+
+Link to HP (extracted from lecture repo config file DTD link): [https://checkstyle.org](https://checkstyle.org)  
