@@ -62,8 +62,15 @@ Verwendete HTTP Codes:
 
 Link to HP (extracted from lecture repo config file DTD link): [https://checkstyle.org](https://checkstyle.org)  
 
+#### Checkstyle config syntax, documentation links
+
+[Documentation-link to default checks overview list](https://checkstyle.org/checks.html)
+
+#### Integration 
+
 Link to the "maven-checkstyle-plugin" 
-that seems to be used in the intro-repo of the lecture: 
+that seems to be used in the intro-repo of the BAE lecture 
+and in the "use this" example of SLM: 
 [https://maven.apache.org/plugins/maven-checkstyle-plugin/usage.html](https://maven.apache.org/plugins/maven-checkstyle-plugin/usage.html)
 
 Note: The button that looks like a command line seems to give accessible in 
@@ -72,6 +79,5 @@ maven docs describe as "command line".
 
 Go there to try "mvn checkstyle:check" for a test of the check.
 
-[Documentation-link to default checks overview list](https://checkstyle.org/checks.html)
 
 
