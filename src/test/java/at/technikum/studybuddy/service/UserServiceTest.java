@@ -45,10 +45,8 @@ class UserServiceTest {
         // act
         userService.createUserAdminIfNecessary();
 
-
         // assert
-        Mockito.verify(userRepository, Mockito.times(0)).save(Mockito.any());    }
-
-
+        Mockito.verify(userRepository, Mockito.times(0)).save(Mockito.any());
+    }
 
 }
