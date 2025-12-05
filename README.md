@@ -61,3 +61,17 @@ Verwendete HTTP Codes:
 ### Checkstyle
 
 Link to HP (extracted from lecture repo config file DTD link): [https://checkstyle.org](https://checkstyle.org)  
+
+Link to the "maven-checkstyle-plugin" 
+that seems to be used in the intro-repo of the lecture: 
+[https://maven.apache.org/plugins/maven-checkstyle-plugin/usage.html](https://maven.apache.org/plugins/maven-checkstyle-plugin/usage.html)
+
+Note: The button that looks like a command line seems to give accessible in 
+the "maven" foldout in IntelliJ seems to give something resembling what the 
+maven docs describe as "command line".
+
+Go there to try "mvn checkstyle:check" for a test of the check.
+
+[Documentation-link to default checks overview list](https://checkstyle.org/checks.html)
+
+
