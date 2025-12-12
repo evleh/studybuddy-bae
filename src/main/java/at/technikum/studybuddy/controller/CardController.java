@@ -1,7 +1,7 @@
 package at.technikum.studybuddy.controller;
 
 
-import at.technikum.studybuddy.entity.Card;
+import at.technikum.studybuddy.dto.CardDto;
 import at.technikum.studybuddy.service.CardService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,29 +20,29 @@ public class CardController {
     }
 
     @GetMapping
-    public List<Card> readAll(){
-        return this.cardService.readAll();
+    public List<CardDto> readAll(){
+        return this.cardService.readAll().stream().map(CardDto::new).toList();
     }
 
     @GetMapping("/{id}")
-    public Card read(@PathVariable long id){
-        return this.cardService.read(id);
-    } // wirft 404
+    public CardDto read(@PathVariable long id){
+        return new CardDto(this.cardService.read(id));
+    }
 
     @ResponseStatus(HttpStatus.CREATED) // 202
     @PostMapping
-    public Card create(@RequestBody @Valid Card card){
-        return this.cardService.create(card);
+    public CardDto create(@RequestBody @Valid CardDto cardDto){
+        return new CardDto(this.cardService.create(cardDto));
     }
 
     // ToDo: Achtung hier nicht einfach übernehmen. In service wird save-methode aufgerufen.
     @PutMapping("/{id}")
-    public Card update(@PathVariable long id, @RequestBody @Valid Card card){
-        return this.cardService.update(id, card);
+    public CardDto update(@PathVariable long id, @RequestBody @Valid CardDto cardDto){
+        return new CardDto(this.cardService.update(id, cardDto));
     }
 
     @DeleteMapping("/{id}")
-    public Card delete(@PathVariable long id){
+    public CardDto delete(@PathVariable long id){
         return this.cardService.delete(id);
     } // wirft 404
 

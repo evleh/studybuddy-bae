@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.service;
 
+import at.technikum.studybuddy.dto.CardDto;
 import at.technikum.studybuddy.entity.Card;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.CardRepository;
@@ -11,9 +12,12 @@ import java.util.Optional;
 @Service
 public class CardService {
     private final CardRepository cardRepository;
+    private final BoxService boxService;
 
-    public CardService(CardRepository cardRepository) {
+    public CardService(CardRepository cardRepository, BoxService boxService) {
+
         this.cardRepository = cardRepository;
+        this.boxService = boxService;
     }
 
     public List<Card> readAll(){
@@ -29,28 +33,35 @@ public class CardService {
     }
 
 
-    public Card create(Card card){
+    public Card create(CardDto cardDto){
+        Card card = new Card();
+        card.setQuestion(cardDto.getQuestion());
+        card.setAnswer(cardDto.getAnswer());
+        card.setBox(boxService.readBoxById(cardDto.getBoxId()));
         return this.cardRepository.save(card);
     }
 
-    public Card update(long id, Card card){
+    public Card update(long id, CardDto cardDto){
         Optional<Card> cardRepo = this.cardRepository.findById(id);
         // Eventuell InputMismatchException wenn id-Paramater und card-id nicht übereinstimmen
 
         if(cardRepo.isEmpty()){
             throw new ResourceNotFoundException();
         }
-        return this.cardRepository.save(card);
+        Card card = read(id);
+        card.setQuestion(cardDto.getQuestion());
+        card.setAnswer(cardDto.getAnswer());
+        return cardRepository.save(card);
     }
 
-    public Card delete(long id) throws ResourceNotFoundException{
+    public CardDto delete(long id) throws ResourceNotFoundException{
         Optional<Card> card = this.cardRepository.findById(id);
         if(card.isEmpty()){
             throw new ResourceNotFoundException();
         }
 
         this.cardRepository.deleteById(id);
-        return card.get();
+        return new CardDto(card.get());
 
     }
 }
