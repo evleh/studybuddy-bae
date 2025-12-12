@@ -10,7 +10,10 @@ import java.net.URL;
 import java.time.Instant;
 
 @Entity
-@Table(name = "studybuddy_user")
+@Table(
+        name = "studybuddy_user",
+        uniqueConstraints = @UniqueConstraint(columnNames={"username"})
+)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

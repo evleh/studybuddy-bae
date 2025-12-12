@@ -1,11 +1,11 @@
 package at.technikum.studybuddy.service;
 
+import at.technikum.studybuddy.dto.Registration;
+import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
-import at.technikum.studybuddy.entity.User;
-import at.technikum.studybuddy.dto.Registration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +56,19 @@ public class UserService {
         return user.get();
     }
 
+    public void createUserAdminIfNecessary() {
+        if (userRepository.findByUsername("admin").isPresent()) { return;}
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("admin"));
+        admin.setAdmin(true);
+        admin.setEmail("admin@example.com");
+        admin.setGender("admin");
+        admin.setCountry("AT");
+        admin.setLastname("AD");
+        admin.setFirstname("MIN");
+        userRepository.save(admin);
+    }
     public User register(Registration registration) {
         userRepository.findByUsername(registration.getUsername())
                 .ifPresent(user -> {throw new EntityAlreadyExistsException();});
