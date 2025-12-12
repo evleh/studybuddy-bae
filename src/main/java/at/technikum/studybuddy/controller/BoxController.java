@@ -1,7 +1,9 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.BoxDto;
+import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.service.BoxService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ public class BoxController {
     }
 
     @GetMapping
+    @RolesAllowed(RoleTypes.ADMIN)
     public List<BoxDto> readAll() {
         return boxService.readAllBoxes().stream().map(BoxDto::new).toList();
     }

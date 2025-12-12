@@ -2,7 +2,9 @@ package at.technikum.studybuddy.controller;
 
 
 import at.technikum.studybuddy.dto.CardDto;
+import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.service.CardService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ public class CardController {
     }
 
     @GetMapping
+    @RolesAllowed(RoleTypes.ADMIN)
     public List<CardDto> readAll(){
         return this.cardService.readAll().stream().map(CardDto::new).toList();
     }

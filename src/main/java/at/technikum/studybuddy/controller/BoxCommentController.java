@@ -1,7 +1,9 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.BoxCommentDto;
+import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.service.BoxCommentService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ public class BoxCommentController {
     }
 
     @GetMapping
+    @RolesAllowed(RoleTypes.ADMIN)
     public List<BoxCommentDto> readAll() {
         return this.boxCommentService.readAllBoxComments().stream().map(BoxCommentDto::new).toList();
     }
@@ -42,6 +45,7 @@ public class BoxCommentController {
     }
 
     @DeleteMapping("/{id}")
+    @RolesAllowed(RoleTypes.ADMIN)
     public BoxCommentDto deleteById(@PathVariable Long id) {
         return this.boxCommentService.deleteBoxComment(id);
     }
