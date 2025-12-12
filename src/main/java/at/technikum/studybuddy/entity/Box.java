@@ -8,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,6 +33,10 @@ public class Box {
     @OneToMany(mappedBy = "box")
     private List<BoxComment> comments ;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
 
     @NotBlank
     @Size(min = 5, max = 200)
@@ -42,6 +45,14 @@ public class Box {
     private String description;
 
     private Boolean isPublic;
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User creator) {
+        this.owner = creator;
+    }
 
     public Box() {
     }

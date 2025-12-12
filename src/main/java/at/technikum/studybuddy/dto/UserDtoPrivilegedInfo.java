@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
 
-public class UserDtoPrivilegedInfo extends UserDtoPublicInfo {
+public class UserDtoPrivilegedInfo extends UserDto {
 
     private boolean isAdmin;
     @Email
@@ -25,16 +25,16 @@ public class UserDtoPrivilegedInfo extends UserDtoPublicInfo {
 
 
     public UserDtoPrivilegedInfo() {}
-    public UserDtoPrivilegedInfo(User fromUserEntity) {
-        super(fromUserEntity);
-        this.email = fromUserEntity.getEmail();
-        this.gender = fromUserEntity.getGender();
-        this.firstname = fromUserEntity.getFirstname();
-        this.lastname = fromUserEntity.getLastname();
-        this.country = fromUserEntity.getCountry();
-        this.lastLogin = fromUserEntity.getLastLogin();
-        this.createdAt = fromUserEntity.getCreatedAt();
-        this.updatedAt = fromUserEntity.getUpdatedAt();
+    public UserDtoPrivilegedInfo(User user) {
+        super(user);
+        this.email = user.getEmail();
+        this.gender = user.getGender();
+        this.firstname = user.getFirstname();
+        this.lastname = user.getLastname();
+        this.country = user.getCountry();
+        this.lastLogin = user.getLastLogin();
+        this.createdAt = user.getCreatedAt();
+        this.updatedAt = user.getUpdatedAt();
     }
     public UserDto downCastToAbstract() {
         /*

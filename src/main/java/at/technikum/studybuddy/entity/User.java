@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.net.URL;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "studybuddy_user")
@@ -35,6 +36,10 @@ public class User {
     private Instant createdAt;
     @UpdateTimestamp
     private Instant updatedAt;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Box> boxes;
+
 
     // empty constructor
     public User() {
@@ -167,5 +172,13 @@ public class User {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Box> getBoxes() {
+        return boxes;
+    }
+
+    public void setBoxes(List<Box> boxes) {
+        this.boxes = boxes;
     }
 }
