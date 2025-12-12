@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.entity;
 
+import at.technikum.studybuddy.security.RoleTypes;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -69,7 +70,11 @@ public class User {
     }
 
     public String getRole() {
-        return "sure";
+        if (this.isAdmin) {
+            return RoleTypes.ADMIN;
+        } else {
+            return RoleTypes.REGISTERED;
+        }
     }
 
     // getters
@@ -78,7 +83,7 @@ public class User {
     }
 
     public boolean isAdmin() {
-        return isAdmin;
+        return this.isAdmin;
     }
 
     public String getUsername() {

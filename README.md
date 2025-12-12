@@ -79,5 +79,7 @@ maven docs describe as "command line".
 
 Go there to try "mvn checkstyle:check" for a test of the check.
 
+### Permission / docs
 
-
+Tutorial for getting the RolesAllowed-Decorators to work:  
+[https://www.baeldung.com/spring-security-method-security](https://www.baeldung.com/spring-security-method-security)  

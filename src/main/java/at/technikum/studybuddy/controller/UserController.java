@@ -4,7 +4,9 @@ import at.technikum.studybuddy.dto.Registration;
 import at.technikum.studybuddy.dto.UserDto;
 import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
 import at.technikum.studybuddy.entity.User;
+import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.service.UserService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ public class UserController {
     }
 
     @GetMapping
+    @RolesAllowed(RoleTypes.ADMIN)
     public List<UserDto> readAll() {
         return this.userService.readAll().stream()
                 .map(UserDtoPrivilegedInfo::new)
@@ -49,6 +52,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @RolesAllowed(RoleTypes.ADMIN)
     public User delete (@PathVariable int id){
         return userService.delete(id);
     }
