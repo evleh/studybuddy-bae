@@ -16,8 +16,12 @@ public class BoxComment {
 
     // doLater: comment is created by a user
     @ManyToOne
-    @JoinColumn(name = "box_id")
-    Box box ;
+    @JoinColumn(name = "box_id", nullable = false)
+    private Box box;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id") //todo , nullable = false
+    private User owner;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -28,6 +32,16 @@ public class BoxComment {
     @Column(length = 2048)
     @NotBlank
     private String text;
+
+    public BoxComment(){
+
+    }
+
+    public BoxComment(Box box,  User user, String text){
+        this.box = box;
+        this.owner = user;
+        this.text = text;
+    }
 
     public Box getBox() {
         return box;
@@ -69,7 +83,13 @@ public class BoxComment {
         this.text = text;
     }
 
+    public User getOwner() {
+        return owner;
+    }
 
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 }
 
 

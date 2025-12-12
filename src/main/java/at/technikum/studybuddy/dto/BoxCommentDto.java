@@ -16,19 +16,22 @@ public class BoxCommentDto {
     // t.odo: displaydate als string?
 
     private Long boxId ;
+    private Long ownerId;
 
 
     BoxCommentDto() {
-        super();
+
     }
 
     public BoxCommentDto(BoxComment boxComment) {
-        this();
         if (boxComment != null) {
             this.id = boxComment.getId();
             this.text = boxComment.getText();
             if (boxComment.getBox() != null) {
                 this.boxId = boxComment.getBox().getId();
+            }
+            if (boxComment.getOwner() != null) {
+                this.boxId = boxComment.getOwner().getId();
             }
         }
     }
@@ -55,5 +58,13 @@ public class BoxCommentDto {
 
     public void setBoxId(Long boxId) {
         this.boxId = boxId;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }

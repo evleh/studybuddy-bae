@@ -42,6 +42,8 @@ public class User {
 
     @OneToMany(mappedBy = "owner")
     private List<Box> boxes;
+    @OneToMany(mappedBy = "owner")
+    private List<BoxComment> boxComments;
 
 
     // empty constructor
@@ -183,5 +185,13 @@ public class User {
 
     public void setBoxes(List<Box> boxes) {
         this.boxes = boxes;
+    }
+
+    public List<BoxComment> getBoxComments() {
+        return boxComments;
+    }
+
+    public void setBoxComments(List<BoxComment> boxComments) {
+        this.boxComments = boxComments;
     }
 }

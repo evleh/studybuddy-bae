@@ -1,6 +1,7 @@
 package at.technikum.studybuddy.dto;
 
 import at.technikum.studybuddy.entity.Box;
+import at.technikum.studybuddy.entity.BoxComment;
 import at.technikum.studybuddy.entity.User;
 
 import java.net.URL;
@@ -17,6 +18,7 @@ public abstract class UserDto {
     private String username;
     private URL foto;
     private List<Long> boxIds;
+    private List<Long> boxCommentIds;
 
     UserDto() {}
     UserDto(User user) {
@@ -25,6 +27,9 @@ public abstract class UserDto {
         this.foto = user.getFoto();
         if(user.getBoxes() != null){
             this.boxIds = user.getBoxes().stream().map(Box::getId).toList();
+        }
+        if(user.getBoxComments() != null){
+            this.boxCommentIds = user.getBoxComments().stream().map(BoxComment::getId).toList();
         }
     }
 
@@ -56,4 +61,15 @@ public abstract class UserDto {
         this.foto = foto;
     }
 
+    public void setBoxIds(List<Long> boxIds) {
+        this.boxIds = boxIds;
+    }
+
+    public List<Long> getBoxCommentIds() {
+        return boxCommentIds;
+    }
+
+    public void setBoxCommentIds(List<Long> boxCommentIds) {
+        this.boxCommentIds = boxCommentIds;
+    }
 }

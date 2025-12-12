@@ -34,7 +34,7 @@ public class Box {
     private List<BoxComment> comments ;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
+    @JoinColumn(name = "owner_id") // todo: , nullable = false darf nicht null sein!
     private User owner;
 
 
@@ -74,7 +74,6 @@ public class Box {
 
 
     public Long getId() {
-
         return id;
     }
 
