@@ -16,5 +16,8 @@
         <!-- Check for unused imports and variables -->
         <module name="UnusedImports"/>
         <module name="UnusedLocalVariable"/>
+        <module name="Indentation"/>
+        <module name="LeftCurly"/>
+        <module name="RightCurly"/>
     </module>
 </module>
