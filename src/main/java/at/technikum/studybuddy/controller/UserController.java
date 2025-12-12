@@ -3,12 +3,16 @@ package at.technikum.studybuddy.controller;
 import at.technikum.studybuddy.dto.Registration;
 import at.technikum.studybuddy.dto.UserDto;
 import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
+import at.technikum.studybuddy.dto.UserDtoPublicInfo;
 import at.technikum.studybuddy.entity.User;
+import at.technikum.studybuddy.exceptions.EntityNotFoundException;
 import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.service.UserService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,11 +48,29 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User update(
+    @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})
+    public UserDto update(
             @PathVariable long id,
-            @RequestBody User user
+            @RequestBody UserDtoPublicInfo userDto
     ) {
-        return this.userService.update(id,user);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName(); // inquiries into getting-the-id with springboot went nowhere;
+        User requester = userService.getByUsername(userName);
+        User toUpdate = userService.getByUsername(userDto.getUsername()); // id/name redundant information atm.
+
+        boolean requesterHasAdminRole = requester.isAdmin();
+        boolean requesterEqualUserToUpdate = (requester.getId() == userDto.getId());
+
+        //throw new EntityUpdateNotAllowedException("hello worlds");
+        throw new EntityNotFoundException("aaaaaa");
+
+        /*if (requesterHasAdminRole || requesterEqualUserToUpdate) {
+            // to the thing with the update
+            //return this.userService.update(id,user);
+            return userDto;
+        } else {
+            throw new EntityUpdateNotAllowedException("403: Update denied.");
+        }*/
     }
 
     @DeleteMapping("/{id}")
