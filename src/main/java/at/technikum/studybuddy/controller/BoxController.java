@@ -25,7 +25,9 @@ public class BoxController {
     }
 
     @GetMapping("/{id}")
-    public BoxDto readById(@PathVariable Long id) { return new BoxDto(boxService.readBoxById(id)); }
+    public BoxDto readById(@PathVariable Long id) {
+        return new BoxDto(boxService.readBoxById(id));
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
