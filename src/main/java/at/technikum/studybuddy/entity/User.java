@@ -11,7 +11,10 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name = "studybuddy_user")
+@Table(
+        name = "studybuddy_user",
+        uniqueConstraints = @UniqueConstraint(columnNames={"username"})
+)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
