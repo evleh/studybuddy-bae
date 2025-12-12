@@ -1,5 +1,5 @@
 /**
- * Taken from eww-bae-25 quite verbatim initionally
+ * Taken from eww-bae-25 quite verbatim initially
  */
 
 package at.technikum.studybuddy.security;
@@ -58,7 +58,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
     private void verifyToken(String jwt) {
         String userId = null;
-        String role = null;
         String userName = null;
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256("le secret"))
@@ -69,7 +68,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
             DecodedJWT decodedJWT = verifier.verify(jwt);
             userId = decodedJWT.getClaim("userId").asString();
-            role = decodedJWT.getClaim("role").asString();
             userName = decodedJWT.getClaim("userName").asString();
 
 
@@ -92,7 +90,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         Authentication authentication = new UserPrincipalAuthenticationToken(myUserPrincipal);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
 
         // hashTag findMeAgain #findmeagain also TODO
     }
