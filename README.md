@@ -86,5 +86,7 @@ Tutorial for getting the RolesAllowed-Decorators to work:
 
 ### Filehandling
 
+Official minIO documentation: https://docs.min.io/enterprise/aistor-object-store/installation/container/install/
+Video-Tutorial for minIO: https://www.youtube.com/watch?v=bVosjy3hrLY
 Tutorial for Spring Boot MinIO Integration: https://lf-onap.atlassian.net/wiki/spaces/DW/pages/99057714/Spring+Boot+MinIO+Integration+Lab+and+Exercises
 
