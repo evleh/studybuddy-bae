@@ -18,8 +18,11 @@ public class BoxDto {
 
     private Boolean isPublic;
 
+    // Entity connections. Currently, DTOs return only return ids. one todo is to make this more realistic
     // missing here too: comments, cards, all connections ofc.
-    private List<Long> commentIds ;
+    @NotBlank
+    private Long ownerId;
+    private List<Long> commentIds;
 
     public BoxDto() {
         // empty
@@ -30,18 +33,12 @@ public class BoxDto {
         this.title = box.getTitle();
         this.description = box.getDescription();
         this.isPublic = box.getPublic();
+        this.ownerId = box.getOwner().getId();
         if (box.getComments() != null) {
             this.commentIds = box.getComments().stream().map(BoxComment::getId).toList();
         }
     }
 
-    public Box makeAndGetBoxForCreation() { // the name "getBoxFor..." would confuse the framework.
-        return new Box(
-                this.title,
-                this.description,
-                this.isPublic
-        );
-    }
 
     public Long getId() {
         return id;
@@ -77,5 +74,17 @@ public class BoxDto {
 
     public List<Long> getCommentIds() {
         return commentIds;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public void setCommentIds(List<Long> commentIds) {
+        this.commentIds = commentIds;
     }
 }

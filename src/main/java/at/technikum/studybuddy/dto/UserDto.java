@@ -23,7 +23,7 @@ public abstract class UserDto {
         this.id = user.getId();
         this.username = user.getUsername();
         this.foto = user.getFoto();
-        if(this.boxIds != null){
+        if(user.getBoxes() != null){
             this.boxIds = user.getBoxes().stream().map(Box::getId).toList();
         }
     }

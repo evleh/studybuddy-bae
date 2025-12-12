@@ -2,20 +2,25 @@ package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.BoxDto;
 import at.technikum.studybuddy.entity.Box;
+import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.repository.BoxRepository;
+import at.technikum.studybuddy.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoxService {
 
     private final BoxRepository boxRepository;
+    private final UserRepository userRepository;
 
-    BoxService(BoxRepository boxRepository) {
+    public BoxService(BoxRepository boxRepository, UserRepository userRepository) {
         this.boxRepository = boxRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Box> readAllBoxes() {
@@ -27,7 +32,11 @@ public class BoxService {
     }
 
     public Box createBox(BoxDto boxDto) {
-        Box box = boxDto.makeAndGetBoxForCreation();
+        Optional<User> owner = this.userRepository.findById(boxDto.getOwnerId());
+        if(owner.isEmpty()){
+            throw new ResourceNotFoundException();
+        }
+        Box box = new Box(boxDto.getTitle(), boxDto.getDescription(), boxDto.getPublic(), owner.get());
         return boxRepository.save(box);
     }
 

@@ -34,7 +34,7 @@ public class Box {
     private List<BoxComment> comments ;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
 
@@ -50,17 +50,18 @@ public class Box {
         return owner;
     }
 
-    public void setOwner(User creator) {
-        this.owner = creator;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public Box() {
     }
 
-    public Box(String title, String description, Boolean isPublic) {
+    public Box(String title, String description, Boolean isPublic, User owner) {
         this.title = title;
         this.description = description;
         this.isPublic = isPublic;
+        this.owner = owner;
     }
 
     public Box updateFromBoxDto(BoxDto boxDto) {
