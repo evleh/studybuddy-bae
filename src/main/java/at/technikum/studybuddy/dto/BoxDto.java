@@ -2,6 +2,7 @@ package at.technikum.studybuddy.dto;
 
 import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.BoxComment;
+import at.technikum.studybuddy.entity.Card;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -20,9 +21,9 @@ public class BoxDto {
 
     // Entity connections. Currently, DTOs return only return ids. one todo is to make this more realistic
     // missing here too: comments, cards, all connections ofc.
-    @NotBlank
     private Long ownerId;
     private List<Long> commentIds;
+    private List<Long> cardIds;
 
     public BoxDto() {
         // empty
@@ -36,6 +37,9 @@ public class BoxDto {
         this.ownerId = box.getOwner().getId();
         if (box.getComments() != null) {
             this.commentIds = box.getComments().stream().map(BoxComment::getId).toList();
+        }
+        if(box.getCards() != null){
+            this.cardIds = box.getCards().stream().map(Card::getId).toList();
         }
     }
 
@@ -86,5 +90,13 @@ public class BoxDto {
 
     public void setCommentIds(List<Long> commentIds) {
         this.commentIds = commentIds;
+    }
+
+    public List<Long> getCardIds() {
+        return cardIds;
+    }
+
+    public void setCardIds(List<Long> cardIds) {
+        this.cardIds = cardIds;
     }
 }
