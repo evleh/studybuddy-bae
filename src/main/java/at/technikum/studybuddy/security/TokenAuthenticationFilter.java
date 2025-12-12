@@ -4,7 +4,6 @@
 
 package at.technikum.studybuddy.security;
 
-import at.technikum.studybuddy.service.AuthService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
