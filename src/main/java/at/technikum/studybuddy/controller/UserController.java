@@ -4,7 +4,9 @@ import at.technikum.studybuddy.dto.Registration;
 import at.technikum.studybuddy.dto.UserDto;
 import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
 import at.technikum.studybuddy.entity.User;
+import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.service.UserService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +50,7 @@ public class UserController {
         return this.userService.update(id,user);
     }
 
+    @RolesAllowed(RoleTypes.ADMIN)
     @DeleteMapping("/{id}")
     public User delete (@PathVariable int id){
         return userService.delete(id);
