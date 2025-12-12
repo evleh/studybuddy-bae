@@ -82,7 +82,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new UsernameNotFoundException("userName"));
 
-        UserPrincipal myUserPrincipal =  new UserPrincipal(
+        UserPrincipal myUserPrincipal = new UserPrincipal(
                 Long.toString(user.getId()),
                 user.getUsername(),
                 user.getPassword(),
