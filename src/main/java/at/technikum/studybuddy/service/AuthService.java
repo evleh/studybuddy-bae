@@ -39,7 +39,6 @@ public class AuthService {
         String jwt = JWT.create()
                 .withExpiresAt(Instant.now().plus(20, ChronoUnit.DAYS))
                 .withClaim("userId", userPrincipal.getUserId())
-                //.withClaim("role", userPrincipal.getUserId())
                 .withClaim("userName", userPrincipal.getUsername())
                 .withIssuer("studybuddy-bae")
                 .withIssuedAt(Date.from(Instant.now()))
