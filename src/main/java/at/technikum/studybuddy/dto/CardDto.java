@@ -1,6 +1,5 @@
 package at.technikum.studybuddy.dto;
 
-import at.technikum.studybuddy.entity.BoxComment;
 import at.technikum.studybuddy.entity.Card;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

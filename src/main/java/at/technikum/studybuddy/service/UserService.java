@@ -57,7 +57,9 @@ public class UserService {
     }
 
     public void createUserAdminIfNecessary() {
-        if (userRepository.findByUsername("admin").isPresent()) { return;}
+        if (userRepository.findByUsername("admin").isPresent()) {
+            return;
+        }
         User admin = new User();
         admin.setUsername("admin");
         admin.setPassword(passwordEncoder.encode("admin"));
