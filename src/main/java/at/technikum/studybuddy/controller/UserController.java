@@ -24,6 +24,7 @@ public class UserController {
     }
 
     @GetMapping
+    @RolesAllowed(RoleTypes.ADMIN)
     public List<UserDto> readAll() {
         return this.userService.readAll().stream()
                 .map(UserDtoPrivilegedInfo::new)
@@ -50,8 +51,8 @@ public class UserController {
         return this.userService.update(id,user);
     }
 
-    @RolesAllowed(RoleTypes.ADMIN)
     @DeleteMapping("/{id}")
+    @RolesAllowed(RoleTypes.ADMIN)
     public User delete (@PathVariable int id){
         return userService.delete(id);
     }
