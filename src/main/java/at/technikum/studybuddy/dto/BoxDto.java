@@ -19,7 +19,6 @@ public class BoxDto {
 
     private Boolean isPublic;
 
-    // Entity connections. Currently, DTOs return only return ids. one todo is to make this more realistic.
     private Long ownerId;
     private List<Long> commentIds;
     private List<Long> cardIds;
