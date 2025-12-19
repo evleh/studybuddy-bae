@@ -47,15 +47,7 @@ public class Box {
     private String description;
 
     private Boolean isPublic;
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
+    
     public Box() {
     }
 
