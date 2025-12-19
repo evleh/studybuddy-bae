@@ -27,7 +27,7 @@ public class BoxCommentService {
     }
 
     public BoxComment createBoxComment(BoxCommentDto boxCommentDto) {
-        Optional<User> userOptional = userRepository.findById(boxCommentDto.getOwnerId());
+        Optional<User> userOptional = userRepository.findById(boxCommentDto.getAuthorId());
         Optional<Box> boxOptional = boxRepository.findById(boxCommentDto.getBoxId());
 
         if(userOptional.isEmpty() || boxOptional.isEmpty()){

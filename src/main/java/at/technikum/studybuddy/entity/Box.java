@@ -47,7 +47,7 @@ public class Box {
     private String description;
 
     private Boolean isPublic;
-    
+
     public Box() {
     }
 

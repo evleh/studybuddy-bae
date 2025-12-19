@@ -43,7 +43,7 @@ public class User {
 
     @OneToMany(mappedBy = "owner")
     private List<Box> boxes;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "author")
     private List<BoxComment> boxComments;
 
 
