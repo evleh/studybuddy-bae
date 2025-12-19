@@ -123,6 +123,12 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public boolean isCurrentUserRegistered(){
+        return org.springframework.security.authentication.AnonymousAuthenticationToken.class !=
+                        SecurityContextHolder.getContext().getAuthentication().getClass();
+
+    }
+
     public boolean isCurrentUserAdmin() {
         try {
             String userName = this.getUserNameOfCurrentUser();
