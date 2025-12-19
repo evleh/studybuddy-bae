@@ -40,6 +40,7 @@ public class FileController {
                     PutObjectArgs.builder()
                             .bucket(bucketName)
                             .object(fileName)
+                            .object(originalFilename)
                             .stream(file.getInputStream(), file.getSize(), -1)
                             .contentType(file.getContentType())
                             .build()
