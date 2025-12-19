@@ -93,7 +93,7 @@ public class UserService {
     }
 
     public boolean isCurrentUserRegistered(){
-        return org.springframework.security.authentication.AnonymousAuthenticationToken.class ==
+        return org.springframework.security.authentication.AnonymousAuthenticationToken.class !=
                         SecurityContextHolder.getContext().getAuthentication().getClass();
 
     }
