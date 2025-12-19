@@ -2,6 +2,7 @@ package at.technikum.studybuddy.dto;
 
 import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.BoxComment;
+import at.technikum.studybuddy.entity.Card;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -18,8 +19,9 @@ public class BoxDto {
 
     private Boolean isPublic;
 
-    // missing here too: comments, cards, all connections ofc.
-    private List<Long> commentIds ;
+    private Long ownerId;
+    private List<Long> commentIds;
+    private List<Long> cardIds;
 
     public BoxDto() {
         // empty
@@ -30,18 +32,15 @@ public class BoxDto {
         this.title = box.getTitle();
         this.description = box.getDescription();
         this.isPublic = box.getPublic();
+        this.ownerId = box.getOwner().getId();
         if (box.getComments() != null) {
             this.commentIds = box.getComments().stream().map(BoxComment::getId).toList();
         }
+        if(box.getCards() != null){
+            this.cardIds = box.getCards().stream().map(Card::getId).toList();
+        }
     }
 
-    public Box makeAndGetBoxForCreation() { // the name "getBoxFor..." would confuse the framework.
-        return new Box(
-                this.title,
-                this.description,
-                this.isPublic
-        );
-    }
 
     public Long getId() {
         return id;
@@ -77,5 +76,25 @@ public class BoxDto {
 
     public List<Long> getCommentIds() {
         return commentIds;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public void setCommentIds(List<Long> commentIds) {
+        this.commentIds = commentIds;
+    }
+
+    public List<Long> getCardIds() {
+        return cardIds;
+    }
+
+    public void setCardIds(List<Long> cardIds) {
+        this.cardIds = cardIds;
     }
 }

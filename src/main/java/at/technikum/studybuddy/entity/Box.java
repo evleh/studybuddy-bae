@@ -30,9 +30,15 @@ public class Box {
 
     // comment: if I read https://www.baeldung.com/hibernate-one-to-many right
     // mappedBy specifies, as a string, the *name* of the property in the other Class that refers to here
+    @ManyToOne
+    @JoinColumn(name = "owner_id") // todo: , nullable = false darf nicht null sein!
+    private User owner;
+
+    @OneToMany(mappedBy = "box")
+    private List<Card> cards;
+
     @OneToMany(mappedBy = "box")
     private List<BoxComment> comments ;
-
 
     @NotBlank
     @Size(min = 5, max = 200)
@@ -45,10 +51,11 @@ public class Box {
     public Box() {
     }
 
-    public Box(String title, String description, Boolean isPublic) {
+    public Box(String title, String description, Boolean isPublic, User owner) {
         this.title = title;
         this.description = description;
         this.isPublic = isPublic;
+        this.owner = owner;
     }
 
     public Box updateFromBoxDto(BoxDto boxDto) {
@@ -58,10 +65,7 @@ public class Box {
         return this;
     }
 
-
-
     public Long getId() {
-
         return id;
     }
 
@@ -116,4 +120,22 @@ public class Box {
     public void setComments(List<BoxComment> comments) {
         this.comments = comments;
     }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+
 }

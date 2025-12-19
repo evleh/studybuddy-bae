@@ -1,9 +1,14 @@
 package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.BoxCommentDto;
+import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.BoxComment;
+import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
+import at.technikum.studybuddy.repository.BoxRepository;
+import at.technikum.studybuddy.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,16 +18,24 @@ import java.util.Optional;
 public class BoxCommentService {
 
     private final BoxCommentRepository boxCommentRepository;
-    private final BoxService boxService;
-    public BoxCommentService(BoxCommentRepository boxCommentRepository, BoxService boxService) {
+    private final BoxRepository boxRepository;
+    private final UserRepository userRepository;
+
+    public BoxCommentService(BoxCommentRepository boxCommentRepository, BoxRepository boxRepository, UserRepository userRepository) {
         this.boxCommentRepository = boxCommentRepository;
-        this.boxService = boxService;
+        this.boxRepository = boxRepository;
+        this.userRepository = userRepository;
     }
 
     public BoxComment createBoxComment(BoxCommentDto boxCommentDto) {
-        BoxComment boxComment = new BoxComment();
-        boxComment.setText(boxCommentDto.getText());
-        boxComment.setBox(boxService.readBoxById(boxCommentDto.getBoxId())); // if not found, boxService should throw.
+        Optional<User> userOptional = this.userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Optional<Box> boxOptional = boxRepository.findById(boxCommentDto.getBoxId());
+
+        if(userOptional.isEmpty() || boxOptional.isEmpty()){
+            throw new ResourceNotFoundException();
+        }
+
+        BoxComment boxComment = new BoxComment(boxOptional.get(), userOptional.get(), boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
     }
 
