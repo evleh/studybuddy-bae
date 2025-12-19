@@ -26,7 +26,7 @@ public class Card {
 
     @ManyToOne
     @JoinColumn(name = "box_id")
-    Box box ;
+    private Box box;
 
     @CreationTimestamp
     private Instant createdAt;

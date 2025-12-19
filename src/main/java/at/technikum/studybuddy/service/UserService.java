@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public User update(long id, User user) {
-        Optional<User> findUser = userRepository.findById(id); // nur save wenn es schon existiert
+        Optional<User> findUser = userRepository.findById(id); // save info if user already exists
         if(findUser.isEmpty()){
             throw new ResourceNotFoundException();
         }
