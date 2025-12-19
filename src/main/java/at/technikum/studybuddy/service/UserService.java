@@ -6,6 +6,7 @@ import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
+import at.technikum.studybuddy.security.UserPrincipalAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -92,9 +93,22 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    /**
+     * Altin advises to this switch form to distinguish by class-of-return value;
+     * It casts and makes results usable-as-their-type.
+     * Not necessary here, but instructive?
+     */
     public boolean isCurrentUserRegistered(){
-        return org.springframework.security.authentication.AnonymousAuthenticationToken.class !=
-                        SecurityContextHolder.getContext().getAuthentication().getClass();
+        switch (SecurityContextHolder.getContext().getAuthentication()) {
+            case UserPrincipalAuthenticationToken studybuddyToken:
+                return true;
+            case org.springframework.security.authentication.AnonymousAuthenticationToken anonymousAuthenticationToken:
+                return false;
+            default: // this config would treat newly added Auth classes as non-registered until changed.
+                return false;
+        }
+        /* replaces: return org.springframework.security.authentication.AnonymousAuthenticationToken.class !=
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().isInstance();*/
 
     }
 
