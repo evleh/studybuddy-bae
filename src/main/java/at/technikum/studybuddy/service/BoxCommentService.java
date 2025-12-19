@@ -96,6 +96,18 @@ public class BoxCommentService {
             return false;
         }
     }
+    public boolean hasCurrentUserReadPermission(Long commentId) {
+        if (!this.userService.isCurrentUserRegistered()) return false;
+        if (this.userService.isCurrentUserAdmin()) return true;
+
+        BoxComment boxComment = this.readBoxCommentById(commentId);
+        Box box = boxComment.getBox();
+        String currentUserName = this.userService.getUserNameOfCurrentUser();
+
+        if (box.getOwner().getUsername().equals(currentUserName)) return true;
+        if (boxComment.getAuthor().getUsername().equals(currentUserName)) return true;
+        return false;
+    }
 
 
 }
