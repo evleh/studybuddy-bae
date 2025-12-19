@@ -1,8 +1,11 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.BoxCommentDto;
+import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.service.BoxCommentService;
+import at.technikum.studybuddy.service.BoxService;
+import at.technikum.studybuddy.service.UserService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -16,9 +19,13 @@ import java.util.List;
 public class BoxCommentController {
 
     private final BoxCommentService boxCommentService;
+    private final UserService userService;
+    private final BoxService boxService;
 
-    BoxCommentController(BoxCommentService boxCommentService) {
+    BoxCommentController(BoxCommentService boxCommentService, UserService userServicem, BoxService boxService) {
         this.boxCommentService = boxCommentService;
+        this.userService = userService;
+        this.boxService = boxService;
     }
 
     @GetMapping
@@ -36,7 +43,14 @@ public class BoxCommentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BoxCommentDto create(@Valid @RequestBody BoxCommentDto boxCommentDto) {
-        return new BoxCommentDto(this.boxCommentService.createBoxComment(boxCommentDto));
+        if (this.userService.isCurrentUserRegistered() ||
+            this.userService.isCurrentUserAdmin() ||
+            this.boxService.isPublicOrOwnerIsCurrent(this.boxService.readBoxById(boxCommentDto.getBoxId()))
+        ) {
+            return new BoxCommentDto(this.boxCommentService.createBoxComment(boxCommentDto));
+        } else {
+            throw new PermissionDeniedException();
+        }
     }
 
     @PutMapping("/{id}")
