@@ -5,6 +5,7 @@ import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.repository.BoxRepository;
 import at.technikum.studybuddy.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 
@@ -32,7 +33,8 @@ public class BoxService {
     }
 
     public Box createBox(BoxDto boxDto) {
-        Optional<User> owner = this.userRepository.findById(boxDto.getOwnerId());
+        // todo remove ownerId from boxDto??
+        Optional<User> owner = this.userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         if(owner.isEmpty()){
             throw new ResourceNotFoundException();
         }

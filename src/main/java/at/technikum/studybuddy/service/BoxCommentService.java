@@ -8,6 +8,7 @@ import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
 import at.technikum.studybuddy.repository.BoxRepository;
 import at.technikum.studybuddy.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class BoxCommentService {
     }
 
     public BoxComment createBoxComment(BoxCommentDto boxCommentDto) {
-        Optional<User> userOptional = userRepository.findById(boxCommentDto.getAuthorId());
+        Optional<User> userOptional = this.userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Optional<Box> boxOptional = boxRepository.findById(boxCommentDto.getBoxId());
 
         if(userOptional.isEmpty() || boxOptional.isEmpty()){
