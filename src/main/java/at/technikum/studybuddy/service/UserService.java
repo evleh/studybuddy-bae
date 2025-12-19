@@ -1,6 +1,8 @@
 package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.Registration;
+import at.technikum.studybuddy.dto.UserDto;
+import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
@@ -30,12 +32,27 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public User read(long id) {
-        Optional<User> user = this.userRepository.findById(id);
-        if(user.isEmpty()){
+    public UserDto read(long id) {
+        Optional<User> userOptional = this.userRepository.findById(id);
+        if(userOptional.isEmpty()){
             throw new ResourceNotFoundException();
         }
-        return user.get();
+
+        User user = userOptional.get();
+        // admin -> privileged
+        if(this.isCurrentUserAdmin()){
+            return new UserDtoPrivilegedInfo(user);
+        }
+
+        // owner -> privilegeddto
+        if(user.getUsername().equals( this.getUserNameOfCurrentUser())) {
+            return new UserDtoPrivilegedInfo(user);
+        }
+
+        System.out.println("throws");
+        throw new RuntimeException();
+
+        // registered
     }
 
     public User update(long id, User user) {
@@ -71,6 +88,20 @@ public class UserService {
         admin.setLastname("AD");
         admin.setFirstname("MIN");
         userRepository.save(admin);
+        System.out.println("admin:");
+
+
+        // normal user
+        User normal = new User();
+        normal.setUsername("normal");
+        normal.setPassword(passwordEncoder.encode("normal"));
+        normal.setAdmin(false);
+        normal.setEmail("admin@example.com");
+        normal.setGender("user");
+        normal.setCountry("AT");
+        normal.setLastname("US");
+        normal.setFirstname("ER");
+        userRepository.save(normal);
     }
     public User register(Registration registration) {
         userRepository.findByUsername(registration.getUsername())

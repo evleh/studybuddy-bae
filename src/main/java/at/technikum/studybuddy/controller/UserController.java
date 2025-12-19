@@ -33,8 +33,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})// admin + owner
     public UserDto read(@PathVariable long id) {
-        return new UserDtoPrivilegedInfo(this.userService.read(id));
+        return this.userService.read(id);
     }
 
     @PostMapping
