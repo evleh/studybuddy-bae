@@ -17,10 +17,12 @@ public class BoxService {
 
     private final BoxRepository boxRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public BoxService(BoxRepository boxRepository, UserRepository userRepository) {
+    public BoxService(BoxRepository boxRepository, UserRepository userRepository, UserService userService) {
         this.boxRepository = boxRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public List<Box> readAllBoxes() {
@@ -58,4 +60,9 @@ public class BoxService {
         return box.getPublic() || box.getOwner().getUsername().equals(username);
     }
 
+    public boolean isPublicOrOwnerIsCurrent(Box box) {
+        return box.getPublic() || box.getOwner().getUsername().equals(
+                userService.getUserNameOfCurrentUser()
+        );
+    }
 }

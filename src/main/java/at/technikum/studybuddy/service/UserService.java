@@ -94,11 +94,20 @@ public class UserService {
 
     public boolean isCurrentUserAdmin() {
         try {
-            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            String userName = this.getUserNameOfCurrentUser();
             return this.getByUsername(userName).isAdmin();
         } catch(RuntimeException e) {
             System.err.format("%s", e.toString());
             return false;
+        }
+    }
+
+    public String getUserNameOfCurrentUser() {
+        try {
+            return SecurityContextHolder.getContext().getAuthentication().getName();
+        } catch(RuntimeException e) {
+            System.err.format("%s", e.toString());
+            return "not logged in";
         }
 
     }
