@@ -20,11 +20,20 @@ public class BoxCommentService {
     private final BoxCommentRepository boxCommentRepository;
     private final BoxRepository boxRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
+    private final BoxService boxService;
 
-    public BoxCommentService(BoxCommentRepository boxCommentRepository, BoxRepository boxRepository, UserRepository userRepository) {
+    public BoxCommentService(BoxCommentRepository boxCommentRepository,
+                             BoxRepository boxRepository,
+                             UserRepository userRepository,
+                             UserService userService,
+                             BoxService boxService
+    ) {
         this.boxCommentRepository = boxCommentRepository;
         this.boxRepository = boxRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
+        this.boxService = boxService;
     }
 
     public BoxComment createBoxComment(BoxCommentDto boxCommentDto) {
@@ -76,6 +85,16 @@ public class BoxCommentService {
         // assuming everything went smooth, then:
         return new BoxCommentDto(boxComment.get());
 
+    }
+
+    public boolean isCurrentUserAllowedToCommentOnBoxWithId(Long boxId) {
+        if (!this.userService.isCurrentUserRegistered()) return false;
+        if (this.userService.isCurrentUserAdmin()) return true;
+        if (this.boxService.isPublicOrOwnerIsCurrent(this.boxService.readBoxById(boxId))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

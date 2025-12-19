@@ -22,7 +22,7 @@ public class BoxCommentController {
     private final UserService userService;
     private final BoxService boxService;
 
-    BoxCommentController(BoxCommentService boxCommentService, UserService userServicem, BoxService boxService) {
+    BoxCommentController(BoxCommentService boxCommentService, UserService userService, BoxService boxService) {
         this.boxCommentService = boxCommentService;
         this.userService = userService;
         this.boxService = boxService;
@@ -43,10 +43,7 @@ public class BoxCommentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BoxCommentDto create(@Valid @RequestBody BoxCommentDto boxCommentDto) {
-        if (this.userService.isCurrentUserRegistered() ||
-            this.userService.isCurrentUserAdmin() ||
-            this.boxService.isPublicOrOwnerIsCurrent(this.boxService.readBoxById(boxCommentDto.getBoxId()))
-        ) {
+        if (this.boxCommentService.isCurrentUserAllowedToCommentOnBoxWithId(boxCommentDto.getBoxId())) {
             return new BoxCommentDto(this.boxCommentService.createBoxComment(boxCommentDto));
         } else {
             throw new PermissionDeniedException();
