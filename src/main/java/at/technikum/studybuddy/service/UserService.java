@@ -94,11 +94,7 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    /**
-     * Altin advises to this switch form to distinguish by class-of-return value;
-     * It casts and makes results usable-as-their-type.
-     * Not necessary here, but instructive?
-     */
+
     public boolean isCurrentUserNotRegistered(){
         return !(Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()) instanceof UserPrincipalAuthenticationToken);
     }
