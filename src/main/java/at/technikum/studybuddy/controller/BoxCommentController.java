@@ -6,6 +6,8 @@ import at.technikum.studybuddy.service.BoxCommentService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +38,8 @@ public class BoxCommentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BoxCommentDto create(@Valid @RequestBody BoxCommentDto boxCommentDto) {
+        Authentication auth =  SecurityContextHolder.getContext().getAuthentication();
+
         return new BoxCommentDto(this.boxCommentService.createBoxComment(boxCommentDto));
     }
 
