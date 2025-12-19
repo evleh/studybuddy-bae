@@ -73,8 +73,6 @@ public class Box {
         return this;
     }
 
-
-
     public Long getId() {
         return id;
     }
@@ -138,5 +136,14 @@ public class Box {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
 
 }
