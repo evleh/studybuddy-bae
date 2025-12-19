@@ -1,10 +1,13 @@
 package at.technikum.studybuddy.dto;
 
+import at.technikum.studybuddy.entity.Box;
+import at.technikum.studybuddy.entity.BoxComment;
 import at.technikum.studybuddy.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
+import java.util.List;
 
 public class UserDtoPrivilegedInfo extends UserDto {
 
@@ -21,6 +24,8 @@ public class UserDtoPrivilegedInfo extends UserDto {
     private Instant lastLogin;
     private Instant createdAt;
     private Instant updatedAt;
+    private List<Long> boxIds;
+    private List<Long> boxCommentIds;
 
 
 
@@ -35,6 +40,12 @@ public class UserDtoPrivilegedInfo extends UserDto {
         this.lastLogin = user.getLastLogin();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
+        if(user.getBoxes() != null){
+            this.boxIds = user.getBoxes().stream().map(Box::getId).toList();
+        }
+        if(user.getBoxComments() != null){
+            this.boxCommentIds = user.getBoxComments().stream().map(BoxComment::getId).toList();
+        }
     }
     public UserDto downCastToAbstract() {
         /*
@@ -116,4 +127,19 @@ public class UserDtoPrivilegedInfo extends UserDto {
         this.updatedAt = updatedAt;
     }
 
+    public List<Long> getBoxIds() {
+        return boxIds;
+    }
+
+    public void setBoxIds(List<Long> boxIds) {
+        this.boxIds = boxIds;
+    }
+
+    public List<Long> getBoxCommentIds() {
+        return boxCommentIds;
+    }
+
+    public void setBoxCommentIds(List<Long> boxCommentIds) {
+        this.boxCommentIds = boxCommentIds;
+    }
 }

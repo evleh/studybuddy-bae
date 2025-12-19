@@ -31,7 +31,7 @@ public class BoxCommentDto {
                 this.boxId = boxComment.getBox().getId();
             }
             if (boxComment.getAuthor() != null) {
-                this.boxId = boxComment.getAuthor().getId();
+                this.authorId = boxComment.getAuthor().getId();
             }
         }
     }
