@@ -95,8 +95,13 @@ public class UserService {
     }
 
 
-    public boolean isCurrentUserNotRegistered(){
-        return !(Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()) instanceof UserPrincipalAuthenticationToken);
+    public boolean isCurrentUserRegistered(){
+        // from the doc: Objects.requireNonNull is a java utility
+        // that throws a null pointer exception if it were otherwise.
+        return Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()) instanceof UserPrincipalAuthenticationToken;
+    }
+    public boolean isCurrentUserNotRegistered() {
+        return !this.isCurrentUserRegistered();
     }
 
     public boolean isCurrentUserAdmin() {
