@@ -3,12 +3,11 @@ package at.technikum.studybuddy.service;
 import at.technikum.studybuddy.dto.BoxDto;
 import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.User;
+import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxRepository;
 import at.technikum.studybuddy.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +52,10 @@ public class BoxService {
         BoxDto boxDto = new BoxDto(box);
         boxRepository.delete(box);
         return boxDto;
+    }
+
+    public boolean isPublicOrOwner(Box box, String username) {
+        return box.getPublic() || box.getOwner().getUsername().equals(username);
     }
 
 }

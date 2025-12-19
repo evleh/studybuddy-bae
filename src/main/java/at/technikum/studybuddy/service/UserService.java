@@ -6,6 +6,7 @@ import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -89,6 +90,17 @@ public class UserService {
     public User getByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public boolean isCurrentUserAdmin() {
+        try {
+            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            return this.getByUsername(userName).isAdmin();
+        } catch(RuntimeException e) {
+            System.err.format("%s", e.toString());
+            return false;
+        }
+
     }
 
 }
