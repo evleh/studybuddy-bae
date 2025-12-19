@@ -88,7 +88,7 @@ public class BoxCommentService {
     }
 
     public boolean isCurrentUserAllowedToCommentOnBoxWithId(Long boxId) {
-        if (!this.userService.isCurrentUserRegistered()) return false;
+        if (this.userService.isCurrentUserNotRegistered()) return false;
         if (this.userService.isCurrentUserAdmin()) return true;
         if (this.boxService.isPublicOrOwnerIsCurrent(this.boxService.readBoxById(boxId))) {
             return true;
@@ -97,7 +97,7 @@ public class BoxCommentService {
         }
     }
     public boolean hasCurrentUserReadPermission(Long commentId) {
-        if (!this.userService.isCurrentUserRegistered()) return false;
+        if (this.userService.isCurrentUserNotRegistered()) return false;
         if (this.userService.isCurrentUserAdmin()) return true;
 
         BoxComment boxComment = this.readBoxCommentById(commentId);

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -98,18 +99,8 @@ public class UserService {
      * It casts and makes results usable-as-their-type.
      * Not necessary here, but instructive?
      */
-    public boolean isCurrentUserRegistered(){
-        switch (SecurityContextHolder.getContext().getAuthentication()) {
-            case UserPrincipalAuthenticationToken studybuddyToken:
-                return true;
-            case org.springframework.security.authentication.AnonymousAuthenticationToken anonymousAuthenticationToken:
-                return false;
-            default: // this config would treat newly added Auth classes as non-registered until changed.
-                return false;
-        }
-        /* replaces: return org.springframework.security.authentication.AnonymousAuthenticationToken.class !=
-                        SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().isInstance();*/
-
+    public boolean isCurrentUserNotRegistered(){
+        return !(Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()) instanceof UserPrincipalAuthenticationToken);
     }
 
     public boolean isCurrentUserAdmin() {
