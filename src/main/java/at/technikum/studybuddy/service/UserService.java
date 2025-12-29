@@ -10,7 +10,9 @@ import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
 import at.technikum.studybuddy.security.RoleTypes;
+import at.technikum.studybuddy.security.UserPrincipal;
 import jakarta.annotation.security.RolesAllowed;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,32 +38,26 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})// admin + owner
+    @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})
     public UserDto read(long id) {
+        if(!this.isCurrentUserAdmin() && !this.isOwner(id)){
+            throw new PermissionDeniedException();
+        }
+
         Optional<User> userOptional = this.userRepository.findById(id);
         if(userOptional.isEmpty()){
             throw new ResourceNotFoundException();
         }
 
-        User user = userOptional.get();
-        // admin -> privileged
-        if(this.isCurrentUserAdmin()){
-            return new UserDtoPrivilegedInfo(user);
-        }
-
-        // owner -> privilegeddto
-        if(user.getUsername().equals( this.getUserNameOfCurrentUser())) {
-            return new UserDtoPrivilegedInfo(user);
-        }
-
-        System.out.println("throws");
-        throw new RuntimeException();
-
-        // registered
+        return new UserDtoPrivilegedInfo(userOptional.get());
     }
 
     @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})
     public User update(long id, User user) {
+        if(!this.isCurrentUserAdmin() && !this.isOwner(id)){
+            throw new PermissionDeniedException();
+        }
+
         Optional<User> findUser = userRepository.findById(id); // save info if user already exists
         if(findUser.isEmpty()){
             throw new ResourceNotFoundException();
@@ -95,7 +91,6 @@ public class UserService {
         admin.setLastname("AD");
         admin.setFirstname("MIN");
         userRepository.save(admin);
-        System.out.println("admin:");
 
 
         // normal user
@@ -155,5 +150,13 @@ public class UserService {
         }
 
     }
+
+    public boolean isOwner(Long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPricipal = (UserPrincipal) auth.getPrincipal();
+        Long userId = Long.parseLong(userPricipal.getUserId());
+        return userId.equals(id);
+    }
+
 
 }
