@@ -40,7 +40,7 @@ public class UserService {
 
     @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})
     public UserDto read(long id) {
-        if(!this.isCurrentUserAdmin() && !this.isOwner(id)){
+        if(!this.isAdmin() && !this.isOwner(id)){
             throw new PermissionDeniedException();
         }
 
@@ -54,7 +54,7 @@ public class UserService {
 
     @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})
     public User update(long id, User user) {
-        if(!this.isCurrentUserAdmin() && !this.isOwner(id)){
+        if(!this.isAdmin() && !this.isOwner(id)){
             throw new PermissionDeniedException();
         }
 
@@ -158,5 +158,9 @@ public class UserService {
         return userId.equals(id);
     }
 
+    public boolean isAdmin(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
 
 }
