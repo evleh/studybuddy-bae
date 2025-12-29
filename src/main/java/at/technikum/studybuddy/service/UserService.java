@@ -6,8 +6,11 @@ import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
+import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
+import at.technikum.studybuddy.security.RoleTypes;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,10 +31,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @RolesAllowed(RoleTypes.ADMIN)
     public List<User> readAll(){
         return this.userRepository.findAll();
     }
 
+    @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})// admin + owner
     public UserDto read(long id) {
         Optional<User> userOptional = this.userRepository.findById(id);
         if(userOptional.isEmpty()){
@@ -55,6 +60,7 @@ public class UserService {
         // registered
     }
 
+    @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})
     public User update(long id, User user) {
         Optional<User> findUser = userRepository.findById(id); // save info if user already exists
         if(findUser.isEmpty()){
@@ -65,6 +71,7 @@ public class UserService {
         return findUser.get();
     }
 
+    @RolesAllowed(RoleTypes.ADMIN)
     public User delete(long id){
         Optional<User> user = this.userRepository.findById(id);
         if(user.isEmpty()){
