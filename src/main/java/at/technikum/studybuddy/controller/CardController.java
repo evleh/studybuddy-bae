@@ -22,7 +22,6 @@ public class CardController {
     }
 
     @GetMapping
-    @RolesAllowed(RoleTypes.ADMIN)
     public List<CardDto> readAll(){
         return this.cardService.readAll().stream().map(CardDto::new).toList();
     }

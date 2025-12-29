@@ -4,6 +4,8 @@ import at.technikum.studybuddy.dto.CardDto;
 import at.technikum.studybuddy.entity.Card;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.CardRepository;
+import at.technikum.studybuddy.security.RoleTypes;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class CardService {
         this.boxService = boxService;
     }
 
+    @RolesAllowed(RoleTypes.ADMIN)
     public List<Card> readAll(){
         return this.cardRepository.findAll();
     }
