@@ -38,7 +38,7 @@ public class AuthService {
         // real JWT here
         String jwt = JWT.create()
                 .withExpiresAt(Instant.now().plus(20, ChronoUnit.DAYS))
-                .withClaim("userId", userPrincipal.getUserId())
+                .withClaim("userId", userPrincipal.getId())
                 .withClaim("userName", userPrincipal.getUsername())
                 .withIssuer("studybuddy-bae")
                 .withIssuedAt(Date.from(Instant.now()))
@@ -48,7 +48,7 @@ public class AuthService {
 
         Token token = new Token();
         token.setAccessToken(jwt);
-        token.setUserId(userPrincipal.getUserId());
+        token.setUserId(Long.toString(userPrincipal.getId()));
         return token;
     }
 

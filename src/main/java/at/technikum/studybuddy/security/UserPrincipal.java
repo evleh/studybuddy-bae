@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public class UserPrincipal implements UserDetails {
 
-    private final String userId;
+    private final Long id;
 
     private final String username;
 
@@ -15,11 +15,11 @@ public class UserPrincipal implements UserDetails {
 
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(String userId,
+    public UserPrincipal(Long userId,
                          String username,
                          String password,
                          Collection<? extends GrantedAuthority> authorities) {
-        this.userId = userId;
+        this.id = userId;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
@@ -60,7 +60,7 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 
-    public String getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 }

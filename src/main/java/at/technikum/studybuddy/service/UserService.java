@@ -12,6 +12,7 @@ import at.technikum.studybuddy.repository.UserRepository;
 import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.security.UserPrincipal;
 import jakarta.annotation.security.RolesAllowed;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,17 +34,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    @RolesAllowed(RoleTypes.ADMIN)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> readAll(){
         return this.userRepository.findAll();
     }
 
-    @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && #id == authentication.principal.id)")
     public UserDto read(long id) {
-        if(!this.isAdmin() && !this.isOwner(id)){
-            throw new PermissionDeniedException();
-        }
-
         Optional<User> userOptional = this.userRepository.findById(id);
         if(userOptional.isEmpty()){
             throw new ResourceNotFoundException();
@@ -52,12 +49,8 @@ public class UserService {
         return new UserDtoPrivilegedInfo(userOptional.get());
     }
 
-    @RolesAllowed({RoleTypes.ADMIN, RoleTypes.REGISTERED})
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && #id == authentication.principal.id)")
     public User update(long id, User user) {
-        if(!this.isAdmin() && !this.isOwner(id)){
-            throw new PermissionDeniedException();
-        }
-
         Optional<User> findUser = userRepository.findById(id); // save info if user already exists
         if(findUser.isEmpty()){
             throw new ResourceNotFoundException();
@@ -67,7 +60,7 @@ public class UserService {
         return findUser.get();
     }
 
-    @RolesAllowed(RoleTypes.ADMIN)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User delete(long id){
         Optional<User> user = this.userRepository.findById(id);
         if(user.isEmpty()){
@@ -154,7 +147,7 @@ public class UserService {
     public boolean isOwner(Long id){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userPricipal = (UserPrincipal) auth.getPrincipal();
-        Long userId = Long.parseLong(userPricipal.getUserId());
+        Long userId = userPricipal.getId();
         return userId.equals(id);
     }
 
