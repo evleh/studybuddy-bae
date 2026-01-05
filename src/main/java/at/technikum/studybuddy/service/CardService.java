@@ -33,7 +33,6 @@ public class CardService {
         return this.cardRepository.findAll();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId() == authentication.principal.id")
     public Card read(long id) throws ResourceNotFoundException{
         Optional<Card> cardOptional = this.cardRepository.findById(id);
@@ -58,6 +57,7 @@ public class CardService {
         return this.cardRepository.save(card);
     }
 
+    // todo talk about this. is this unsave ???????
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Card update(long id, CardDto cardDto){
         // Eventuell InputMismatchException wenn id-Paramater und card-id nicht übereinstimmen

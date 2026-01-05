@@ -36,7 +36,6 @@ public class BoxService {
         return boxRepository.findAll();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getPublic() || authentication.principal.id == returnObject.owner.getId()")
     public Box read(Long id) {
         return boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
