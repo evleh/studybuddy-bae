@@ -43,19 +43,20 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("Check Token here!");
         System.out.println(request.getHeader("Authorization"));
 
-        // check JWT, if valid read user data and create authentication
-
+        // 1. decide whether we want to apply the filter? Only if request has the right header, we want to proceed with
+        // authentication. Otherwise, we apply the filter chain with an early return.
         if (null == request.getHeader("Authorization")) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        // 2. Check credentials (JWT) and [authenticate | reject ]. If authenticated, authentication object is created
         this.verifyToken(request
                 .getHeader("Authorization")
                 .replace("Bearer ", "")
         );
 
-
+        // 3. call next filter
         filterChain.doFilter(request, response);
     }
     private void verifyToken(String jwt) {
@@ -92,6 +93,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         Authentication authentication = new UserPrincipalAuthenticationToken(myUserPrincipal);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        System.out.printf("[%s] logged in with authorities [%s]%n", authentication.getName(), authentication.getAuthorities() );
 
         // hashTag findMeAgain #findmeagain also TODO
     }
