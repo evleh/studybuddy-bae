@@ -1,11 +1,17 @@
 package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.CardDto;
+import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.Card;
+import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.CardRepository;
 import at.technikum.studybuddy.security.RoleTypes;
+import at.technikum.studybuddy.security.UserPrincipal;
 import jakarta.annotation.security.RolesAllowed;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,49 +28,81 @@ public class CardService {
         this.boxService = boxService;
     }
 
-    @RolesAllowed(RoleTypes.ADMIN)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Card> readAll(){
         return this.cardRepository.findAll();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
+    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId() == authentication.principal.id")
     public Card read(long id) throws ResourceNotFoundException{
-        Optional<Card> card = this.cardRepository.findById(id);
-        if(card.isEmpty()){
+        Optional<Card> cardOptional = this.cardRepository.findById(id);
+        if(cardOptional.isEmpty()){
             throw new ResourceNotFoundException();
         }
-        return card.get();
+        return cardOptional.get();
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Card create(CardDto cardDto){
+        // authorization: only for parent box owner = self
+        if(!isBoxOwnerPrincipal(cardDto)){
+            throw new PermissionDeniedException();
+        }
+
         Card card = new Card();
         card.setQuestion(cardDto.getQuestion());
         card.setAnswer(cardDto.getAnswer());
-        card.setBox(boxService.readBoxById(cardDto.getBoxId()));
+        card.setBox(boxService.read(cardDto.getBoxId()));
+
         return this.cardRepository.save(card);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Card update(long id, CardDto cardDto){
-        Optional<Card> cardRepo = this.cardRepository.findById(id);
         // Eventuell InputMismatchException wenn id-Paramater und card-id nicht übereinstimmen
+        // authorization: only for parent box owner = self
+        if(!isBoxOwnerPrincipal(cardDto)){
+            throw new PermissionDeniedException();
+        }
 
-        if(cardRepo.isEmpty()){
+        Optional<Card> cardOptional = this.cardRepository.findById(id);
+        if(cardOptional.isEmpty()){
             throw new ResourceNotFoundException();
         }
+
         Card card = read(id);
         card.setQuestion(cardDto.getQuestion());
         card.setAnswer(cardDto.getAnswer());
         return cardRepository.save(card);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public CardDto delete(long id) throws ResourceNotFoundException{
-        Optional<Card> card = this.cardRepository.findById(id);
-        if(card.isEmpty()){
+        Optional<Card> cardOptional = this.cardRepository.findById(id);
+        if(cardOptional.isEmpty()){
             throw new ResourceNotFoundException();
         }
 
-        this.cardRepository.deleteById(id);
-        return new CardDto(card.get());
+        // authorization: only for parent box owner = self
+        if(!isBoxOwnerPrincipal(cardOptional.get())){
+            throw new PermissionDeniedException();
+        }
 
+        this.cardRepository.deleteById(id);
+        return new CardDto(cardOptional.get());
+
+    }
+
+    public boolean isBoxOwnerPrincipal(CardDto cardDto){
+        Box parentBox = boxService.read(cardDto.getBoxId());
+        Long boxOwnerId = parentBox.getOwner().getId();
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userPrincipalId = userPrincipal.getId();
+        return boxOwnerId.equals(userPrincipalId);
+    }
+
+    public boolean isBoxOwnerPrincipal(Card card){
+        return this.isBoxOwnerPrincipal(new CardDto(card));
     }
 }
