@@ -1,11 +1,19 @@
 package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.Registration;
+import at.technikum.studybuddy.dto.UserDto;
+import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
+import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
+import at.technikum.studybuddy.security.RoleTypes;
+import at.technikum.studybuddy.security.UserPrincipal;
+import jakarta.annotation.security.RolesAllowed;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,18 +34,22 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> readAll(){
         return this.userRepository.findAll();
     }
 
-    public User read(long id) {
-        Optional<User> user = this.userRepository.findById(id);
-        if(user.isEmpty()){
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && #id == authentication.principal.id)")
+    public UserDto read(long id) {
+        Optional<User> userOptional = this.userRepository.findById(id);
+        if(userOptional.isEmpty()){
             throw new ResourceNotFoundException();
         }
-        return user.get();
+
+        return new UserDtoPrivilegedInfo(userOptional.get());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && #id == authentication.principal.id)")
     public User update(long id, User user) {
         Optional<User> findUser = userRepository.findById(id); // save info if user already exists
         if(findUser.isEmpty()){
@@ -48,6 +60,7 @@ public class UserService {
         return findUser.get();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User delete(long id){
         Optional<User> user = this.userRepository.findById(id);
         if(user.isEmpty()){
@@ -71,6 +84,19 @@ public class UserService {
         admin.setLastname("AD");
         admin.setFirstname("MIN");
         userRepository.save(admin);
+
+
+        // normal user
+        User normal = new User();
+        normal.setUsername("normal");
+        normal.setPassword(passwordEncoder.encode("normal"));
+        normal.setAdmin(false);
+        normal.setEmail("admin@example.com");
+        normal.setGender("user");
+        normal.setCountry("AT");
+        normal.setLastname("US");
+        normal.setFirstname("ER");
+        userRepository.save(normal);
     }
     public User register(Registration registration) {
         userRepository.findByUsername(registration.getUsername())
@@ -116,6 +142,18 @@ public class UserService {
             return "not logged in";
         }
 
+    }
+
+    public boolean isOwner(Long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPricipal = (UserPrincipal) auth.getPrincipal();
+        Long userId = userPricipal.getId();
+        return userId.equals(id);
+    }
+
+    public boolean isAdmin(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 
 }
