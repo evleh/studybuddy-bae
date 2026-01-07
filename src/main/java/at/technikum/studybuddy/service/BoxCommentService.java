@@ -8,6 +8,7 @@ import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
 import at.technikum.studybuddy.repository.BoxRepository;
 import at.technikum.studybuddy.repository.UserRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class BoxCommentService {
         this.userRepository = userRepository;
     }
 
-    public BoxComment createBoxComment(BoxCommentDto boxCommentDto) {
+    public BoxComment create(BoxCommentDto boxCommentDto) {
         Optional<User> userOptional = this.userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Optional<Box> boxOptional = boxRepository.findById(boxCommentDto.getBoxId());
 
@@ -39,11 +40,12 @@ public class BoxCommentService {
         return boxCommentRepository.save(boxComment);
     }
 
-    public List<BoxComment> readAllBoxComments() {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<BoxComment> readAll() {
         return this.boxCommentRepository.findAll();
     }
 
-    public BoxComment readBoxCommentById(Long id) {
+    public BoxComment read(Long id) {
         return this.boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
         /* note:
@@ -53,13 +55,14 @@ public class BoxCommentService {
         */
     }
 
-    public BoxComment updateBoxComment(Long id, BoxCommentDto boxCommentDto) {
-        BoxComment boxComment = readBoxCommentById(id);
+    public BoxComment update(Long id, BoxCommentDto boxCommentDto) {
+        BoxComment boxComment = read(id);
         boxComment.setText(boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
     }
 
-    public BoxCommentDto deleteBoxComment(Long id) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public BoxCommentDto delete(Long id) {
         Optional<BoxComment> boxComment = this.boxCommentRepository.findById(id);
         boxComment.orElseThrow(ResourceNotFoundException::new);
         // comment for line above: orElseThrow does not return an optional, so no chaining :(

@@ -81,5 +81,5 @@ Go there to try "mvn checkstyle:check" for a test of the check.
 
 ### Permission / docs
 
-Tutorial for getting the RolesAllowed-Decorators to work:  
+Tutorial for getting the PreAuthenticate/PostAuthenticate-Decorators to work:  
 [https://www.baeldung.com/spring-security-method-security](https://www.baeldung.com/spring-security-method-security)  
