@@ -13,8 +13,8 @@ import java.time.Instant;
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Definiert Strategie wie PK generiert wird.
-    private long id;
-    // private long boxId;
+    private Long id;
+
     @NotBlank
     @Size(min = 1, max = 2000)
     private String question;
@@ -45,11 +45,11 @@ public class Card {
         this.box = box;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

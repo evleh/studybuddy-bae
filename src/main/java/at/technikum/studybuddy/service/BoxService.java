@@ -21,12 +21,10 @@ public class BoxService {
 
     private final BoxRepository boxRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
 
-    public BoxService(BoxRepository boxRepository, UserRepository userRepository, UserService userService) {
+    public BoxService(BoxRepository boxRepository, UserRepository userRepository) {
         this.boxRepository = boxRepository;
         this.userRepository = userRepository;
-        this.userService = userService;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -34,10 +32,15 @@ public class BoxService {
         return boxRepository.findAll();
     }
 
-    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getPublic() || authentication.principal.id == returnObject.owner.getId()")
+    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getPublic() || authentication.principal.id.equals(returnObject.owner.getId())")
     public Box read(Long id) {
         return boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
+
+    public Box readInternal(Long id) {
+        return boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    }
+
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Box create(BoxDto boxDto) {
@@ -58,7 +61,7 @@ public class BoxService {
         Long userId = userPrincipal.getId();
 
         // can't use PostAuthorize because returnObject is updated box i.e. changes are already saved when check happens
-        if(box.getOwner().getId() != userId) {
+        if(!box.getOwner().getId().equals(userId)) {
             throw new PermissionDeniedException();
         }
 
@@ -67,29 +70,19 @@ public class BoxService {
 
     // change to return dto, to (hopefully) avoid the org.hibernate.LazyInitializationException
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public BoxDto delete(Long id) {
+    public Box delete(Long id) {
         Box box = boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userPrincipal.getId();
 
         // can't use PostAuthorize because returnObject is updated box i.e. changes are already saved when check happens
-        if(box.getOwner().getId() != userId) {
+        if(! (box.getOwner().getId().equals(userId) && box.getOwner().isAdmin())) {
             throw new PermissionDeniedException();
         }
 
-        BoxDto boxDto = new BoxDto(box);
         boxRepository.delete(box);
-        return boxDto;
+        return box;
     }
 
-    public boolean isPublicOrOwner(Box box, String username) {
-        return box.getPublic() || box.getOwner().getUsername().equals(username);
-    }
-
-    public boolean isPublicOrOwnerIsCurrent(Box box) {
-        return box.getPublic() || box.getOwner().getUsername().equals(
-                userService.getUserNameOfCurrentUser()
-        );
-    }
 }

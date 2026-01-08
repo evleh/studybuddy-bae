@@ -11,7 +11,7 @@ public abstract class UserDto {
      * If an abstract class has abstract methods, this forces the child to
      * implement this method.
      */
-    private long id;
+    private Long id;
     private String username;
     private URL foto;
 
@@ -24,11 +24,11 @@ public abstract class UserDto {
     }
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

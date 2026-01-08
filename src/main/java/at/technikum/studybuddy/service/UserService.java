@@ -37,35 +37,34 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && #id == authentication.principal.id)")
-    public UserDto read(long id) {
-        Optional<User> userOptional = this.userRepository.findById(id);
-        if(userOptional.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
-
-        return new UserDtoPrivilegedInfo(userOptional.get());
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
+    public User read(Long id) {
+        User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        return user;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && #id == authentication.principal.id)")
-    public User update(long id, User user) {
-        Optional<User> findUser = userRepository.findById(id); // save info if user already exists
-        if(findUser.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
+    // todo only admin can change admin attribute
+    // todo change password: sollte man wsl extra machen
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
+    public User update(Long id, UserDtoPrivilegedInfo userDto) {
+        User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new); // save info if user already exists
+
+        user.setFoto(userDto.getFoto());
+        user.setEmail(userDto.getEmail());
+        user.setGender(userDto.getGender());
+        user.setFirstname(userDto.getFirstname());
+        user.setLastname(userDto.getLastname());
+        user.setCountry(userDto.getCountry());
 
         this.userRepository.save(user);
-        return findUser.get();
+        return user;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User delete(long id){
-        Optional<User> user = this.userRepository.findById(id);
-        if(user.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
+    public User delete(Long id){
+        User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         this.userRepository.deleteById(id);
-        return user.get();
+        return user;
     }
 
     public void createUserAdminIfNecessary() {
@@ -116,22 +115,6 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public boolean isCurrentUserRegistered(){
-        return org.springframework.security.authentication.AnonymousAuthenticationToken.class !=
-                        SecurityContextHolder.getContext().getAuthentication().getClass();
-
-    }
-
-    public boolean isCurrentUserAdmin() {
-        try {
-            String userName = this.getUserNameOfCurrentUser();
-            return this.getByUsername(userName).isAdmin();
-        } catch(RuntimeException e) {
-            System.err.format("%s", e.toString());
-            return false;
-        }
-    }
-
     public String getUserNameOfCurrentUser() {
         try {
             return SecurityContextHolder.getContext().getAuthentication().getName();
@@ -141,17 +124,4 @@ public class UserService {
         }
 
     }
-
-    public boolean isOwner(Long id){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPricipal = (UserPrincipal) auth.getPrincipal();
-        Long userId = userPricipal.getId();
-        return userId.equals(id);
-    }
-
-    public boolean isAdmin(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-    }
-
 }

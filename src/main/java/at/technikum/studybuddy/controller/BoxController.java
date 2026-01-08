@@ -43,6 +43,6 @@ public class BoxController {
 
     @DeleteMapping("/{id}")
     public BoxDto delete(@PathVariable Long id) {
-        return boxService.delete(id);
+        return new BoxDto(boxService.delete(id));
     }
 }
