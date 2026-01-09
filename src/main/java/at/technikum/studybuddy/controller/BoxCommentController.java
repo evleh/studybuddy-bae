@@ -21,29 +21,29 @@ public class BoxCommentController {
 
     @GetMapping
     public List<BoxCommentDto> readAll() {
-        return this.boxCommentService.readAllBoxComments().stream().map(BoxCommentDto::new).toList();
+        return this.boxCommentService.readAll().stream().map(BoxCommentDto::new).toList();
     }
 
     @GetMapping("/{id}")
     public BoxCommentDto readById(@PathVariable Long id) {
-        return new BoxCommentDto(this.boxCommentService.readBoxCommentById(id));
+        return new BoxCommentDto(this.boxCommentService.read(id));
 
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BoxCommentDto create(@Valid @RequestBody BoxCommentDto boxCommentDto) {
-        return new BoxCommentDto(this.boxCommentService.createBoxComment(boxCommentDto));
+        return new BoxCommentDto(this.boxCommentService.create(boxCommentDto));
     }
 
     @PutMapping("/{id}")
     public BoxCommentDto update(@PathVariable Long id, @Valid @RequestBody BoxCommentDto boxCommentDto) {
-        return new BoxCommentDto(this.boxCommentService.updateBoxComment(id, boxCommentDto));
+        return new BoxCommentDto(this.boxCommentService.update(id, boxCommentDto));
     }
 
     @DeleteMapping("/{id}")
-    public BoxCommentDto deleteById(@PathVariable Long id) {
-        return this.boxCommentService.deleteBoxComment(id);
+    public BoxCommentDto delete(@PathVariable Long id) {
+        return this.boxCommentService.delete(id);
     }
 
 }

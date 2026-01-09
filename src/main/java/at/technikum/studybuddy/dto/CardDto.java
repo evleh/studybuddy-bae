@@ -17,11 +17,10 @@ public class CardDto {
     private String answer;
 
     CardDto() {
-        super();
+
     }
 
     public CardDto(Card card) {
-        this();
         if (card != null) {
             this.id = card.getId();
             this.question = card.getQuestion();

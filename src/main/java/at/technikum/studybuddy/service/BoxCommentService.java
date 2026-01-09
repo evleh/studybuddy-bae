@@ -1,69 +1,96 @@
 package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.BoxCommentDto;
+import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.BoxComment;
+import at.technikum.studybuddy.entity.User;
+import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
+import at.technikum.studybuddy.repository.BoxRepository;
+import at.technikum.studybuddy.repository.UserRepository;
+import at.technikum.studybuddy.security.UserPrincipal;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BoxCommentService {
 
     private final BoxCommentRepository boxCommentRepository;
-    private final BoxService boxService;
-    public BoxCommentService(BoxCommentRepository boxCommentRepository, BoxService boxService) {
+    private final BoxRepository boxRepository;
+    private final UserRepository userRepository;
+
+    public BoxCommentService(BoxCommentRepository boxCommentRepository, BoxRepository boxRepository, UserRepository userRepository) {
         this.boxCommentRepository = boxCommentRepository;
-        this.boxService = boxService;
+        this.boxRepository = boxRepository;
+        this.userRepository = userRepository;
     }
 
-    public BoxComment createBoxComment(BoxCommentDto boxCommentDto) {
-        BoxComment boxComment = new BoxComment();
-        boxComment.setText(boxCommentDto.getText());
-        boxComment.setBox(boxService.readBoxById(boxCommentDto.getBoxId())); // if not found, boxService should throw.
-        return boxCommentRepository.save(boxComment);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
+    public BoxComment create(BoxCommentDto boxCommentDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth.getPrincipal() instanceof UserPrincipal user)) {
+            throw new PermissionDeniedException();
+        }
+
+        User author = userRepository.findByUsername(auth.getName())
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Box box = boxRepository.findById(boxCommentDto.getBoxId())
+                .orElseThrow(ResourceNotFoundException::new);
+
+        if (!box.getPublic() || !box.getOwner().getId().equals(user.getId())) {
+            throw new PermissionDeniedException();
+        }
+
+        BoxComment comment = new BoxComment(box, author, boxCommentDto.getText());
+        return boxCommentRepository.save(comment);
     }
 
-    public List<BoxComment> readAllBoxComments() {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<BoxComment> readAll() {
         return this.boxCommentRepository.findAll();
     }
 
-    public BoxComment readBoxCommentById(Long id) {
+    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getAuthor().getId().equals(authentication.principal.id)")
+    public BoxComment read(Long id) {
         return this.boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        /* note:
-          ResourceNotFoundException::new
-          is an ide-suggest replacement for () -> new ResourceNotFoundException
-          which is shorthand for if(..isempty()) ... etc
-        */
     }
 
-    public BoxComment updateBoxComment(Long id, BoxCommentDto boxCommentDto) {
-        BoxComment boxComment = readBoxCommentById(id);
+    //ML2: tested for owner
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
+    public BoxComment update(Long id, BoxCommentDto boxCommentDto) {
+        BoxComment boxComment = read(id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth.getPrincipal() instanceof UserPrincipal user)) {
+            throw new PermissionDeniedException();
+        }
+
+        User author = boxComment.getAuthor();
+        if ( !author.getId().equals(user.getId()) && !author.isAdmin() )  {
+            throw new PermissionDeniedException();
+        }
+
         boxComment.setText(boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
     }
 
-    public BoxCommentDto deleteBoxComment(Long id) {
-        Optional<BoxComment> boxComment = this.boxCommentRepository.findById(id);
-        boxComment.orElseThrow(ResourceNotFoundException::new);
-        // comment for line above: orElseThrow does not return an optional, so no chaining :(
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public BoxCommentDto delete(Long id) {
+        BoxComment boxComment = boxCommentRepository.findById(id)
+                .orElseThrow(ResourceNotFoundException::new);
 
-        try {
-            // ide suggests; suspect makes it easier to change pks later?
-            // docs seem to say delete will look up with Ids from the object here
-            boxCommentRepository.delete(boxComment.get());
-        } catch (IllegalArgumentException e) {
-            // in case it got deleted by someone else in between?
-            // might be too much, idk.
-            throw new ResourceNotFoundException();
-        }
-        // assuming everything went smooth, then:
-        return new BoxCommentDto(boxComment.get());
+        BoxCommentDto boxCommentDto = new BoxCommentDto(boxComment);
+        boxCommentRepository.delete(boxComment);
 
+        return boxCommentDto;
     }
-
 
 }

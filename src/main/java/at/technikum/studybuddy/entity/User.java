@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.net.URL;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(
@@ -18,7 +19,7 @@ import java.time.Instant;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private boolean isAdmin;
     private String username;
     private URL foto;
@@ -40,13 +41,19 @@ public class User {
     @UpdateTimestamp
     private Instant updatedAt;
 
+    @OneToMany(mappedBy = "owner")
+    private List<Box> boxes;
+    @OneToMany(mappedBy = "author")
+    private List<BoxComment> boxComments;
+
+
     // empty constructor
     public User() {
 
     }
 
     // full constructor
-    public User(long id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant updatedAt) {
+    public User(Long id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant updatedAt) {
         this.id = id;
         this.isAdmin = isAdmin;
         this.username = username;
@@ -61,7 +68,6 @@ public class User {
         this.createdAt = created;
         this.updatedAt = updatedAt;
     }
-
     public String getRole() {
         if (this.isAdmin) {
             return RoleTypes.ADMIN;
@@ -71,7 +77,7 @@ public class User {
     }
 
     // getters
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -125,7 +131,7 @@ public class User {
 
     //setters
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -175,5 +181,21 @@ public class User {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Box> getBoxes() {
+        return boxes;
+    }
+
+    public void setBoxes(List<Box> boxes) {
+        this.boxes = boxes;
+    }
+
+    public List<BoxComment> getBoxComments() {
+        return boxComments;
+    }
+
+    public void setBoxComments(List<BoxComment> boxComments) {
+        this.boxComments = boxComments;
     }
 }

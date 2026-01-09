@@ -25,7 +25,7 @@ public class CardController {
     }
 
     @GetMapping("/{id}")
-    public CardDto read(@PathVariable long id){
+    public CardDto read(@PathVariable Long id){
         return new CardDto(this.cardService.read(id));
     }
 
@@ -37,14 +37,14 @@ public class CardController {
 
     // ToDo: Achtung hier nicht einfach übernehmen. In service wird save-methode aufgerufen.
     @PutMapping("/{id}")
-    public CardDto update(@PathVariable long id, @RequestBody @Valid CardDto cardDto){
+    public CardDto update(@PathVariable Long id, @RequestBody @Valid CardDto cardDto){
         return new CardDto(this.cardService.update(id, cardDto));
     }
 
     @DeleteMapping("/{id}")
-    public CardDto delete(@PathVariable long id){
+    public CardDto delete(@PathVariable Long id){
         return this.cardService.delete(id);
-    } // wirft 404
+    }
 
 
 
