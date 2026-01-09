@@ -73,7 +73,7 @@ public class BoxCommentService {
         }
 
         User author = boxComment.getAuthor();
-        if ( !(author.getId().equals(user.getId()) && author.isAdmin()))  {
+        if ( !author.getId().equals(user.getId()) && !author.isAdmin() )  {
             throw new PermissionDeniedException();
         }
 
@@ -82,13 +82,14 @@ public class BoxCommentService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public BoxComment delete(Long id) {
+    public BoxCommentDto delete(Long id) {
         BoxComment boxComment = boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
 
+        BoxCommentDto boxCommentDto = new BoxCommentDto(boxComment);
         boxCommentRepository.delete(boxComment);
 
-        return boxComment;
+        return boxCommentDto;
     }
 
 }

@@ -3,6 +3,7 @@ package at.technikum.studybuddy.service;
 import at.technikum.studybuddy.dto.Registration;
 import at.technikum.studybuddy.dto.UserDto;
 import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
+import at.technikum.studybuddy.dto.UserDtoPublicInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
@@ -32,6 +33,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // ML2 tested
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> readAll(){
         return this.userRepository.findAll();
@@ -43,6 +45,7 @@ public class UserService {
         return user;
     }
 
+    // ML2 not working
     // todo only admin can change admin attribute
     // todo change password: sollte man wsl extra machen
     @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
@@ -60,11 +63,14 @@ public class UserService {
         return user;
     }
 
+    // ML2 tested
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User delete(Long id){
+    public UserDto delete(Long id){
         User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+
+        UserDtoPublicInfo userDto= new UserDtoPublicInfo(user);
         this.userRepository.deleteById(id);
-        return user;
+        return userDto;
     }
 
     public void createUserAdminIfNecessary() {
@@ -95,6 +101,8 @@ public class UserService {
         normal.setFirstname("ER");
         userRepository.save(normal);
     }
+
+    // ML2 tested
     public User register(Registration registration) {
         userRepository.findByUsername(registration.getUsername())
                 .ifPresent(user -> {throw new EntityAlreadyExistsException();});

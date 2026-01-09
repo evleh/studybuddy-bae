@@ -43,7 +43,7 @@ public class CardController {
 
     @DeleteMapping("/{id}")
     public CardDto delete(@PathVariable Long id){
-        return new CardDto(this.cardService.delete(id));
+        return this.cardService.delete(id);
     }
 
 

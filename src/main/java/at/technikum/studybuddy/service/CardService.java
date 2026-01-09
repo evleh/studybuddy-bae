@@ -57,6 +57,7 @@ public class CardService {
         return this.cardRepository.save(card);
     }
 
+    // ML2: basics tested
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Card update(Long id, CardDto cardDto){
         // Eventuell InputMismatchException wenn id-Paramater und card-id nicht übereinstimmen
@@ -77,16 +78,18 @@ public class CardService {
         return cardRepository.save(card);
     }
 
+    //ML2: tested owner works
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public Card delete(Long id) throws ResourceNotFoundException{
+    public CardDto delete(Long id) throws ResourceNotFoundException{
         Card card = this.cardRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 
         // authorization: only for parent box owner = self
         if(!isBoxOwnerPrincipalOrAdmin(card)){
             throw new PermissionDeniedException();
         }
+        CardDto cardDto = new CardDto(card);
         this.cardRepository.deleteById(id);
-        return card;
+        return cardDto;
     }
 
     public boolean isBoxOwnerPrincipalOrAdmin(CardDto cardDto){

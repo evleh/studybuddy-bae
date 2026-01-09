@@ -32,6 +32,7 @@ public class BoxService {
         return boxRepository.findAll();
     }
 
+    // ML2: tested
     @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getPublic() || authentication.principal.id.equals(returnObject.owner.getId())")
     public Box read(Long id) {
         return boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
@@ -42,6 +43,7 @@ public class BoxService {
     }
 
 
+    //ML2: tested
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Box create(BoxDto boxDto) {
         // todo remove ownerId from boxDto??
@@ -53,6 +55,7 @@ public class BoxService {
         return boxRepository.save(box);
     }
 
+    //ML2: tested
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Box update(Long id, BoxDto boxDto) {
         Box box = boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
@@ -69,20 +72,22 @@ public class BoxService {
     }
 
     // change to return dto, to (hopefully) avoid the org.hibernate.LazyInitializationException
+    // ML2: worked with owner, needs proper testing
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public Box delete(Long id) {
+    public BoxDto delete(Long id) {
         Box box = boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userPrincipal.getId();
 
         // can't use PostAuthorize because returnObject is updated box i.e. changes are already saved when check happens
-        if(! (box.getOwner().getId().equals(userId) && box.getOwner().isAdmin())) {
+        if( !box.getOwner().getId().equals(userId) && !box.getOwner().isAdmin() ) {
             throw new PermissionDeniedException();
         }
 
+        BoxDto boxDto = new BoxDto(box);
         boxRepository.delete(box);
-        return box;
+        return boxDto;
     }
 
 }

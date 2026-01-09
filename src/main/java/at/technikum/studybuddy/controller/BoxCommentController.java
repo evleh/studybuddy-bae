@@ -43,7 +43,7 @@ public class BoxCommentController {
 
     @DeleteMapping("/{id}")
     public BoxCommentDto delete(@PathVariable Long id) {
-        return new BoxCommentDto(this.boxCommentService.delete(id));
+        return this.boxCommentService.delete(id);
     }
 
 }
