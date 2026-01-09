@@ -63,6 +63,7 @@ public class BoxCommentService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
+    //ML2: tested for owner
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public BoxComment update(Long id, BoxCommentDto boxCommentDto) {
         BoxComment boxComment = read(id);
