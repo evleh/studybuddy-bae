@@ -3,15 +3,14 @@ package at.technikum.studybuddy.service;
 import at.technikum.studybuddy.dto.Registration;
 import at.technikum.studybuddy.dto.UserDto;
 import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
+import at.technikum.studybuddy.dto.UserDtoPublicInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
 import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
-import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.security.UserPrincipal;
-import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,40 +33,44 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // ML2 tested
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> readAll(){
         return this.userRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && #id == authentication.principal.id)")
-    public UserDto read(long id) {
-        Optional<User> userOptional = this.userRepository.findById(id);
-        if(userOptional.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
-
-        return new UserDtoPrivilegedInfo(userOptional.get());
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
+    public User read(Long id) {
+        User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        return user;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && #id == authentication.principal.id)")
-    public User update(long id, User user) {
-        Optional<User> findUser = userRepository.findById(id); // save info if user already exists
-        if(findUser.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
+    // ML2 not working
+    // todo only admin can change admin attribute
+    // todo change password: sollte man wsl extra machen
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
+    public User update(Long id, UserDtoPrivilegedInfo userDto) {
+        User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new); // save info if user already exists
+
+        user.setFoto(userDto.getFoto());
+        user.setEmail(userDto.getEmail());
+        user.setGender(userDto.getGender());
+        user.setFirstname(userDto.getFirstname());
+        user.setLastname(userDto.getLastname());
+        user.setCountry(userDto.getCountry());
 
         this.userRepository.save(user);
-        return findUser.get();
+        return user;
     }
 
+    // ML2 tested
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User delete(long id){
-        Optional<User> user = this.userRepository.findById(id);
-        if(user.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
+    public UserDto delete(Long id){
+        User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+
+        UserDtoPublicInfo userDto= new UserDtoPublicInfo(user);
         this.userRepository.deleteById(id);
-        return user.get();
+        return userDto;
     }
 
     public void createUserAdminIfNecessary() {
@@ -98,6 +101,8 @@ public class UserService {
         normal.setFirstname("ER");
         userRepository.save(normal);
     }
+
+    // ML2 tested
     public User register(Registration registration) {
         userRepository.findByUsername(registration.getUsername())
                 .ifPresent(user -> {throw new EntityAlreadyExistsException();});
@@ -118,22 +123,6 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public boolean isCurrentUserRegistered(){
-        return org.springframework.security.authentication.AnonymousAuthenticationToken.class !=
-                        SecurityContextHolder.getContext().getAuthentication().getClass();
-
-    }
-
-    public boolean isCurrentUserAdmin() {
-        try {
-            String userName = this.getUserNameOfCurrentUser();
-            return this.getByUsername(userName).isAdmin();
-        } catch(RuntimeException e) {
-            System.err.format("%s", e.toString());
-            return false;
-        }
-    }
-
     public String getUserNameOfCurrentUser() {
         try {
             return SecurityContextHolder.getContext().getAuthentication().getName();
@@ -143,17 +132,4 @@ public class UserService {
         }
 
     }
-
-    public boolean isOwner(Long id){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPricipal = (UserPrincipal) auth.getPrincipal();
-        Long userId = userPricipal.getId();
-        return userId.equals(id);
-    }
-
-    public boolean isAdmin(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-    }
-
 }

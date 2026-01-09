@@ -19,7 +19,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private boolean isAdmin;
     private String username;
     private URL foto;
@@ -53,7 +53,7 @@ public class User {
     }
 
     // full constructor
-    public User(long id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant updatedAt) {
+    public User(Long id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant updatedAt) {
         this.id = id;
         this.isAdmin = isAdmin;
         this.username = username;
@@ -68,7 +68,6 @@ public class User {
         this.createdAt = created;
         this.updatedAt = updatedAt;
     }
-
     public String getRole() {
         if (this.isAdmin) {
             return RoleTypes.ADMIN;
@@ -78,7 +77,7 @@ public class User {
     }
 
     // getters
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -132,7 +131,7 @@ public class User {
 
     //setters
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

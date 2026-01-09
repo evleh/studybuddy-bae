@@ -7,9 +7,7 @@ import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxRepository;
 import at.technikum.studybuddy.repository.UserRepository;
-import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.security.UserPrincipal;
-import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,12 +21,10 @@ public class BoxService {
 
     private final BoxRepository boxRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
 
-    public BoxService(BoxRepository boxRepository, UserRepository userRepository, UserService userService) {
+    public BoxService(BoxRepository boxRepository, UserRepository userRepository) {
         this.boxRepository = boxRepository;
         this.userRepository = userRepository;
-        this.userService = userService;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -36,11 +32,18 @@ public class BoxService {
         return boxRepository.findAll();
     }
 
-    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getPublic() || authentication.principal.id == returnObject.owner.getId()")
+    // ML2: tested
+    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getPublic() || authentication.principal.id.equals(returnObject.owner.getId())")
     public Box read(Long id) {
         return boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
+    public Box readInternal(Long id) {
+        return boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    }
+
+
+    //ML2: tested
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Box create(BoxDto boxDto) {
         // todo remove ownerId from boxDto??
@@ -52,6 +55,7 @@ public class BoxService {
         return boxRepository.save(box);
     }
 
+    //ML2: tested
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Box update(Long id, BoxDto boxDto) {
         Box box = boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
@@ -60,7 +64,7 @@ public class BoxService {
         Long userId = userPrincipal.getId();
 
         // can't use PostAuthorize because returnObject is updated box i.e. changes are already saved when check happens
-        if(box.getOwner().getId() != userId) {
+        if(!box.getOwner().getId().equals(userId)) {
             throw new PermissionDeniedException();
         }
 
@@ -68,6 +72,7 @@ public class BoxService {
     }
 
     // change to return dto, to (hopefully) avoid the org.hibernate.LazyInitializationException
+    // ML2: worked with owner, needs proper testing
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public BoxDto delete(Long id) {
         Box box = boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
@@ -76,7 +81,7 @@ public class BoxService {
         Long userId = userPrincipal.getId();
 
         // can't use PostAuthorize because returnObject is updated box i.e. changes are already saved when check happens
-        if(box.getOwner().getId() != userId) {
+        if( !box.getOwner().getId().equals(userId) && !box.getOwner().isAdmin() ) {
             throw new PermissionDeniedException();
         }
 
@@ -85,13 +90,4 @@ public class BoxService {
         return boxDto;
     }
 
-    public boolean isPublicOrOwner(Box box, String username) {
-        return box.getPublic() || box.getOwner().getUsername().equals(username);
-    }
-
-    public boolean isPublicOrOwnerIsCurrent(Box box) {
-        return box.getPublic() || box.getOwner().getUsername().equals(
-                userService.getUserNameOfCurrentUser()
-        );
-    }
 }
