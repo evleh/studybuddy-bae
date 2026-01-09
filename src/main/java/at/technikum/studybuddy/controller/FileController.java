@@ -2,6 +2,7 @@ package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.security.RoleTypes;
 import io.minio.*;
+import io.minio.messages.Item;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -11,8 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import io.minio.messages.Item;
-import io.minio.Result;
 
 import java.io.InputStream;
 import java.net.URLConnection;
@@ -31,8 +30,8 @@ public class FileController {
         this.minioClient = minioClient;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) {
         try {
             String originalFilename = file.getOriginalFilename();
             String fileName = UUID.randomUUID().toString();
