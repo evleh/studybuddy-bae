@@ -33,22 +33,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // ML2 tested
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> readAll(){
         return this.userRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
     public User read(Long id) {
         User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         return user;
     }
 
-    // ML2 not working
-    // todo only admin can change admin attribute
-    // todo change password: sollte man wsl extra machen
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
+
     public User update(Long id, UserDtoPrivilegedInfo userDto) {
         User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new); // save info if user already exists
 
@@ -63,8 +57,6 @@ public class UserService {
         return user;
     }
 
-    // ML2 tested
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserDto delete(Long id){
         User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 
@@ -102,7 +94,6 @@ public class UserService {
         userRepository.save(normal);
     }
 
-    // ML2 tested
     public User register(Registration registration) {
         userRepository.findByUsername(registration.getUsername())
                 .ifPresent(user -> {throw new EntityAlreadyExistsException();});
