@@ -33,6 +33,8 @@ public class CardService {
         return this.cardRepository.findAll();
     }
 
+    //getAll ändern 
+
     @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId().equals(authentication.principal.id)")
     public Card read(Long id) throws ResourceNotFoundException{
         Optional<Card> cardOptional = this.cardRepository.findById(id);
@@ -58,8 +60,8 @@ public class CardService {
     }
 
     // ML2: basics tested
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public Card update(Long id, CardDto cardDto){
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')") // gehört in controller
+    public Card update(Long id, CardDto cardDto){ // securityContextHolder mitgebn -> testen
         // Eventuell InputMismatchException wenn id-Paramater und card-id nicht übereinstimmen
         // authorization: only for parent box owner = self
         if(!isBoxOwnerPrincipalOrAdmin(cardDto)){
