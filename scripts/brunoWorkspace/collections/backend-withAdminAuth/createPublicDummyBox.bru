@@ -1,0 +1,30 @@
+meta {
+  name: createPublicDummyBox
+  type: http
+  seq: 9
+}
+
+post {
+  url: http://localhost:8080/boxes
+  body: json
+  auth: inherit
+}
+
+headers {
+  accept: */*
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "dummyTitle",
+    "description": "dummyDescription",
+    "ownerId": 1,
+    "public": true
+  }
+}
+
+settings {
+  encodeUrl: false
+  timeout: 0
+}

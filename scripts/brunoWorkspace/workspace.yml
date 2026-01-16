@@ -1,0 +1,16 @@
+opencollection: 1.0.0
+info:
+  name: "brunoWorkspace"
+  type: workspace
+
+collections:
+  - name: "backend-checks"
+    path: "collections/backend-checks"
+  - name: "backend-withAdminAuth"
+    path: "collections/backend-withAdminAuth"
+
+specs:
+
+docs: ''
+
+activeEnvironmentUid: k8gpmd000000000000000

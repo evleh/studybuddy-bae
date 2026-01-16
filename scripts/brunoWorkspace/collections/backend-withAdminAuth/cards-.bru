@@ -1,0 +1,20 @@
+meta {
+  name: cards/
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8080/cards
+  body: none
+  auth: inherit
+}
+
+headers {
+  accept: */*
+}
+
+settings {
+  encodeUrl: false
+  timeout: 0
+}

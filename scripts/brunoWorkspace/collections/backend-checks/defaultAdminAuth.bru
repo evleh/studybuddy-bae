@@ -1,0 +1,27 @@
+meta {
+  name: defaultAdminAuth
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/auth/token
+  body: json
+  auth: inherit
+}
+
+headers {
+  accept: */*
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "username": "admin",
+    "password": "admin"
+  }
+}
+
+settings {
+  encodeUrl: false
+}

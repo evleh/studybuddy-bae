@@ -1,0 +1,19 @@
+meta {
+  name: public/boxes
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:8080/public/boxes
+  body: none
+  auth: inherit
+}
+
+headers {
+  accept: */*
+}
+
+settings {
+  encodeUrl: false
+}
