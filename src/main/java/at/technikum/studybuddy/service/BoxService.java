@@ -90,4 +90,8 @@ public class BoxService {
         return boxDto;
     }
 
+    public List<Box> readPublicBoxes() {
+        return this.boxRepository.findBoxesByIsPublicIsTrue();
+    }
+
 }
