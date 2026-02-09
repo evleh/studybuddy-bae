@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && principal.id.equals(#id))")
     public UserDto read(@PathVariable Long id) {
         return new UserDtoPrivilegedInfo(this.userService.read(id));
     }
@@ -47,7 +47,7 @@ public class UserController {
     // todo/to define only admin can change admin attribute
     // todo/to define change password
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && principal.id.equals(#id))")
     public UserDto update(
             @PathVariable Long id,
             @Valid @RequestBody UserDtoPrivilegedInfo userDto

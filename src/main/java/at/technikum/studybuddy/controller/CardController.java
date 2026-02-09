@@ -29,7 +29,7 @@ public class CardController {
 
     // todo PostAuthorize
     @GetMapping("/{id}")
-    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId().equals(authentication.principal.id)")
+    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId().equals(principal.id)")
     public CardDto read(@PathVariable Long id){
         return new CardDto(this.cardService.read(id));
     }
