@@ -13,7 +13,7 @@ public abstract class UserDto {
      */
     private Long id;
     private String username;
-    private URL foto;
+    private String foto;
 
 
     UserDto() {}

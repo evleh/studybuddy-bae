@@ -7,18 +7,13 @@ import at.technikum.studybuddy.dto.UserDtoPublicInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
-import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
-import at.technikum.studybuddy.security.UserPrincipal;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {

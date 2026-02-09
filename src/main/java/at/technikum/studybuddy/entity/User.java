@@ -22,7 +22,7 @@ public class User {
     private Long id;
     private boolean isAdmin;
     private String username;
-    private URL foto;
+    private String foto;
     @Email
     private String email;
     @NotBlank
