@@ -60,7 +60,7 @@ public class Box {
 
     public Box updateFromBoxDto(BoxDto boxDto) {
         title = boxDto.getTitle()==null?title:boxDto.getTitle();
-        description = boxDto.getDescription()==null?description:boxDto.getTitle();
+        description = boxDto.getDescription()==null?description:boxDto.getDescription();
         isPublic = boxDto.getPublic()==null?isPublic:boxDto.getPublic();
         return this;
     }
