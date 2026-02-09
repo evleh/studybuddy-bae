@@ -94,4 +94,11 @@ public class BoxService {
         return this.boxRepository.findBoxesByIsPublicIsTrue();
     }
 
+    public List<Box> readBoxesOfUser(Long userId) {
+
+        return this.boxRepository.findBoxesByOwner(
+                this.userRepository.findById(userId).orElseThrow()
+        );
+    }
+
 }
