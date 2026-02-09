@@ -40,11 +40,11 @@ public abstract class UserDto {
         this.username = username;
     }
 
-    public URL getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(URL foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 

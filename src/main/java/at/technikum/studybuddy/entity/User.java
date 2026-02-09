@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.net.URL;
 import java.time.Instant;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class User {
     }
 
     // full constructor
-    public User(Long id, boolean isAdmin, String username, URL foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant updatedAt) {
+    public User(Long id, boolean isAdmin, String username, String foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant updatedAt) {
         this.id = id;
         this.isAdmin = isAdmin;
         this.username = username;
@@ -89,7 +88,7 @@ public class User {
         return username;
     }
 
-    public URL getFoto() {
+    public String getFoto() {
         return foto;
     }
 
@@ -143,7 +142,7 @@ public class User {
         this.username = username;
     }
 
-    public void setFoto(URL foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 
