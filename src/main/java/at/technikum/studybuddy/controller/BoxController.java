@@ -1,11 +1,14 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.BoxDto;
+import at.technikum.studybuddy.exceptions.PermissionDeniedException;
+import at.technikum.studybuddy.security.UserPrincipal;
 import at.technikum.studybuddy.service.BoxService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,20 +39,21 @@ public class BoxController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public BoxDto create(@Valid @RequestBody BoxDto  boxDto) {
-        return new BoxDto(this.boxService.create(boxDto));
+    public BoxDto create(@Valid @RequestBody BoxDto boxDto, @AuthenticationPrincipal UserPrincipal user) {
+        return new BoxDto(this.boxService.create(boxDto, user));
     }
 
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
+    @PreAuthorize("hasRole('ADMIN') || (hasRole('REGISTERED') && #boxDto.ownerId.equals(principal.id))")
     public BoxDto update(@PathVariable Long id, @Valid @RequestBody BoxDto boxDto) {
+
         return new BoxDto(boxService.update(id,boxDto));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public BoxDto delete(@PathVariable Long id) {
-        return boxService.delete(id);
+    public BoxDto delete(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal user) {
+        return boxService.delete(id, user);
     }
 }

@@ -38,9 +38,9 @@ public class BoxService {
     }
 
 
-    public Box create(BoxDto boxDto) {
+    public Box create(BoxDto boxDto, UserPrincipal user) {
         // todo remove ownerId from boxDto??
-        Optional<User> owner = this.userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Optional<User> owner = this.userRepository.findByUsername(user.getUsername());
         if(owner.isEmpty()){
             throw new ResourceNotFoundException();
         }
@@ -48,31 +48,19 @@ public class BoxService {
         return boxRepository.save(box);
     }
 
-    //ML2: tested
     public Box update(Long id, BoxDto boxDto) {
         Box box = boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
-
-        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = userPrincipal.getId();
-
-        // can't use PostAuthorize because returnObject is updated box i.e. changes are already saved when check happens
-        if(!box.getOwner().getId().equals(userId)) {
-            throw new PermissionDeniedException();
-        }
 
         return boxRepository.save(box.updateFromBoxDto(boxDto));
     }
 
     // change to return dto, to (hopefully) avoid the org.hibernate.LazyInitializationException
-    // ML2: worked with owner, needs proper testing
-    public BoxDto delete(Long id) {
+    public BoxDto delete(Long id, UserPrincipal user) {
         Box box = boxRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 
-        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = userPrincipal.getId();
+        Long userId = user.getId();
 
-        // can't use PostAuthorize because returnObject is updated box i.e. changes are already saved when check happens
-        if( !box.getOwner().getId().equals(userId) && !box.getOwner().isAdmin() ) {
+        if(!box.getOwner().getId().equals(userId) || !box.getOwner().isAdmin() ) {
             throw new PermissionDeniedException();
         }
 
