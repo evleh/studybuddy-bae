@@ -46,6 +46,7 @@ public class UserDtoPrivilegedInfo extends UserDto {
         if(user.getBoxComments() != null){
             this.boxCommentIds = user.getBoxComments().stream().map(BoxComment::getId).toList();
         }
+        this.isAdmin = user.isAdmin();
     }
     public UserDto downCastToAbstract() {
         /*
