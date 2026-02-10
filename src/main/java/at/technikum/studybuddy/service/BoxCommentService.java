@@ -31,46 +31,53 @@ public class BoxCommentService {
         this.userRepository = userRepository;
     }
 
-    public BoxComment create(BoxCommentDto boxCommentDto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth.getPrincipal() instanceof UserPrincipal user)) {
-            throw new PermissionDeniedException();
-        }
+    public BoxComment create(BoxCommentDto boxCommentDto, UserPrincipal user) {
 
-        User author = userRepository.findByUsername(auth.getName())
+        User author = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(ResourceNotFoundException::new);
 
         Box box = boxRepository.findById(boxCommentDto.getBoxId())
                 .orElseThrow(ResourceNotFoundException::new);
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
 
-        if (!box.getPublic() || !box.getOwner().getId().equals(user.getId())) {
+        if (box.getPublic() || box.getOwner().getId().equals(user.getId()) || isAdmin) {
+            BoxComment comment = new BoxComment(box, author, boxCommentDto.getText());
+            return boxCommentRepository.save(comment);
+        } else {
             throw new PermissionDeniedException();
         }
 
-        BoxComment comment = new BoxComment(box, author, boxCommentDto.getText());
-        return boxCommentRepository.save(comment);
     }
 
     public List<BoxComment> readAll() {
         return this.boxCommentRepository.findAll();
     }
 
-    public BoxComment read(Long id) {
-        return this.boxCommentRepository.findById(id)
+    public BoxComment read(Long id, UserPrincipal user) {
+        BoxComment boxComment= this.boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
+
+        Long authorId = boxComment.getAuthor().getId();
+        boolean isPublic = boxComment.getBox().getPublic();
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
+        if(isAdmin || isPublic || user.getId().equals(authorId)){
+            return boxComment;
+        } else {
+            throw new PermissionDeniedException();
+        }
     }
 
     //ML2: tested for owner
-    public BoxComment update(Long id, BoxCommentDto boxCommentDto) {
-        BoxComment boxComment = read(id);
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth.getPrincipal() instanceof UserPrincipal user)) {
-            throw new PermissionDeniedException();
-        }
+    public BoxComment update(Long id, BoxCommentDto boxCommentDto, UserPrincipal user) {
+        BoxComment boxComment = read(id, user);
 
         User author = boxComment.getAuthor();
-        if ( !author.getId().equals(user.getId()) && !author.isAdmin() )  {
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
+
+        if (!author.getId().equals(user.getId()) && !isAdmin )  {
             throw new PermissionDeniedException();
         }
 
