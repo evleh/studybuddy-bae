@@ -8,6 +8,7 @@ import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserDto> readAll() {
         return this.userService.readAll().stream()
                 .map(UserDtoPrivilegedInfo::new)
@@ -31,6 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && principal.id.equals(#id))")
     public UserDto read(@PathVariable Long id) {
         return new UserDtoPrivilegedInfo(this.userService.read(id));
     }
@@ -41,7 +44,10 @@ public class UserController {
         return new UserDtoPrivilegedInfo(this.userService.register(registration));
     }
 
+    // todo/to define only admin can change admin attribute
+    // todo/to define change password
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && principal.id.equals(#id))")
     public UserDto update(
             @PathVariable Long id,
             @Valid @RequestBody UserDtoPrivilegedInfo userDto
@@ -50,6 +56,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserDto delete (@PathVariable Long id){
         return userService.delete(id);
     }

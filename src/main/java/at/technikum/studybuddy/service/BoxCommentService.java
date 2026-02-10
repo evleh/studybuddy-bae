@@ -31,7 +31,6 @@ public class BoxCommentService {
         this.userRepository = userRepository;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public BoxComment create(BoxCommentDto boxCommentDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth.getPrincipal() instanceof UserPrincipal user)) {
@@ -52,19 +51,16 @@ public class BoxCommentService {
         return boxCommentRepository.save(comment);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<BoxComment> readAll() {
         return this.boxCommentRepository.findAll();
     }
 
-    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getAuthor().getId().equals(authentication.principal.id)")
     public BoxComment read(Long id) {
         return this.boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
     //ML2: tested for owner
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public BoxComment update(Long id, BoxCommentDto boxCommentDto) {
         BoxComment boxComment = read(id);
 
@@ -82,7 +78,6 @@ public class BoxCommentService {
         return boxCommentRepository.save(boxComment);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BoxCommentDto delete(Long id) {
         BoxComment boxComment = boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
