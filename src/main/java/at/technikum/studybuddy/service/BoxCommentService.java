@@ -69,7 +69,6 @@ public class BoxCommentService {
         }
     }
 
-    //ML2: tested for owner
     public BoxComment update(Long id, BoxCommentDto boxCommentDto, UserPrincipal user) {
         BoxComment boxComment = read(id, user);
 
