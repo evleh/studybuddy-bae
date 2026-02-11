@@ -1,7 +1,9 @@
 package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.CardDto;
+import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.Card;
+import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.CardRepository;
@@ -17,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -107,6 +110,46 @@ class CardServiceTest {
         assertThrows(ResourceNotFoundException.class,() -> {
             cardService.update(1L,cardDtoToUpdate,requester);
         });
+    }
+
+    @Test
+    void updateCardWithOnlyTitleDtoAndRequesterBeingCardOwnerCallsSaveMethodOnce() {
+        var userId = 177L;
+        var boxId = 31L;
+        var cardId = 5L;
+
+        var requester = new UserPrincipal(userId,"testRequester","",
+                List.of(new SimpleGrantedAuthority(RoleTypes.REGISTERED)));
+        // arrange box and card initial
+        var box = new Box();
+        box.setId(boxId);
+        box.setPublic(true);
+        var owner = new User();
+        owner.setId(userId);
+        box.setOwner(owner);
+        var card = new Card();
+        card.setId(cardId);
+        card.setBox(box);
+        String preChangeAnswer = "Old Answer";
+        String postChangeAnswer = "New Answer"; // never checked, not sure if reasonable to try. research needed.
+        card.setAnswer(preChangeAnswer);
+
+        // instruct the mock
+        Mockito.when(cardRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(card));
+        Mockito.when(cardRepository.save(Mockito.any(Card.class)))
+                .thenReturn(card);
+
+        // arrange dto for update
+        var updateCardDto = new CardDto();
+        updateCardDto.setAnswer(postChangeAnswer);
+
+        // act
+        var updatedCard = cardService.update(cardId,updateCardDto,requester);
+
+        // assert
+        Mockito.verify(cardRepository, Mockito.times(1)).save(Mockito.any(Card.class));
+
     }
 
 }
