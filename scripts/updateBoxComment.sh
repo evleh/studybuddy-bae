@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# admin changing user comment
+curl -X 'PUT' \
+  'http://localhost:8080/boxcomments/7' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIzNTc5NzMsInVzZXJJZCI6MSwidXNlck5hbWUiOiJhZG1pbiIsImlzcyI6InN0dWR5YnVkZHktYmFlIiwiaWF0IjoxNzcwNjI5OTczfQ.WO0evQKs2rqt0fGMg8284XCQXxvoMTlJUGJNNKzIflk' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 7,
+  "text": "try changing a text",
+  "boxId": 0,
+  "authorId": 0,
+  "visible": false
+}'
+
+# admin changing own comment
+curl -X 'PUT' \
+  'http://localhost:8080/boxcomments/2' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIzNTc5NzMsInVzZXJJZCI6MSwidXNlck5hbWUiOiJhZG1pbiIsImlzcyI6InN0dWR5YnVkZHktYmFlIiwiaWF0IjoxNzcwNjI5OTczfQ.WO0evQKs2rqt0fGMg8284XCQXxvoMTlJUGJNNKzIflk' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 2,
+  "text": "try changing a text",
+  "boxId": 0,
+  "authorId": 0,
+  "visible": false
+}'
+
+# user changing own comment
+curl -X 'PUT' \
+  'http://localhost:8080/boxcomments/6' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIzNjE3NTAsInVzZXJJZCI6MiwidXNlck5hbWUiOiJub3JtYWwiLCJpc3MiOiJzdHVkeWJ1ZGR5LWJhZSIsImlhdCI6MTc3MDYzMzc1MH0.9mHsbX_wIPk761Qw6MYT6SD14i76clM1P-kNzMNRjJ8' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 6,
+  "text": "try changing a text",
+  "boxId": 0,
+  "authorId": 0,
+  "visible": false
+}'
+
+# user changing admin comment
+curl -X 'PUT' \
+  'http://localhost:8080/boxcomments/1' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIzNjE3NTAsInVzZXJJZCI6MiwidXNlck5hbWUiOiJub3JtYWwiLCJpc3MiOiJzdHVkeWJ1ZGR5LWJhZSIsImlhdCI6MTc3MDYzMzc1MH0.9mHsbX_wIPk761Qw6MYT6SD14i76clM1P-kNzMNRjJ8' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 1,
+  "text": "try changing a text",
+  "boxId": 0,
+  "authorId": 0,
+  "visible": false
+}'
