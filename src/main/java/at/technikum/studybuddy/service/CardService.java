@@ -28,24 +28,17 @@ public class CardService {
         this.boxService = boxService;
     }
 
-    public List<Card> readAll(UserPrincipal requestPrincipal) {
-
-        boolean requesterIsAdmin = requestPrincipal.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        if (requesterIsAdmin) {
+    public List<Card> readAll(UserPrincipal requester) {
+         if (requester.isStudyBuddyAdmin()) {
             return this.cardRepository.findAll();
         } else {
             return new ArrayList<Card>();
         }
-
     }
 
     public Card read(Long id, UserPrincipal requester) throws ResourceNotFoundException{
-        // refactor this: @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId().equals(principal.id)")
 
-        boolean requesterIsAdmin = requester.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean requesterIsAdmin = requester.isStudyBuddyAdmin();
 
         // need to know if the card exists even in the admin case, branch further down
         Optional<Card> cardOptional;
@@ -114,6 +107,8 @@ public class CardService {
         if (cardDto.getAnswer() != null) cardAsExists.setAnswer(cardDto.getAnswer());
         // todo: media not yet in dto.
         // cardAsExists.setMedia(cardDto.getMedia());
+
+        // additional values in the dto put into the put request are ignored (for example: id, if it were set)
 
         return cardRepository.save(cardAsExists);
     }
