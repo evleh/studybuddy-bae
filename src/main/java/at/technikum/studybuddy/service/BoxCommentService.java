@@ -40,7 +40,7 @@ public class BoxCommentService {
                 .orElseThrow(ResourceNotFoundException::new);
 
         if (box.getPublic() || box.getOwner().getId().equals(user.getId()) || author.isAdmin()) {
-            BoxComment comment = new BoxComment(box, author, boxCommentDto.getText(), true);
+            BoxComment comment = new BoxComment(box, author, boxCommentDto.getText());
             return boxCommentRepository.save(comment);
         } else {
             throw new PermissionDeniedException();
@@ -82,7 +82,7 @@ public class BoxCommentService {
         }
 
         // only visibility can be changed for box comments
-        boxComment.setVisible(boxCommentDto.isVisible());
+        boxComment.setText(boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
     }
 

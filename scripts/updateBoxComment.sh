@@ -8,10 +8,9 @@ curl -X 'PUT' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": 7,
-  "text": "try changing a text",
+  "text": "admin changing user comment",
   "boxId": 0,
-  "authorId": 0,
-  "visible": false
+  "authorId": 0
 }'
 
 # admin changing own comment
@@ -22,10 +21,9 @@ curl -X 'PUT' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": 2,
-  "text": "try changing a text",
+  "text": "admin changing own comment",
   "boxId": 0,
-  "authorId": 0,
-  "visible": false
+  "authorId": 0
 }'
 
 # user changing own comment
@@ -36,10 +34,9 @@ curl -X 'PUT' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": 6,
-  "text": "try changing a text",
+  "text": "user changing own comment",
   "boxId": 0,
-  "authorId": 0,
-  "visible": false
+  "authorId": 0
 }'
 
 # user changing admin comment
@@ -50,8 +47,7 @@ curl -X 'PUT' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": 1,
-  "text": "try changing a text",
+  "text": "user changing admin comment",
   "boxId": 0,
-  "authorId": 0,
-  "visible": false
+  "authorId": 0
 }'
