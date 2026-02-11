@@ -8,12 +8,11 @@ import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.CardRepository;
 import at.technikum.studybuddy.security.UserPrincipal;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +27,17 @@ public class CardService {
         this.boxService = boxService;
     }
 
-    public List<Card> readAll(){
-        return this.cardRepository.findAll();
+    public List<Card> readAll(UserPrincipal requestPrincipal) {
+
+        boolean requesterIsAdmin = requestPrincipal.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (requesterIsAdmin) {
+            return this.cardRepository.findAll();
+        } else {
+            return new ArrayList<Card>();
+        }
+
     }
 
     public Card read(Long id) throws ResourceNotFoundException{

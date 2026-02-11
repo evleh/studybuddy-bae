@@ -2,11 +2,13 @@ package at.technikum.studybuddy.controller;
 
 
 import at.technikum.studybuddy.dto.CardDto;
+import at.technikum.studybuddy.security.UserPrincipal;
 import at.technikum.studybuddy.service.CardService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +25,8 @@ public class CardController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<CardDto> readAll(){
-        return this.cardService.readAll().stream().map(CardDto::new).toList();
+    public List<CardDto> readAll(@AuthenticationPrincipal UserPrincipal requester){
+        return this.cardService.readAll(requester).stream().map(CardDto::new).toList();
     }
 
     // todo PostAuthorize
