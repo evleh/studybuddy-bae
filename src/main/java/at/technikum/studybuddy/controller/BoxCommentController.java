@@ -29,7 +29,7 @@ public class BoxCommentController {
         return this.boxCommentService.readAll().stream().map(BoxCommentDto::new).toList();
     }
 
-    @GetMapping("/{id}") // todo fix authentication
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public BoxCommentDto read(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal user) {
         return new BoxCommentDto(this.boxCommentService.read(id, user));
@@ -52,6 +52,7 @@ public class BoxCommentController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BoxCommentDto delete(@PathVariable Long id) {
+        // only admin is allowed to delete to prevent deletion malicious comments by trolls
         return this.boxCommentService.delete(id);
     }
 

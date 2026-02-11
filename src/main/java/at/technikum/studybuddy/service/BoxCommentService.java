@@ -38,11 +38,9 @@ public class BoxCommentService {
 
         Box box = boxRepository.findById(boxCommentDto.getBoxId())
                 .orElseThrow(ResourceNotFoundException::new);
-        boolean isAdmin = user.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
 
-        if (box.getPublic() || box.getOwner().getId().equals(user.getId()) || isAdmin) {
-            BoxComment comment = new BoxComment(box, author, boxCommentDto.getText(), boxCommentDto.isVisible());
+        if (box.getPublic() || box.getOwner().getId().equals(user.getId()) || author.isAdmin()) {
+            BoxComment comment = new BoxComment(box, author, boxCommentDto.getText(), true);
             return boxCommentRepository.save(comment);
         } else {
             throw new PermissionDeniedException();
@@ -55,11 +53,12 @@ public class BoxCommentService {
     }
 
     public BoxComment read(Long id, UserPrincipal user) {
-        BoxComment boxComment= this.boxCommentRepository.findById(id)
+        BoxComment boxComment = this.boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
 
         Long authorId = boxComment.getAuthor().getId();
         boolean isPublic = boxComment.getBox().getPublic();
+        // extract from UserPrincipal because user and author are not necessarily the same person
         boolean isAdmin = user.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
         if(isAdmin || isPublic || user.getId().equals(authorId)){
@@ -73,6 +72,8 @@ public class BoxCommentService {
         BoxComment boxComment = read(id, user);
 
         User author = boxComment.getAuthor();
+
+        // extract from UserPrincipal because user and author are not necessarily the same person
         boolean isAdmin = user.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
 
@@ -80,7 +81,8 @@ public class BoxCommentService {
             throw new PermissionDeniedException();
         }
 
-        boxComment.setText(boxCommentDto.getText());
+        // only visibility can be changed for box comments
+        boxComment.setVisible(boxCommentDto.isVisible());
         return boxCommentRepository.save(boxComment);
     }
 
