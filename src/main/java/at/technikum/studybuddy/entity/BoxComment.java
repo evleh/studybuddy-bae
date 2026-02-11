@@ -33,14 +33,17 @@ public class BoxComment {
     @NotBlank
     private String text;
 
+    private boolean isVisible;
+
     public BoxComment(){
 
     }
 
-    public BoxComment(Box box,  User user, String text){
+    public BoxComment(Box box, User user, String text, boolean isVisible){
         this.box = box;
         this.author = user;
         this.text = text;
+        this.isVisible = isVisible;
     }
 
     public Box getBox() {
@@ -89,6 +92,14 @@ public class BoxComment {
 
     public void setAuthor(User owner) {
         this.author = owner;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }
 

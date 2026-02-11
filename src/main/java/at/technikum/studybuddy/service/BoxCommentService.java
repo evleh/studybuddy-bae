@@ -42,7 +42,7 @@ public class BoxCommentService {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
 
         if (box.getPublic() || box.getOwner().getId().equals(user.getId()) || isAdmin) {
-            BoxComment comment = new BoxComment(box, author, boxCommentDto.getText());
+            BoxComment comment = new BoxComment(box, author, boxCommentDto.getText(), boxCommentDto.isVisible());
             return boxCommentRepository.save(comment);
         } else {
             throw new PermissionDeniedException();

@@ -17,6 +17,7 @@ public class BoxCommentDto {
 
     private Long boxId ;
     private Long authorId;
+    private boolean isVisible;
 
 
     BoxCommentDto() {
@@ -33,6 +34,8 @@ public class BoxCommentDto {
             if (boxComment.getAuthor() != null) {
                 this.authorId = boxComment.getAuthor().getId();
             }
+
+            this.isVisible = boxComment.isVisible();
         }
     }
 
@@ -66,5 +69,13 @@ public class BoxCommentDto {
 
     public void setAuthorId(Long authorId) {
         this.authorId = authorId;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }
