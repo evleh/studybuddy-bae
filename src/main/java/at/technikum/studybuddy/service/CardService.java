@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,12 +41,46 @@ public class CardService {
 
     }
 
-    public Card read(Long id) throws ResourceNotFoundException{
-        Optional<Card> cardOptional = this.cardRepository.findById(id);
-        if(cardOptional.isEmpty()){
-            throw new ResourceNotFoundException();
+    public Card read(Long id, UserPrincipal requester) throws ResourceNotFoundException{
+        // refactor this: @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId().equals(principal.id)")
+
+        boolean requesterIsAdmin = requester.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        // need to know if the card exists even in the admin case, branch further down
+        Optional<Card> cardOptional;
+
+        // note: its is a little a mystery for me ATM why one should expect that method here to throw that exception,
+        // but: oh well.
+        try {
+            cardOptional = this.cardRepository.findById(id);
+        } catch (ResourceNotFoundException ignored) {
+            cardOptional = Optional.empty();
         }
-        return cardOptional.get();
+
+        // only admins gets "not found" exception because otherwise
+        // possible that info about non-existence information leak already. o_o
+        if(cardOptional.isEmpty() ){
+            if (requesterIsAdmin) {
+                throw new ResourceNotFoundException();
+            } else {
+                throw new PermissionDeniedException();
+            }
+        }
+
+        // ressource was found.
+        if (requesterIsAdmin) {
+            return cardOptional.get();
+        } else {
+            boolean requesterIsOwner = Objects.equals(cardOptional.get().getBox().getOwner().getId(), requester.getId());
+            // box of card either public or belonging to requester => read allowed
+            if (requesterIsOwner || cardOptional.get().getBox().getPublic()) {
+                return cardOptional.get();
+            } else {
+                throw new PermissionDeniedException();
+            }
+        }
+
     }
 
     public Card create(CardDto cardDto){
@@ -63,23 +98,24 @@ public class CardService {
     }
 
     // ML2: basics tested
-    public Card update(Long id, CardDto cardDto){
-        // Eventuell InputMismatchException wenn id-Paramater und card-id nicht übereinstimmen
-        // authorization: only for parent box owner = self
-        if(!isBoxOwnerPrincipalOrAdmin(cardDto)){
+    public Card update(Long id, CardDto cardDto, UserPrincipal requester) {
+        // read card checks most permission conditions ...
+        Card cardAsExists = this.read(id,requester);
+
+        // ... but a problem remains: read is allowed for public boxes, but that does not allow updating for all.
+        var updateDenied = !requester.isStudyBuddyAdmin()
+                && !cardAsExists.getBox().getOwner().getId().equals(requester.getId());
+        if(updateDenied){
             throw new PermissionDeniedException();
         }
 
-        Optional<Card> cardOptional = this.cardRepository.findById(id);
-        if(cardOptional.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
+        // card only has three properties one is allowed to change by endpoint, actually.
+        if (cardDto.getQuestion() != null) cardAsExists.setQuestion(cardDto.getQuestion());
+        if (cardDto.getAnswer() != null) cardAsExists.setAnswer(cardDto.getAnswer());
+        // todo: media not yet in dto.
+        // cardAsExists.setMedia(cardDto.getMedia());
 
-        // todo: logic does not work !!!
-        Card card = read(id);
-        card.setQuestion(cardDto.getQuestion());
-        card.setAnswer(cardDto.getAnswer());
-        return cardRepository.save(card);
+        return cardRepository.save(cardAsExists);
     }
 
     //ML2: tested owner works

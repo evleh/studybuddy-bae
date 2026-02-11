@@ -29,11 +29,10 @@ public class CardController {
         return this.cardService.readAll(requester).stream().map(CardDto::new).toList();
     }
 
-    // todo PostAuthorize
     @GetMapping("/{id}")
-    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId().equals(principal.id)")
-    public CardDto read(@PathVariable Long id){
-        return new CardDto(this.cardService.read(id));
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
+    public CardDto read(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal requester){
+        return new CardDto(this.cardService.read(id, requester));
     }
 
     @PostMapping
@@ -43,11 +42,11 @@ public class CardController {
         return new CardDto(this.cardService.create(cardDto));
     }
 
-    // ToDo: Achtung hier nicht einfach übernehmen. In service wird save-methode aufgerufen.
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public CardDto update(@PathVariable Long id, @RequestBody @Valid CardDto cardDto){
-        return new CardDto(this.cardService.update(id, cardDto));
+    public CardDto update(@PathVariable Long id, @RequestBody @Valid CardDto cardDto,
+                          @AuthenticationPrincipal UserPrincipal requester){
+        return new CardDto(this.cardService.update(id, cardDto, requester));
     }
 
     @DeleteMapping("/{id}")
