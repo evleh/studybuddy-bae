@@ -22,7 +22,6 @@ public class CardService {
     private final BoxService boxService;
 
     public CardService(CardRepository cardRepository, BoxService boxService) {
-
         this.cardRepository = cardRepository;
         this.boxService = boxService;
     }
@@ -64,10 +63,9 @@ public class CardService {
                 throw new PermissionDeniedException();
             }
         }
-
     }
 
-    public Card create(CardDto cardDto){
+    public Card create(CardDto cardDto, UserPrincipal requester){
         // authorization: only for parent box owner = self
         if(!isBoxOwnerPrincipalOrAdmin(cardDto)){
             throw new PermissionDeniedException();
@@ -105,17 +103,18 @@ public class CardService {
     }
 
     //ML2: tested owner works
-    public CardDto delete(Long id) throws ResourceNotFoundException{
-        Card card = this.cardRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    public CardDto delete(Long id, UserPrincipal requester) throws ResourceNotFoundException {
+        Card card = this.read(id, requester);
 
-        // authorization: only for parent box owner = self
-        if(!isBoxOwnerPrincipalOrAdmin(card)){
+        if (card.getBox().getOwner().getId().equals(requester.getId()) || requester.isStudyBuddyAdmin()) {
+            CardDto cardDto = new CardDto(card); // create temp dto from card for return of deleted data
+            this.cardRepository.deleteById(id);
+            return cardDto;
+        } else {
             throw new PermissionDeniedException();
         }
-        CardDto cardDto = new CardDto(card);
-        this.cardRepository.deleteById(id);
-        return cardDto;
     }
+
 
     public boolean isBoxOwnerPrincipalOrAdmin(CardDto cardDto){
         Box parentBox = boxService.readInternal(cardDto.getBoxId());
@@ -128,7 +127,4 @@ public class CardService {
         return false;
     }
 
-    public boolean isBoxOwnerPrincipalOrAdmin(Card card){
-        return this.isBoxOwnerPrincipalOrAdmin(new CardDto(card));
-    }
 }
