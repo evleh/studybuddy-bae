@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(MockitoExtension.class)
 class CardServiceTest {
@@ -41,6 +42,10 @@ class CardServiceTest {
     private static @NonNull UserPrincipal getSimpleRegisteredPrincipal() {
         var authorities = List.of(new SimpleGrantedAuthority(RoleTypes.REGISTERED));
         return new UserPrincipal(17L,"testRequester","", authorities);
+    }
+    private static @NonNull UserPrincipal getSimpleRegisteredPrincipal(Long userId) {
+        var authorities = List.of(new SimpleGrantedAuthority(RoleTypes.REGISTERED));
+        return new UserPrincipal(userId,"testRequester"+userId.toString(),"", authorities);
     }
     private static @NonNull UserPrincipal getSimpleAdminPrincipal() {
         var authorities = List.of(new SimpleGrantedAuthority(RoleTypes.ADMIN));
@@ -152,7 +157,12 @@ class CardServiceTest {
         var updatedCard = cardService.update(cardId,updateCardDto,requester);
 
         // assert
-        Mockito.verify(cardRepository, Mockito.times(1)).save(Mockito.any(Card.class));
+        //Mockito.verify(cardRepository, Mockito.times(1)).save(Mockito.any(Card.class));
+
+        //Mockito.verify(cardRepository).save(card);
+        Mockito.verify(cardRepository).save(eq(card));
+
+        assertEquals(postChangeAnswer, card.getAnswer());
 
     }
 
@@ -210,4 +220,32 @@ class CardServiceTest {
         // assert
         Mockito.verify(cardRepository, Mockito.times(0)).deleteById(Mockito.anyLong());
     }
+
+    @Test
+    void userCanCreateCardForOwnedBox() {
+        // arrange
+        var userId = 123L;
+        var boxId = 17L;
+
+        var owner = new User(); owner.setId(userId);
+        var box = new Box(); box.setOwner(owner);
+
+        var cardDto = new CardDto(); cardDto.setBoxId(boxId);
+        cardDto.setAnswer("its a nonempty string");
+        cardDto.setQuestion("its another nonempty string");
+
+        UserPrincipal requester = getSimpleRegisteredPrincipal(userId);
+
+        Mockito.when(boxService.read(Mockito.anyLong())).thenReturn(box);
+
+        // act
+        this.cardService.create(cardDto,requester);
+
+        // assert
+        Mockito.verify(cardRepository, Mockito.times(1)).save(Mockito.any());
+
+
+
+    }
+
 }

@@ -69,7 +69,7 @@ public class CardService {
         try {
             Box boxForCard = this.boxService.read(boxIdForCard);
 
-            if (!boxForCard.getOwner().getId().equals(requester.getId()) && !requester.isStudyBuddyAdmin()) {
+            if (boxForCard.getOwner().getId().equals(requester.getId()) || requester.isStudyBuddyAdmin()) {
                 // do the thing
                 Card newCard = new Card();
                 newCard.setQuestion(cardDto.getQuestion());
