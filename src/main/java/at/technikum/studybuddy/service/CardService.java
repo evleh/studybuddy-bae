@@ -3,13 +3,10 @@ package at.technikum.studybuddy.service;
 import at.technikum.studybuddy.dto.CardDto;
 import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.Card;
-import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.CardRepository;
 import at.technikum.studybuddy.security.UserPrincipal;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,17 +63,30 @@ public class CardService {
     }
 
     public Card create(CardDto cardDto, UserPrincipal requester){
-        // authorization: only for parent box owner = self
-        if(!isBoxOwnerPrincipalOrAdmin(cardDto)){
-            throw new PermissionDeniedException();
+        Long boxIdForCard = cardDto.getBoxId();
+        if (boxIdForCard == 0) throw new PermissionDeniedException(); // even admin should not make boxless cards
+
+        try {
+            Box boxForCard = this.boxService.read(boxIdForCard);
+
+            if (!boxForCard.getOwner().getId().equals(requester.getId()) && !requester.isStudyBuddyAdmin()) {
+                // do the thing
+                Card newCard = new Card();
+                newCard.setQuestion(cardDto.getQuestion());
+                newCard.setAnswer(cardDto.getAnswer());
+                // todo: add media when media implemented
+                newCard.setBox(boxForCard);
+                return this.cardRepository.save(newCard);
+            } else {
+                throw new PermissionDeniedException();
+            }
+        } catch(ResourceNotFoundException e) {
+            if (requester.isStudyBuddyAdmin()) {
+                throw new ResourceNotFoundException();
+            } else {
+                throw new PermissionDeniedException();
+            }
         }
-
-        Card card = new Card();
-        card.setQuestion(cardDto.getQuestion());
-        card.setAnswer(cardDto.getAnswer());
-        card.setBox(boxService.read(cardDto.getBoxId()));
-
-        return this.cardRepository.save(card);
     }
 
     // ML2: basics tested
@@ -102,7 +112,6 @@ public class CardService {
         return cardRepository.save(cardAsExists);
     }
 
-    //ML2: tested owner works
     public CardDto delete(Long id, UserPrincipal requester) throws ResourceNotFoundException {
         Card card = this.read(id, requester);
 
@@ -115,16 +124,5 @@ public class CardService {
         }
     }
 
-
-    public boolean isBoxOwnerPrincipalOrAdmin(CardDto cardDto){
-        Box parentBox = boxService.readInternal(cardDto.getBoxId());
-        User boxOwner = parentBox.getOwner();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth != null && auth.getPrincipal() instanceof UserPrincipal userPrincipal){
-            Long userPrincipalId = userPrincipal.getId();
-            return boxOwner.getId().equals(userPrincipalId) || boxOwner.getRole().equals("ROLE_ADMIN");
-        }
-        return false;
-    }
 
 }

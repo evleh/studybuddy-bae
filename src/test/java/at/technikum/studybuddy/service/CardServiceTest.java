@@ -156,4 +156,58 @@ class CardServiceTest {
 
     }
 
+    @Test
+    void deleteCallsDeleteIfRequesterBoxOwner() {
+        // arrange user + principal
+        var userId = 177L;
+        var cardId = 123L;
+        var user = new User();
+        user.setId(userId);
+        var requester = new UserPrincipal(userId,"testRequester","",
+                List.of(new SimpleGrantedAuthority(RoleTypes.REGISTERED)));
+
+        var box = new Box();
+        box.setOwner(user);
+        box.setPublic(false);
+        var card = new Card();
+        card.setId(cardId);
+        card.setBox(box);
+        Mockito.when(cardRepository.findById(cardId))
+                .thenReturn(Optional.of(card));
+
+        // act
+        cardService.delete(cardId,requester);
+
+        // assert
+        Mockito.verify(cardRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
+    }
+
+    @Test
+    void deleteDeniesIfBoxPublicButRequesterNotOwner() {
+        // arrange user + principal
+        var requesterId = 177L;
+        var ownerId = 157L;
+        var cardId = 123L;
+        var owner = new User();
+        owner.setId(ownerId);
+        var requester = new UserPrincipal(requesterId,"testRequester","",
+                List.of(new SimpleGrantedAuthority(RoleTypes.REGISTERED)));
+
+        var box = new Box();
+        box.setOwner(owner);
+        box.setPublic(true);
+        var card = new Card();
+        card.setId(cardId);
+        card.setBox(box);
+        Mockito.when(cardRepository.findById(cardId))
+                .thenReturn(Optional.of(card));
+
+        // act
+        assertThrows(PermissionDeniedException.class, () -> {
+            cardService.delete(cardId,requester);
+        });
+
+        // assert
+        Mockito.verify(cardRepository, Mockito.times(0)).deleteById(Mockito.anyLong());
+    }
 }
