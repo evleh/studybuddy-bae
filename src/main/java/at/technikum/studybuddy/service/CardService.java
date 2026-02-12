@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class CardService {
          if (requester.isStudyBuddyAdmin()) {
             return this.cardRepository.findAll();
         } else {
-            return new ArrayList<Card>();
+            throw new PermissionDeniedException();
         }
     }
 
@@ -41,15 +40,7 @@ public class CardService {
         boolean requesterIsAdmin = requester.isStudyBuddyAdmin();
 
         // need to know if the card exists even in the admin case, branch further down
-        Optional<Card> cardOptional;
-
-        // note: its is a little a mystery for me ATM why one should expect that method here to throw that exception,
-        // but: oh well.
-        try {
-            cardOptional = this.cardRepository.findById(id);
-        } catch (ResourceNotFoundException ignored) {
-            cardOptional = Optional.empty();
-        }
+        Optional<Card> cardOptional = this.cardRepository.findById(id);
 
         // only admins gets "not found" exception because otherwise
         // possible that info about non-existence information leak already. o_o

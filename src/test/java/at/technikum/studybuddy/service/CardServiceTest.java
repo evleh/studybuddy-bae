@@ -50,12 +50,12 @@ class CardServiceTest {
 
 
     @Test
-    void readAllReturnsZeroItemsForNonAdminRequester() {
+    void readAllThrowsPermissionDeniedForNonAdminRequester() {
         var requester = getSimpleRegisteredPrincipal();
 
-        var readAllResults = cardService.readAll(requester);
-
-        assertEquals(0, readAllResults.size());
+        assertThrows(PermissionDeniedException.class, () -> {
+            cardService.readAll(requester);
+        });
     }
 
     @Test
@@ -73,7 +73,7 @@ class CardServiceTest {
     @Test
     void readCardThrowsDeniedIfNotFoundAndNotAdmin() {
         var requester = getSimpleRegisteredPrincipal();
-        Mockito.when(cardRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(cardRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(PermissionDeniedException.class,() -> {
             cardService.read(1L,requester);
@@ -83,7 +83,7 @@ class CardServiceTest {
     @Test
     void readCardThrowsActualNotFoundIfNotFoundAndAdmin() {
         var requester = getSimpleAdminPrincipal();
-        Mockito.when(cardRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(cardRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,() -> {
             cardService.read(1L,requester);
@@ -93,23 +93,27 @@ class CardServiceTest {
     @Test
     void updateCardThrowsDeniedIfNotFoundAndNotAdmin() {
         var requester = getSimpleRegisteredPrincipal();
-        Mockito.when(cardRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(cardRepository.findById(1L)).thenReturn(Optional.empty());
         var cardDtoToUpdate = new CardDto();
 
         assertThrows(PermissionDeniedException.class,() -> {
             cardService.update(1L,cardDtoToUpdate,requester);
         });
+        // also check save was never called
+        Mockito.verify(cardRepository, Mockito.times(0)).save(Mockito.any(Card.class));
     }
 
     @Test
     void updateCardThrowsThrowsActualNotFoundIfNotFoundAndAdmin() {
         var requester = getSimpleAdminPrincipal();
-        Mockito.when(cardRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(cardRepository.findById(1L)).thenReturn(Optional.empty());
         var cardDtoToUpdate = new CardDto();
 
         assertThrows(ResourceNotFoundException.class,() -> {
             cardService.update(1L,cardDtoToUpdate,requester);
         });
+        // also check save was never called
+        Mockito.verify(cardRepository, Mockito.times(0)).save(Mockito.any(Card.class));
     }
 
     @Test
@@ -121,7 +125,7 @@ class CardServiceTest {
         var requester = new UserPrincipal(userId,"testRequester","",
                 List.of(new SimpleGrantedAuthority(RoleTypes.REGISTERED)));
         // arrange box and card initial
-        var box = new Box();
+        Box box = new Box();
         box.setId(boxId);
         box.setPublic(true);
         var owner = new User();
