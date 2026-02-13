@@ -39,7 +39,7 @@ public class BoxCommentServiceTest {
         Mockito.when(boxCommentRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<BoxComment> comments = boxCommentService.readAll();
-
+        System.out.println(comments);
         assertTrue(comments.isEmpty());
     }
 }
