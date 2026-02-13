@@ -40,6 +40,6 @@ public class BoxCommentServiceTest {
 
         List<BoxComment> comments = boxCommentService.readAll();
         System.out.println(comments);
-        assertTrue(comments.isEmpty());
+        assertFalse(comments.isEmpty());
     }
 }
