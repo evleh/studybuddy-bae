@@ -29,6 +29,7 @@ jobs:
         cache: maven
     - name: Run Maven Test
       run: |
+        docker compose up -d
         mvn clean
         mvn -B package --file pom.xml
 
