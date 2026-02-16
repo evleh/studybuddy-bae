@@ -24,7 +24,7 @@ public class CardService {
     }
 
     public List<Card> readAll(UserPrincipal requester) {
-         if (requester.isStudyBuddyAdmin()) {
+        if (requester.isStudyBuddyAdmin()) {
             return this.cardRepository.findAll();
         } else {
             throw new PermissionDeniedException();

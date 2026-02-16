@@ -1,7 +1,6 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.BoxDto;
-import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.security.UserPrincipal;
 import at.technikum.studybuddy.service.BoxService;
 import jakarta.validation.Valid;
