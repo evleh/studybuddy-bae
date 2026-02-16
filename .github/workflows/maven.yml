@@ -30,7 +30,7 @@ jobs:
     - name: Run Maven Test
       run: |
         mvn clean
-        mvn test
+        mvn -B package --file pom.xml
 
 
   checkstyle:
