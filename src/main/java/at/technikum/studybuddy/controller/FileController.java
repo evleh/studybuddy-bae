@@ -32,8 +32,7 @@ public class FileController {
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file, @AuthenticationPrincipal UserPrincipal user) {
         try {
-            fileService.saveFile(file, user);
-            return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
+            return ResponseEntity.ok(fileService.saveFile(file, user).getFileName());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }

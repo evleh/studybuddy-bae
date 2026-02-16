@@ -62,7 +62,7 @@ public class FileService {
             fileInfo.setOwner(owner.get());
         }
 
-        // TODO: Connect to Creator
+
 
         return fileInfoRepository.save(fileInfo);
 
