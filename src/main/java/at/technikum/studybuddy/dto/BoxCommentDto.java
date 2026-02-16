@@ -4,6 +4,8 @@ import at.technikum.studybuddy.entity.BoxComment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.time.Instant;
+
 public class BoxCommentDto {
 
     private Long id;
@@ -17,6 +19,9 @@ public class BoxCommentDto {
 
     private Long boxId ;
     private Long authorId;
+
+    private Instant createdAt;
+    private Instant updatedAt;
 
 
     BoxCommentDto() {
@@ -33,6 +38,8 @@ public class BoxCommentDto {
             if (boxComment.getAuthor() != null) {
                 this.authorId = boxComment.getAuthor().getId();
             }
+            this.createdAt = boxComment.getCreatedAt();
+            this.updatedAt = boxComment.getUpdatedAt();
         }
     }
 
@@ -66,5 +73,21 @@ public class BoxCommentDto {
 
     public void setAuthorId(Long authorId) {
         this.authorId = authorId;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
