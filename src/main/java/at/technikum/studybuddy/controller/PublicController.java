@@ -15,7 +15,9 @@ import java.util.List;
 public class PublicController {
     private final BoxService boxService;
 
-    public PublicController(BoxService boxService) { this.boxService = boxService; };
+    public PublicController(BoxService boxService) {
+        this.boxService = boxService;
+    };
 
     /**
      * TODO: without further information the frontend has few options for sorting and/or prioritization of display. :-/

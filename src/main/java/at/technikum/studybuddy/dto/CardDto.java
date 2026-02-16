@@ -16,7 +16,7 @@ public class CardDto {
     @Size(min = 1, max = 2000) // to match the db-varchar length
     private String answer;
 
-    CardDto() {
+    public CardDto() {
 
     }
 

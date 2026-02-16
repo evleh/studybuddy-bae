@@ -60,7 +60,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
     private void verifyToken(String jwt) {
-        String userId = null;
         String userName = null;
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256("le secret"))
@@ -70,7 +69,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     .build();
 
             DecodedJWT decodedJWT = verifier.verify(jwt);
-            userId = decodedJWT.getClaim("userId").asString();
             userName = decodedJWT.getClaim("userName").asString();
 
 

@@ -8,7 +8,6 @@ import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxRepository;
 import at.technikum.studybuddy.repository.UserRepository;
 import at.technikum.studybuddy.security.UserPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

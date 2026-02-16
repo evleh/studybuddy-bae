@@ -3,8 +3,6 @@ package at.technikum.studybuddy.controller;
 import at.technikum.studybuddy.dto.Registration;
 import at.technikum.studybuddy.dto.UserDto;
 import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
-import at.technikum.studybuddy.dto.UserDtoPublicInfo;
-import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

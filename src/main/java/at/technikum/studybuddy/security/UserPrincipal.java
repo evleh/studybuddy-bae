@@ -25,6 +25,12 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
+    // used by services
+    public boolean isStudyBuddyAdmin() {
+        return this.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
