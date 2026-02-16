@@ -1,8 +1,9 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.security.RoleTypes;
+import at.technikum.studybuddy.dto.FileDownload;
+import at.technikum.studybuddy.service.FileService;
 import io.minio.*;
-import io.minio.messages.Item;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -13,38 +14,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/files")
 public class FileController {
 
+    private final FileService fileService;
+
     private final MinioClient minioClient;
     private final String bucketName = "studybuddybucket";
 
-    public FileController(MinioClient minioClient) {
+    public FileController(MinioClient minioClient, FileService fileService) {
+
         this.minioClient = minioClient;
+        this.fileService = fileService;
     }
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) {
         try {
-            String originalFilename = file.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString();
-            minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object(fileName)
-                            .object(originalFilename)
-                            .stream(file.getInputStream(), file.getSize(), -1)
-                            .contentType(file.getContentType())
-                            .build()
-            );
-            return ResponseEntity.ok("File uploaded successfully: " + originalFilename);
+            fileService.saveFile(file);
+            return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
@@ -54,14 +45,7 @@ public class FileController {
     @RolesAllowed(RoleTypes.ADMIN)
     public ResponseEntity<List<String>> listFiles() {
         try {
-            List<String> fileNames = new ArrayList<>();
-            Iterable<Result<Item>> items = minioClient.listObjects(
-                    ListObjectsArgs.builder().bucket(bucketName).build()
-            );
-            for (Result<Item> item : items) {
-                fileNames.add(item.get().objectName());
-            }
-            return ResponseEntity.ok(fileNames);
+            return ResponseEntity.ok(fileService.listFiles());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -70,19 +54,12 @@ public class FileController {
     @GetMapping("/view/{fileName}")
     public ResponseEntity<Resource> viewFile(@PathVariable String fileName) {
         try {
-            InputStream stream = minioClient.getObject(
-                    GetObjectArgs.builder().bucket(bucketName).object(fileName).build()
-            );
-
-            String contentType = URLConnection.guessContentTypeFromName(fileName);
-            if (contentType == null) {
-                contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
-            }
+            FileDownload fileDownload = fileService.getFileStream(fileName);
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
+                    .contentType(MediaType.parseMediaType(fileDownload.contentType()))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=\"" + fileName + "\"")
-                    .body(new InputStreamResource(stream));
+                    .body(new InputStreamResource(fileDownload.stream()));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -92,12 +69,10 @@ public class FileController {
     @GetMapping("/download/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
         try {
-            InputStream stream = minioClient.getObject(
-                    GetObjectArgs.builder().bucket(bucketName).object(fileName).build()
-            );
+            FileDownload fileDownload = fileService.getFileStream(fileName);
             return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(new InputStreamResource(stream));
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .body(new InputStreamResource(fileDownload.stream()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -106,9 +81,7 @@ public class FileController {
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
         try {
-            minioClient.removeObject(
-                    RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build()
-            );
+            fileService.deleteFile(fileName);
             return ResponseEntity.ok("File deleted successfully: " + fileName);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
