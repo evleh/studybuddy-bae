@@ -52,7 +52,13 @@ public class User {
     }
 
     // full constructor
-    public User(Long id, boolean isAdmin, String username, String foto, String email, String gender, String firstname, String lastname, String password, String country, Instant lastLogin, Instant created, Instant updatedAt) {
+    public User(Long id, boolean isAdmin,
+                String username, String foto,
+                String email, String gender,
+                String firstname, String lastname,
+                String password, String country,
+                Instant lastLogin, Instant created, Instant updatedAt
+    ) {
         this.id = id;
         this.isAdmin = isAdmin;
         this.username = username;

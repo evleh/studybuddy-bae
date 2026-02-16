@@ -91,7 +91,9 @@ public class UserService {
 
     public User register(Registration registration) {
         userRepository.findByUsername(registration.getUsername())
-                .ifPresent(user -> {throw new EntityAlreadyExistsException();});
+                .ifPresent(user -> {
+                    throw new EntityAlreadyExistsException();
+                });
 
         User user = new User();
         user.setUsername(registration.getUsername());
