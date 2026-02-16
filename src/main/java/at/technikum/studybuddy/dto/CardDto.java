@@ -16,6 +16,8 @@ public class CardDto {
     @Size(min = 1, max = 2000) // to match the db-varchar length
     private String answer;
 
+    private String media;
+
     public CardDto() {
 
     }
@@ -28,6 +30,7 @@ public class CardDto {
             if (card.getBox() != null) {
                 this.boxId = card.getBox().getId();
             }
+            this.media = card.getMedia();
         }
     }
 
@@ -61,5 +64,13 @@ public class CardDto {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public String getMedia() {
+        return media;
+    }
+
+    public void setMedia(String media) {
+        this.media = media;
     }
 }
