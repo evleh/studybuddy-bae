@@ -64,7 +64,7 @@ public class CardService {
 
     public Card create(CardDto cardDto, UserPrincipal requester){
         Long boxIdForCard = cardDto.getBoxId();
-        if (boxIdForCard == 0) throw new PermissionDeniedException(); // even admin should not make boxless cards
+        if (boxIdForCard == null) throw new PermissionDeniedException(); // even admin should not make boxless cards
 
         try {
             Box boxForCard = this.boxService.read(boxIdForCard);

@@ -244,8 +244,6 @@ class CardServiceTest {
         // assert
         Mockito.verify(cardRepository, Mockito.times(1)).save(Mockito.any());
 
-
-
     }
 
 }
