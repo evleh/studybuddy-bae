@@ -31,7 +31,9 @@ jobs:
       run: |
         docker compose up -d
         mvn clean
-        mvn -B package --file pom.xml
+        mvn test
+        docker compose down
+        
 
 
   checkstyle:
