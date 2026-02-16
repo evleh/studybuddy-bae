@@ -1,6 +1,7 @@
 package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.entity.BoxComment;
+import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
 import at.technikum.studybuddy.repository.BoxRepository;
 import at.technikum.studybuddy.repository.UserRepository;
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -40,6 +42,14 @@ public class BoxCommentServiceTest {
 
         List<BoxComment> comments = boxCommentService.readAll();
         System.out.println(comments);
-        assertFalse(comments.isEmpty());
+        assertTrue(comments.isEmpty());
+    }
+
+    @Test
+    void readEmptyAsAdmin(){
+        Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.empty());
+
+
+        // assertThrows(ResourceNotFoundException.class, () -> boxCommentService.read(1L, ).);
     }
 }
