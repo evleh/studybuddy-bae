@@ -3,7 +3,6 @@ package at.technikum.studybuddy.controller;
 import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.dto.FileDownload;
 import at.technikum.studybuddy.service.FileService;
-import io.minio.*;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -22,12 +21,9 @@ public class FileController {
 
     private final FileService fileService;
 
-    private final MinioClient minioClient;
-    private final String bucketName = "studybuddybucket";
 
-    public FileController(MinioClient minioClient, FileService fileService) {
+    public FileController(FileService fileService) {
 
-        this.minioClient = minioClient;
         this.fileService = fileService;
     }
 
