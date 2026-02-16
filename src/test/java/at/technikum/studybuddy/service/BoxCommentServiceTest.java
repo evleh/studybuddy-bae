@@ -5,13 +5,13 @@ import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.BoxCommentRepository;
 import at.technikum.studybuddy.repository.BoxRepository;
 import at.technikum.studybuddy.repository.UserRepository;
+import at.technikum.studybuddy.security.UserPrincipal;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,20 +36,35 @@ public class BoxCommentServiceTest {
     @InjectMocks
     private BoxCommentService boxCommentService;
 
+    private UserPrincipal adminPrincipal = TestPrincipalFactory.admin();
+
+    private UserPrincipal registeredPrincipal = TestPrincipalFactory.registeredUser(42L);;
+
+
     @Test
     void readAllOnEmptyRepository(){
         Mockito.when(boxCommentRepository.findAll()).thenReturn(Collections.emptyList());
-
         List<BoxComment> comments = boxCommentService.readAll();
-        System.out.println(comments);
         assertTrue(comments.isEmpty());
     }
 
     @Test
-    void readEmptyAsAdmin(){
+    void readRessourceNotFoundAsAdmin(){ // ressource does not exist
         Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.empty());
-
-
-        // assertThrows(ResourceNotFoundException.class, () -> boxCommentService.read(1L, ).);
+        assertThrows(ResourceNotFoundException.class, () -> boxCommentService.read(1L, adminPrincipal));
     }
+
+    @Test
+    void shouldThrowAccessDeniedWhenUserReadsForeignComment(){ // permission to read own ressource
+
+    }
+
+    // user can't read ressource of someone else
+
+    // admin can read everything
+
+
+
+
+
 }
