@@ -17,8 +17,9 @@ public class FileInfo {
     @NotBlank
     private String contentType;
 
-    @NotBlank
-    private String createdBy;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -27,11 +28,11 @@ public class FileInfo {
 
     public FileInfo() {}
 
-    public FileInfo(String fileName, String originalFilename, String contentType, String createdBy, Instant createdAt, Instant updatedAt) {
+    public FileInfo(String fileName, String originalFilename, String contentType, User owner, Instant createdAt, Instant updatedAt) {
         this.fileName = fileName;
         this.originalFilename = originalFilename;
         this.contentType = contentType;
-        this.createdBy = createdBy;
+        this.owner = owner;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -60,12 +61,12 @@ public class FileInfo {
         this.contentType = contentType;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getOwnerName() {
+        return owner.getUsername();
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public Instant getCreatedAt() {

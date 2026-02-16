@@ -2,7 +2,11 @@ package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.FileDownload;
 import at.technikum.studybuddy.entity.FileInfo;
+import at.technikum.studybuddy.entity.User;
+import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.FileInfoRepository;
+import at.technikum.studybuddy.repository.UserRepository;
+import at.technikum.studybuddy.security.UserPrincipal;
 import io.minio.*;
 import io.minio.messages.Item;
 import jakarta.transaction.Transactional;
@@ -14,6 +18,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,17 +27,19 @@ public class FileService {
     private MinioClient minioClient;
 
     private FileInfoRepository fileInfoRepository;
+    private UserRepository userRepository;
 
     private final String bucket = "studybuddybucket";
 
-    public FileService(MinioClient minioClient, FileInfoRepository fileInfoRepository) {
+    public FileService(MinioClient minioClient, FileInfoRepository fileInfoRepository, UserRepository userRepository) {
         this.minioClient = minioClient;
         this.fileInfoRepository = fileInfoRepository;
+        this.userRepository = userRepository;
     }
 
 
     @Transactional
-    public FileInfo saveFile(MultipartFile file) throws Exception{
+    public FileInfo saveFile(MultipartFile file, UserPrincipal user) throws Exception{
         String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
         String originalFilename = file.getOriginalFilename();
 
@@ -48,6 +55,13 @@ public class FileService {
         fileInfo.setOriginalFilename(originalFilename);
         fileInfo.setFileName(fileName);
         fileInfo.setContentType(file.getContentType());
+        Optional<User> owner = this.userRepository.findByUsername(user.getUsername());
+        if(owner.isEmpty()){
+            throw new ResourceNotFoundException();
+        }else{
+            fileInfo.setOwner(owner.get());
+        }
+
         // TODO: Connect to Creator
 
         return fileInfoRepository.save(fileInfo);

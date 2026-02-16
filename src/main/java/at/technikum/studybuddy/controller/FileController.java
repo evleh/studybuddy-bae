@@ -2,6 +2,7 @@ package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.dto.FileDownload;
+import at.technikum.studybuddy.security.UserPrincipal;
 import at.technikum.studybuddy.service.FileService;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.core.io.InputStreamResource;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,9 +30,9 @@ public class FileController {
     }
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file, @AuthenticationPrincipal UserPrincipal user) {
         try {
-            fileService.saveFile(file);
+            fileService.saveFile(file, user);
             return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
