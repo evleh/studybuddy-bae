@@ -69,7 +69,9 @@ public class FileInfo {
         this.owner = owner;
     }
 
-    public User getOwner() { return owner; }
+    public User getOwner() {
+        return owner;
+    }
 
     public Instant getCreatedAt() {
 
