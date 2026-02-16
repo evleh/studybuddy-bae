@@ -31,58 +31,61 @@ public class BoxCommentService {
         this.userRepository = userRepository;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public BoxComment create(BoxCommentDto boxCommentDto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth.getPrincipal() instanceof UserPrincipal user)) {
-            throw new PermissionDeniedException();
-        }
+    public BoxComment create(BoxCommentDto boxCommentDto, UserPrincipal user) {
 
-        User author = userRepository.findByUsername(auth.getName())
+        User author = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(ResourceNotFoundException::new);
 
         Box box = boxRepository.findById(boxCommentDto.getBoxId())
                 .orElseThrow(ResourceNotFoundException::new);
 
-        if (!box.getPublic() || !box.getOwner().getId().equals(user.getId())) {
+        if (box.getPublic() || box.getOwner().getId().equals(user.getId()) || author.isAdmin()) {
+            BoxComment comment = new BoxComment(box, author, boxCommentDto.getText());
+            return boxCommentRepository.save(comment);
+        } else {
             throw new PermissionDeniedException();
         }
 
-        BoxComment comment = new BoxComment(box, author, boxCommentDto.getText());
-        return boxCommentRepository.save(comment);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<BoxComment> readAll() {
         return this.boxCommentRepository.findAll();
     }
 
-    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getAuthor().getId().equals(authentication.principal.id)")
-    public BoxComment read(Long id) {
-        return this.boxCommentRepository.findById(id)
+    public BoxComment read(Long id, UserPrincipal user) {
+        BoxComment boxComment = this.boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
+
+        Long authorId = boxComment.getAuthor().getId();
+        boolean isPublic = boxComment.getBox().getPublic();
+        // extract from UserPrincipal because user and author are not necessarily the same person
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
+        if(isAdmin || isPublic || user.getId().equals(authorId)){
+            return boxComment;
+        } else {
+            throw new PermissionDeniedException();
+        }
     }
 
-    //ML2: tested for owner
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
-    public BoxComment update(Long id, BoxCommentDto boxCommentDto) {
-        BoxComment boxComment = read(id);
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth.getPrincipal() instanceof UserPrincipal user)) {
-            throw new PermissionDeniedException();
-        }
+    public BoxComment update(Long id, BoxCommentDto boxCommentDto, UserPrincipal user) {
+        BoxComment boxComment = read(id, user);
 
         User author = boxComment.getAuthor();
-        if ( !author.getId().equals(user.getId()) && !author.isAdmin() )  {
+
+        // extract from UserPrincipal because user and author are not necessarily the same person
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));;
+
+        if (!author.getId().equals(user.getId()) && !isAdmin )  {
             throw new PermissionDeniedException();
         }
 
+        // only visibility can be changed for box comments
         boxComment.setText(boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BoxCommentDto delete(Long id) {
         BoxComment boxComment = boxCommentRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);

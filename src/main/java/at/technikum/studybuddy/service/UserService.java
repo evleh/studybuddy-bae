@@ -7,18 +7,13 @@ import at.technikum.studybuddy.dto.UserDtoPublicInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.EntityAlreadyExistsException;
 import at.technikum.studybuddy.exceptions.EntityNotFoundException;
-import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.UserRepository;
-import at.technikum.studybuddy.security.UserPrincipal;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -33,22 +28,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // ML2 tested
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> readAll(){
         return this.userRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
     public User read(Long id) {
         User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         return user;
     }
 
-    // ML2 not working
-    // todo only admin can change admin attribute
-    // todo change password: sollte man wsl extra machen
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && authentication.principal.id.equals(#id))")
+
     public User update(Long id, UserDtoPrivilegedInfo userDto) {
         User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new); // save info if user already exists
 
@@ -63,8 +52,6 @@ public class UserService {
         return user;
     }
 
-    // ML2 tested
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserDto delete(Long id){
         User user = this.userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 
@@ -102,7 +89,6 @@ public class UserService {
         userRepository.save(normal);
     }
 
-    // ML2 tested
     public User register(Registration registration) {
         userRepository.findByUsername(registration.getUsername())
                 .ifPresent(user -> {throw new EntityAlreadyExistsException();});

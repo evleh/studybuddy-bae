@@ -28,14 +28,10 @@ public class CardService {
         this.boxService = boxService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Card> readAll(){
         return this.cardRepository.findAll();
     }
 
-    //getAll ändern 
-
-    @PostAuthorize("hasRole('ROLE_ADMIN') || returnObject.getBox().getPublic() || returnObject.getBox().getOwner().getId().equals(authentication.principal.id)")
     public Card read(Long id) throws ResourceNotFoundException{
         Optional<Card> cardOptional = this.cardRepository.findById(id);
         if(cardOptional.isEmpty()){
@@ -44,7 +40,6 @@ public class CardService {
         return cardOptional.get();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public Card create(CardDto cardDto){
         // authorization: only for parent box owner = self
         if(!isBoxOwnerPrincipalOrAdmin(cardDto)){
@@ -60,8 +55,7 @@ public class CardService {
     }
 
     // ML2: basics tested
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')") // gehört in controller
-    public Card update(Long id, CardDto cardDto){ // securityContextHolder mitgebn -> testen
+    public Card update(Long id, CardDto cardDto){
         // Eventuell InputMismatchException wenn id-Paramater und card-id nicht übereinstimmen
         // authorization: only for parent box owner = self
         if(!isBoxOwnerPrincipalOrAdmin(cardDto)){
@@ -81,7 +75,6 @@ public class CardService {
     }
 
     //ML2: tested owner works
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_REGISTERED')")
     public CardDto delete(Long id) throws ResourceNotFoundException{
         Card card = this.cardRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 

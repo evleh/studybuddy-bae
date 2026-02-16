@@ -37,7 +37,7 @@ public class BoxComment {
 
     }
 
-    public BoxComment(Box box,  User user, String text){
+    public BoxComment(Box box, User user, String text){
         this.box = box;
         this.author = user;
         this.text = text;
