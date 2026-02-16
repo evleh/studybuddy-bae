@@ -23,8 +23,6 @@ public class CardController {
 
     @GetMapping
     public List<CardDto> readAll(@AuthenticationPrincipal UserPrincipal requester){
-        System.out.println("huh");
-        System.out.print(requester);
         return this.cardService.readAll(requester).stream().map(CardDto::new).toList();
     }
 

@@ -95,7 +95,7 @@ public class CardService {
         Card cardAsExists = this.read(id,requester);
 
         // ... but a problem remains: read is allowed for public boxes, but that does not allow updating for all.
-        var updateDenied = !requester.isStudyBuddyAdmin()
+        boolean updateDenied = !requester.isStudyBuddyAdmin()
                 && !cardAsExists.getBox().getOwner().getId().equals(requester.getId());
         if(updateDenied){
             throw new PermissionDeniedException();
