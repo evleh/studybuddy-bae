@@ -3,6 +3,7 @@ package at.technikum.studybuddy.service;
 import at.technikum.studybuddy.dto.FileDownload;
 import at.technikum.studybuddy.entity.FileInfo;
 import at.technikum.studybuddy.entity.User;
+import at.technikum.studybuddy.exceptions.PermissionDeniedException;
 import at.technikum.studybuddy.exceptions.ResourceNotFoundException;
 import at.technikum.studybuddy.repository.FileInfoRepository;
 import at.technikum.studybuddy.repository.UserRepository;
@@ -94,9 +95,16 @@ public class FileService {
         return new FileDownload(stream, contentType);
     }
 
-    public void deleteFile(String fileName) throws Exception {
+    @Transactional
+    public void deleteFile(String fileName, UserPrincipal user) throws Exception {
+        FileInfo fileInfo = fileInfoRepository.findById(fileName).orElseThrow(ResourceNotFoundException::new);
+        if(!fileInfo.getOwner().getId().equals(user.getId()) && !user.isStudyBuddyAdmin()) {
+            throw new PermissionDeniedException();
+        }
         minioClient.removeObject(
                 RemoveObjectArgs.builder().bucket(bucket).object(fileName).build());
+
+        fileInfoRepository.delete(fileInfo);
     }
 
 
