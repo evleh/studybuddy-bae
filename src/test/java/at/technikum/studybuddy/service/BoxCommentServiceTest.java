@@ -27,6 +27,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 
+/*
+    What could be better:
+        1) Move nested classes to own file
+        2) Create principal for every testcase (instead of defining it as attribute)
+ */
+
 @ExtendWith(MockitoExtension.class)
 public class BoxCommentServiceTest {
 
