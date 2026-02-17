@@ -50,7 +50,7 @@ public class FileController {
         }
     }
 
-    @GetMapping("/list-fileinfo")
+    @GetMapping("/fileinfos")
     @RolesAllowed(RoleTypes.ADMIN)
     public ResponseEntity<List<FileInfo>> listFileInfos() {
         try {
