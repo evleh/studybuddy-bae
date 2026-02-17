@@ -95,6 +95,7 @@ public class FileService {
         return new FileDownload(stream, contentType);
     }
 
+    @Transactional
     public void deleteFile(String fileName, UserPrincipal user) throws Exception {
         FileInfo fileInfo = fileInfoRepository.findById(fileName).orElseThrow(ResourceNotFoundException::new);
         if(!fileInfo.getOwner().getId().equals(user.getId()) && !user.isStudyBuddyAdmin()) {
@@ -102,6 +103,8 @@ public class FileService {
         }
         minioClient.removeObject(
                 RemoveObjectArgs.builder().bucket(bucket).object(fileName).build());
+
+        fileInfoRepository.delete(fileInfo);
     }
 
 
