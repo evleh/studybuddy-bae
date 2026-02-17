@@ -59,7 +59,7 @@ public class BoxService {
 
         Long userId = user.getId();
 
-        if(!box.getOwner().getId().equals(userId) || !box.getOwner().isAdmin() ) {
+        if(!box.getOwner().getId().equals(userId) && !user.isStudyBuddyAdmin() ) {
             throw new PermissionDeniedException();
         }
 

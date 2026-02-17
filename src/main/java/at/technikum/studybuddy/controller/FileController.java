@@ -64,9 +64,9 @@ public class FileController {
     }
 
     @DeleteMapping("/delete/{fileName}")
-    public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
+    public ResponseEntity<String> deleteFile(@PathVariable String fileName, @AuthenticationPrincipal UserPrincipal user) {
         try {
-            fileService.deleteFile(fileName);
+            fileService.deleteFile(fileName, user);
             return ResponseEntity.ok("File deleted successfully: " + fileName);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
