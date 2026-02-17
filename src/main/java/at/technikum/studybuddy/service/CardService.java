@@ -74,7 +74,7 @@ public class CardService {
                 Card newCard = new Card();
                 newCard.setQuestion(cardDto.getQuestion());
                 newCard.setAnswer(cardDto.getAnswer());
-                // todo: add media when media implemented
+                newCard.setMedia(cardDto.getMedia());
                 newCard.setBox(boxForCard);
                 return this.cardRepository.save(newCard);
             } else {
@@ -95,17 +95,16 @@ public class CardService {
         Card cardAsExists = this.read(id,requester);
 
         // ... but a problem remains: read is allowed for public boxes, but that does not allow updating for all.
-        boolean updateDenied = !requester.isStudyBuddyAdmin()
-                && !cardAsExists.getBox().getOwner().getId().equals(requester.getId());
-        if(updateDenied){
+        boolean changeAllowed = requester.isStudyBuddyAdmin()
+                || cardAsExists.getBox().getOwner().getId().equals(requester.getId());
+        if(!changeAllowed){
             throw new PermissionDeniedException();
         }
 
         // card only has three properties one is allowed to change by endpoint, actually.
         if (cardDto.getQuestion() != null) cardAsExists.setQuestion(cardDto.getQuestion());
         if (cardDto.getAnswer() != null) cardAsExists.setAnswer(cardDto.getAnswer());
-        // todo: media not yet in dto.
-        // cardAsExists.setMedia(cardDto.getMedia());
+        if (cardDto.getMedia() != null) cardAsExists.setMedia(cardDto.getMedia());
 
         // additional values in the dto put into the put request are ignored (for example: id, if it were set)
 
