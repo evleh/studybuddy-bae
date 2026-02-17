@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.service;
 
+import at.technikum.studybuddy.dto.BoxCommentDto;
 import at.technikum.studybuddy.entity.Box;
 import at.technikum.studybuddy.entity.BoxComment;
 import at.technikum.studybuddy.entity.User;
@@ -49,8 +50,9 @@ public class BoxCommentServiceTest {
         return u;
     }
 
-    private Box box(User owner, boolean isPublic) {
+    private Box box(Long id, User owner, boolean isPublic) {
         Box b = new Box();
+        b.setId(id);
         b.setOwner(owner);
         b.setPublic(isPublic);
         return b;
@@ -87,7 +89,7 @@ public class BoxCommentServiceTest {
         void shouldAllowRegisteredUserToReadCommentOfPublicBox(){
             // arrage
             User foreignUser = user(10L);
-            Box publicBox = box(foreignUser, true);
+            Box publicBox = box(5L, foreignUser, true);
             BoxComment foreignComment = comment(foreignUser, publicBox);
             Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.of(foreignComment));
 
@@ -102,7 +104,7 @@ public class BoxCommentServiceTest {
         void shouldThrowAccessDeniedWhenUserReadsCommentOfPrivateBox(){
             //arrange
             User foreignUser = user(10L);
-            Box privateBox = box(foreignUser, false);
+            Box privateBox = box(5L, foreignUser, false);
             BoxComment foreignComment = comment(foreignUser, privateBox);
             Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.of(foreignComment));
 
@@ -115,7 +117,7 @@ public class BoxCommentServiceTest {
         void shouldAllowAdminToReadCommentOfPrivateBox(){ // permission to read own ressource
             //arrange
             User foreignUser = user(10L);
-            Box privateBox = box(foreignUser, false);
+            Box privateBox = box(5L, foreignUser, false);
             BoxComment foreignComment = comment(foreignUser, privateBox);
             Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.of(foreignComment));
 
@@ -125,6 +127,37 @@ public class BoxCommentServiceTest {
             //assert
             assertEquals(result, foreignComment);
         }
+    }
+
+    @Nested
+    class CreateTests{
+
+        @Test
+        void shouldThrowWhenAuthorNameIsNotFound(){
+            // arrange
+            User user = user(10L);
+            Box box = box(5L,user, false);
+            BoxComment comment = comment(user, box);
+            BoxCommentDto dto = new BoxCommentDto(comment);
+            Mockito.when(userRepository.findByUsername(registeredPrincipal.getUsername())).thenThrow(new ResourceNotFoundException());
+            // act + assert
+            assertThrows(ResourceNotFoundException.class, () -> boxCommentService.create(dto, registeredPrincipal));
+        }
+
+        @Test
+        void shouldThrowWhenBoxIsNotFound(){
+            // arrange
+            User user = user(10L);
+            BoxCommentDto dto = TestDataFactory.boxCommentDto(5L);
+            Mockito.when(userRepository.findByUsername(registeredPrincipal.getUsername())).thenReturn(Optional.of(user));
+            Mockito.when(boxRepository.findById(dto.getBoxId())).thenThrow(new ResourceNotFoundException());
+
+            // act + assert
+            assertThrows(ResourceNotFoundException.class, () -> boxCommentService.create(dto, registeredPrincipal));
+        }
+
+        @Test
+        void shouldAllowCommentForPublicBox(){}
     }
 
 

@@ -19,7 +19,7 @@ public class BoxCommentDto {
     private Long authorId;
 
 
-    BoxCommentDto() {
+    public BoxCommentDto() {
 
     }
 
