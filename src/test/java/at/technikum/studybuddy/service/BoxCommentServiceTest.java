@@ -161,20 +161,19 @@ public class BoxCommentServiceTest {
         @Test
         void shouldAllowCommentOnPublicBox(){
             // Arrange
-            UserPrincipal commentCreatorPrincipal = TestPrincipalFactory.registeredUser(42L);
-            User commentCreator = user(42L);
+            User commentCreator = user(registeredPrincipal.getId());
             User boxOwner = user(2L);
             Box box = TestDataFactory.box(5L, boxOwner, true);
-            BoxComment boxComment = new BoxComment(box, boxOwner, "lalalla");
+            BoxComment boxComment = new BoxComment(box, commentCreator, "lalalla");
             BoxCommentDto boxCommentDto = new BoxCommentDto(boxComment);
 
 
-            Mockito.when(userRepository.findByUsername(commentCreatorPrincipal.getUsername())).thenReturn(Optional.of(commentCreator));
+            Mockito.when(userRepository.findByUsername(registeredPrincipal.getUsername())).thenReturn(Optional.of(commentCreator));
             Mockito.when(boxRepository.findById(boxCommentDto.getBoxId())).thenReturn(Optional.of(box));
             // When save is called return the Object that was used as argument for the method call.
             Mockito.when(boxCommentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
             // act
-            BoxComment result = boxCommentService.create(boxCommentDto, commentCreatorPrincipal);
+            BoxComment result = boxCommentService.create(boxCommentDto, registeredPrincipal);
 
             // assert
             assertNotNull(result);
@@ -185,14 +184,13 @@ public class BoxCommentServiceTest {
         void shouldAllowAdminToCommentOnPrivateBox(){
             // Arrange
             // arrange: comment author
-            UserPrincipal commentCreatorPrincipal = TestPrincipalFactory.admin();
-            User commentCreator = user(commentCreatorPrincipal.getId());
+            User commentCreator = user(adminPrincipal.getId());
             commentCreator.setAdmin(true);
-            Mockito.when(userRepository.findByUsername(commentCreatorPrincipal.getUsername())).thenReturn(Optional.of(commentCreator));
+            Mockito.when(userRepository.findByUsername(adminPrincipal.getUsername())).thenReturn(Optional.of(commentCreator));
 
             // arrange: box & comment
             User boxOwner = user(2L);
-            Box box = TestDataFactory.box(5L, commentCreator, false);
+            Box box = TestDataFactory.box(5L, boxOwner, false);
 
             BoxComment boxComment = new BoxComment(box, boxOwner, "lalalla");
             BoxCommentDto boxCommentDto = new BoxCommentDto(boxComment);
@@ -201,7 +199,7 @@ public class BoxCommentServiceTest {
             // arrange: saving the comment to repository
             Mockito.when(boxCommentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
             // act
-            BoxComment result = boxCommentService.create(boxCommentDto, commentCreatorPrincipal);
+            BoxComment result = boxCommentService.create(boxCommentDto, adminPrincipal);
 
             // assert
             assertNotNull(result);
@@ -213,9 +211,8 @@ public class BoxCommentServiceTest {
         void shouldAllowOwnerToCommentOnOwnPrivateBox(){
             // Arrange
             // arrange: comment author
-            UserPrincipal commentCreatorPrincipal = TestPrincipalFactory.registeredUser(2L);
-            User commentCreator = user(commentCreatorPrincipal.getId());
-            Mockito.when(userRepository.findByUsername(commentCreatorPrincipal.getUsername())).thenReturn(Optional.of(commentCreator));
+            User commentCreator = user(registeredPrincipal.getId());
+            Mockito.when(userRepository.findByUsername(registeredPrincipal.getUsername())).thenReturn(Optional.of(commentCreator));
 
             // arrange: box & comment
             User boxOwner = commentCreator;
@@ -228,7 +225,7 @@ public class BoxCommentServiceTest {
             // arrange: saving the comment to repository
             Mockito.when(boxCommentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
             // act
-            BoxComment result = boxCommentService.create(boxCommentDto, commentCreatorPrincipal);
+            BoxComment result = boxCommentService.create(boxCommentDto, registeredPrincipal);
 
             // assert
             assertNotNull(result);
@@ -239,12 +236,11 @@ public class BoxCommentServiceTest {
         void shouldThrowWhenRegularUserCommentsOnPrivateBox(){
             // Arrange
             // arrange: comment author
-            UserPrincipal commentCreatorPrincipal = TestPrincipalFactory.registeredUser(2L);
-            User commentCreator = user(commentCreatorPrincipal.getId());
-            Mockito.when(userRepository.findByUsername(commentCreatorPrincipal.getUsername())).thenReturn(Optional.of(commentCreator));
+            User commentCreator = user(registeredPrincipal.getId());
+            Mockito.when(userRepository.findByUsername(registeredPrincipal.getUsername())).thenReturn(Optional.of(commentCreator));
 
             // arrange: box & comment
-            User boxOwner = user(42L);
+            User boxOwner = user(5L);
             Box box = TestDataFactory.box(5L, boxOwner, false);
 
             BoxComment boxComment = new BoxComment(box, commentCreator, "lalalla");
@@ -252,7 +248,7 @@ public class BoxCommentServiceTest {
             Mockito.when(boxRepository.findById(boxCommentDto.getBoxId())).thenReturn(Optional.of(box));
 
             // act & assert
-            assertThrows(PermissionDeniedException.class, () -> boxCommentService.create(boxCommentDto, commentCreatorPrincipal));
+            assertThrows(PermissionDeniedException.class, () -> boxCommentService.create(boxCommentDto, registeredPrincipal));
         }
 
     }
