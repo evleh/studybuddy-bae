@@ -6,6 +6,7 @@ import at.technikum.studybuddy.entity.Card;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.time.Instant;
 import java.util.List;
 
 public class BoxDto {
@@ -18,6 +19,8 @@ public class BoxDto {
     private String description;
 
     private Boolean isPublic;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     private Long ownerId;
     private List<Long> commentIds;
@@ -32,6 +35,8 @@ public class BoxDto {
         this.title = box.getTitle();
         this.description = box.getDescription();
         this.isPublic = box.getPublic();
+        this.createdAt = box.getCreatedAt();
+        this.updatedAt = box.getUpdatedAt();
         this.ownerId = box.getOwner().getId();
         if (box.getComments() != null) {
             this.commentIds = box.getComments().stream().map(BoxComment::getId).toList();
@@ -96,5 +101,21 @@ public class BoxDto {
 
     public void setCardIds(List<Long> cardIds) {
         this.cardIds = cardIds;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
