@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.controller;
 
+import at.technikum.studybuddy.dto.FileInfoDto;
 import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.dto.FileDownload;
 import at.technikum.studybuddy.security.UserPrincipal;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/files")
 public class FileController {
@@ -47,6 +49,17 @@ public class FileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/fileinfos")
+    @RolesAllowed(RoleTypes.ADMIN)
+    public ResponseEntity<List<FileInfoDto>> listFileInfos() {
+        try {
+            return ResponseEntity.ok(fileService.listFileInfos());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     @GetMapping("/view/{fileName}")
     public ResponseEntity<Resource> viewFile(@PathVariable String fileName) {

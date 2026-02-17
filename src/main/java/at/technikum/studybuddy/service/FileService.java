@@ -1,6 +1,7 @@
 package at.technikum.studybuddy.service;
 
 import at.technikum.studybuddy.dto.FileDownload;
+import at.technikum.studybuddy.dto.FileInfoDto;
 import at.technikum.studybuddy.entity.FileInfo;
 import at.technikum.studybuddy.entity.User;
 import at.technikum.studybuddy.exceptions.PermissionDeniedException;
@@ -77,6 +78,18 @@ public class FileService {
             fileNames.add(result.get().objectName());
         }
         return fileNames;
+    }
+
+    public List<FileInfoDto> listFileInfos() throws Exception {
+        List<String> fileNames = this.listFiles();
+
+        if (fileNames.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return fileInfoRepository.findByFileNameIn(fileNames).stream()
+                .map(FileInfoDto::new)
+                .toList();
     }
 
     public FileDownload getFileStream(String fileName) throws Exception {
