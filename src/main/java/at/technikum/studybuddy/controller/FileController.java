@@ -1,5 +1,6 @@
 package at.technikum.studybuddy.controller;
 
+import at.technikum.studybuddy.dto.FileInfoDto;
 import at.technikum.studybuddy.entity.FileInfo;
 import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.dto.FileDownload;
@@ -52,10 +53,9 @@ public class FileController {
 
     @GetMapping("/fileinfos")
     @RolesAllowed(RoleTypes.ADMIN)
-    public ResponseEntity<List<FileInfo>> listFileInfos() {
+    public ResponseEntity<List<FileInfoDto>> listFileInfos() {
         try {
-            List<FileInfo> fileInfos = fileService.listFileInfos();
-            return ResponseEntity.ok(fileInfos);
+            return ResponseEntity.ok(fileService.listFileInfos());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
