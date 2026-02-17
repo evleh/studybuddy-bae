@@ -65,6 +65,10 @@ public class FileInfo {
         return owner.getUsername();
     }
 
+    public Long getOwnerId() {
+        return owner.getId();
+    }
+
     public void setOwner(User owner) {
         this.owner = owner;
     }

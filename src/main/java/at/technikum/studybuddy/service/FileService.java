@@ -87,8 +87,6 @@ public class FileService {
             return new ArrayList<>();
         }
 
-
-
         return fileInfoRepository.findByFileNameIn(fileNames).stream()
                 .map(FileInfoDto::new)
                 .toList();

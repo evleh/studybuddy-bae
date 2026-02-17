@@ -7,6 +7,7 @@ import java.time.Instant;
 public class FileInfoDto {
 
     private String fileName;
+    private Long ownerId;
     private String ownerName;
     private Instant createdAt;
     private String originalFileName;
@@ -17,6 +18,7 @@ public class FileInfoDto {
 
     public FileInfoDto(FileInfo fileInfo) {
         this.fileName = fileInfo.getFileName();
+        this.ownerId = fileInfo.getOwnerId();
         this.ownerName = fileInfo.getOwnerName();
         this.createdAt = fileInfo.getCreatedAt();
         this.originalFileName = fileInfo.getOriginalFilename();
@@ -29,6 +31,14 @@ public class FileInfoDto {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getOwnerName() {
