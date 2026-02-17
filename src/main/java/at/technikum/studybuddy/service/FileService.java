@@ -79,6 +79,16 @@ public class FileService {
         return fileNames;
     }
 
+    public List<FileInfo> listFileInfos() throws Exception {
+        List<String> fileNames = this.listFiles();
+
+        if (fileNames.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return fileInfoRepository.findByFileNameIn(fileNames);
+    }
+
     public FileDownload getFileStream(String fileName) throws Exception {
         InputStream stream = minioClient.getObject(
                 GetObjectArgs.builder()
