@@ -93,10 +93,11 @@ public class BoxCommentServiceTest {
             User foreignUser = user(10L);
             Box publicBox = box(5L, foreignUser, true);
             BoxComment foreignComment = comment(foreignUser, publicBox);
-            Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.of(foreignComment));
+            foreignComment.setId(1L);
+            Mockito.when(boxCommentRepository.findById(any())).thenReturn(Optional.of(foreignComment));
 
             // act
-            BoxComment result = boxCommentService.read(1L, registeredPrincipal);
+            BoxComment result = boxCommentService.read(foreignComment.getId(), registeredPrincipal);
 
             //assert
             assertEquals(result, foreignComment);
@@ -309,6 +310,30 @@ public class BoxCommentServiceTest {
                     boxCommentService.update(1L, new BoxCommentDto(boxComment), registeredPrincipal));
         }
 
+    }
+
+    @Nested
+    class DeleteTests{
+
+        @Test
+        void shouldThrowWhenCommentDoesNotExist(){
+            // arrange
+            Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.empty());
+
+            // act & assert
+            assertThrows(ResourceNotFoundException.class, () -> boxCommentService.delete(1L));
+        }
+
+        @Test
+        void shouldDeleteWhenCommentExists(){
+            // arrange
+            User author = TestDataFactory.user(1L);
+            Box box = TestDataFactory.box(2L, author, true);
+            BoxComment comment = comment(author, box);
+            comment.setId(3L);
+            Mockito.when(boxCommentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+
+        }
     }
 
 
