@@ -2,8 +2,6 @@ package at.technikum.studybuddy.dto;
 
 import at.technikum.studybuddy.entity.User;
 
-import java.net.URL;
-
 public abstract class UserDto {
     /*
      * Abstract class, defines a constructor signature

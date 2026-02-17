@@ -83,3 +83,10 @@ Go there to try "mvn checkstyle:check" for a test of the check.
 
 Tutorial for getting the PreAuthenticate/PostAuthenticate-Decorators to work:  
 [https://www.baeldung.com/spring-security-method-security](https://www.baeldung.com/spring-security-method-security)  
+
+### Filehandling
+
+Official minIO documentation: https://docs.min.io/enterprise/aistor-object-store/installation/container/install/
+Video-Tutorial for minIO: https://www.youtube.com/watch?v=bVosjy3hrLY
+Tutorial for Spring Boot MinIO Integration: https://lf-onap.atlassian.net/wiki/spaces/DW/pages/99057714/Spring+Boot+MinIO+Integration+Lab+and+Exercises
+

@@ -5,7 +5,6 @@ import at.technikum.studybuddy.security.UserPrincipal;
 import at.technikum.studybuddy.service.BoxCommentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
