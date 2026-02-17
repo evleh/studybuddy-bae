@@ -257,6 +257,64 @@ public class BoxCommentServiceTest {
 
     }
 
+    @Nested
+    class UpdateTests{
+
+        @Test
+        void shouldAllowAdminToUpdateAnyComment(){
+            // arrange
+            User owner = user(5L);
+            Box box = box(2L, owner, true);
+            BoxComment boxComment = new BoxComment(box, owner, "lalala");
+            boxComment.setId(1L);
+
+            Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.of(boxComment));
+            Mockito.when(boxCommentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+            // act
+            BoxComment result = boxCommentService.update(1L, new BoxCommentDto(boxComment), adminPrincipal);
+
+            // assert
+            assertNotNull(result);
+            verify(boxCommentRepository).save(any());
+        }
+
+        @Test
+        void shouldAllowUserToUpdateOwnComment(){
+            // arrange
+            User owner = user(registeredPrincipal.getId());
+            Box box = box(2L, owner, false);
+            BoxComment boxComment = new BoxComment(box, owner, "lalala");
+            boxComment.setId(1L);
+
+            Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.of(boxComment));
+            Mockito.when(boxCommentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+            // act
+            BoxComment result = boxCommentService.update(1L, new BoxCommentDto(boxComment), registeredPrincipal);
+
+            // assert
+            assertNotNull(result);
+            verify(boxCommentRepository).save(any());
+        }
+
+        @Test
+        void shouldThrowWhenUserUpdatesForeignComment(){
+            // arrange
+            User owner = user(5L);
+            Box box = box(2L, owner, true);
+            BoxComment boxComment = new BoxComment(box, owner, "lalala");
+            boxComment.setId(1L);
+
+            Mockito.when(boxCommentRepository.findById(1L)).thenReturn(Optional.of(boxComment));
+
+            // act & assert
+            assertThrows(PermissionDeniedException.class, () ->
+                    boxCommentService.update(1L, new BoxCommentDto(boxComment), registeredPrincipal));
+        }
+
+    }
+
 
 
 
