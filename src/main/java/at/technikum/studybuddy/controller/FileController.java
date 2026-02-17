@@ -1,7 +1,6 @@
 package at.technikum.studybuddy.controller;
 
 import at.technikum.studybuddy.dto.FileInfoDto;
-import at.technikum.studybuddy.entity.FileInfo;
 import at.technikum.studybuddy.security.RoleTypes;
 import at.technikum.studybuddy.dto.FileDownload;
 import at.technikum.studybuddy.security.UserPrincipal;
