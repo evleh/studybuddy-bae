@@ -49,4 +49,16 @@ class UserServiceTest {
         Mockito.verify(userRepository, Mockito.times(0)).save(Mockito.any());
     }
 
+    @Test
+    void updateLastLoginCallsUserRepository() {
+        User user = new User();
+        user.setUsername("admin");
+        Mockito.when(userRepository.findByUsername(Mockito.anyString())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
+
+        userService.updateLastLogin("admin");
+
+        Mockito.verify(userRepository, Mockito.times(1)).save(user);
+    }
+
 }
