@@ -24,7 +24,7 @@ public class BoxCommentDto {
     private Instant updatedAt;
 
 
-    BoxCommentDto() {
+    public BoxCommentDto() {
 
     }
 
