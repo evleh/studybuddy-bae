@@ -75,18 +75,6 @@ public class UserService {
         admin.setFirstname("MIN");
         userRepository.save(admin);
 
-
-        // normal user
-        User normal = new User();
-        normal.setUsername("normal");
-        normal.setPassword(passwordEncoder.encode("normal"));
-        normal.setAdmin(false);
-        normal.setEmail("admin@example.com");
-        normal.setGender("user");
-        normal.setCountry("AT");
-        normal.setLastname("US");
-        normal.setFirstname("ER");
-        userRepository.save(normal);
     }
 
     public User register(Registration registration) {
