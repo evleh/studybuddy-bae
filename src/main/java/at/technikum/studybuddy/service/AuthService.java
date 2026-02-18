@@ -49,6 +49,8 @@ public class AuthService {
         Token token = new Token();
         token.setAccessToken(jwt);
         token.setUserId(Long.toString(userPrincipal.getId()));
+
+
         return token;
     }
 
