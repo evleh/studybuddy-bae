@@ -12,7 +12,9 @@ import at.technikum.studybuddy.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -37,6 +39,12 @@ public class UserService {
         return user;
     }
 
+    @Transactional
+    public void updateLastLogin(String username) {
+        User user =  this.userRepository.findByUsername(username).orElseThrow(ResourceNotFoundException::new);
+        user.setLastLogin(Instant.now());
+        this.userRepository.save(user);
+    }
 
     public User update(Long id, UserDtoPrivilegedInfo userDto) {
         User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new); // save info if user already exists

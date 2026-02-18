@@ -25,6 +25,8 @@ public class AuthController {
         // Uncomment next 2 lines to test workings of the userService.isCurrentUserRegistered() method
         // System.out.print("registered? -> ");
         // System.out.println(userService.isCurrentUserRegistered());
-        return authService.createToken(tokenRequest);
+        Token token = authService.createToken(tokenRequest);
+        this.userService.updateLastLogin(tokenRequest.getUsername());
+        return token;
     }
 }
