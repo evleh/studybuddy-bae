@@ -15,6 +15,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +31,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
 
-    public TokenAuthenticationFilter(UserRepository userRepository) {
+    public TokenAuthenticationFilter(@Lazy UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
