@@ -21,16 +21,16 @@ INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, count
 INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description) VALUES
     ('Bezirke Wien', (SELECT id FROM studybuddy_user WHERE username='mini'), '2025-10-03 00:00:00+00', '2025-10-03 00:00:00+00', true, 'Mit dieser Kartei kann man die 23 Wiener Gemeindebezirke lernen.');
 
-INSERT INTO box (id, title, owner_id, created_at, updated_at, is_public, description) VALUES
-    (2, 'Griechisch für den Urlaub', 2, '2024-12-23 00:00:00+00', '2024-12-23 00:00:00+00', true, 'Diese Kartei enthält Wörter und Phrasen, die dir bei deinem nächsten Griechendlandurlaub bestimmt nützlich sein werden!');
-INSERT INTO box (id, title, owner_id, created_at, updated_at, is_public, description) VALUES
-    (3, 'English classroom vocabulary', 3, '2025-09-09 00:00:00+00', '2025-09-09 00:00:00+00', false, 'Vokabel aus Unit1. Nur für mich zum Lernen für den blöden Vokabeltest.');
-INSERT INTO box (id, title, owner_id, created_at, updated_at, is_public, description) VALUES
-    (4, 'Knochen Deutsch-Latein', 4, '2025-05-05 00:00:00+00', '2025-05-05 00:00:00+00', true, 'Die Knochen des menschlichen Körpers mit ihren deutschen und lateinischen Bezeichnungen. Für Med-Studis und alle anderen, die Anatomie lernen müssen oder wollen (freaks!) :)');
-INSERT INTO box (id, title, owner_id, created_at, updated_at, is_public, description) VALUES
-    (5, 'Heilpflanzen Deutsch - Latein', 5, '2023-04-23 00:00:00+00', '2023-04-23 00:00:00+00', true, 'Einige wichtige Heipflanzen mit ihren deutschen und lateinischen Bezeichnungen. Vielleicht ergänz ich auch mal Kärtchen mit Bild.');
-INSERT INTO box (id, title, owner_id, created_at, updated_at, is_public, description) VALUES
-    (6, 'English irregular plurals', 6, '2022-06-16 00:00:00+00', '2022-06-16 00:00:00+00', true, 'Some of the most common English nouns with irregular plural forms.');
+INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description) VALUES
+    ('Griechisch für den Urlaub', 2, '2024-12-23 00:00:00+00', '2024-12-23 00:00:00+00', true, 'Diese Kartei enthält Wörter und Phrasen, die dir bei deinem nächsten Griechendlandurlaub bestimmt nützlich sein werden!');
+INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description) VALUES
+    ('English classroom vocabulary', 3, '2025-09-09 00:00:00+00', '2025-09-09 00:00:00+00', false, 'Vokabel aus Unit1. Nur für mich zum Lernen für den blöden Vokabeltest.');
+INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description) VALUES
+    ('Knochen Deutsch-Latein', 4, '2025-05-05 00:00:00+00', '2025-05-05 00:00:00+00', true, 'Die Knochen des menschlichen Körpers mit ihren deutschen und lateinischen Bezeichnungen. Für Med-Studis und alle anderen, die Anatomie lernen müssen oder wollen (freaks!) :)');
+INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description) VALUES
+    ('Heilpflanzen Deutsch - Latein', 5, '2023-04-23 00:00:00+00', '2023-04-23 00:00:00+00', true, 'Einige wichtige Heipflanzen mit ihren deutschen und lateinischen Bezeichnungen. Vielleicht ergänz ich auch mal Kärtchen mit Bild.');
+INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description) VALUES
+    ('English irregular plurals', 6, '2022-06-16 00:00:00+00', '2022-06-16 00:00:00+00', true, 'Some of the most common English nouns with irregular plural forms.');
 
 -- ==============================
 -- BEZIRKE WIEN
