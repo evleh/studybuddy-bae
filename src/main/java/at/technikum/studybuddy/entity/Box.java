@@ -28,13 +28,17 @@ public class Box {
     // comment: if I read https://www.baeldung.com/hibernate-one-to-many right
     // mappedBy specifies, as a string, the *name* of the property in the other Class that refers to here
     @ManyToOne
-    @JoinColumn(name = "owner_id") // todo: , nullable = false darf nicht null sein!
+    @JoinColumn(name = "owner_id", nullable = false) // todo: , nullable = false darf nicht null sein!
     private User owner;
 
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Card> cards;
 
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<BoxComment> comments ;
 
     @NotBlank

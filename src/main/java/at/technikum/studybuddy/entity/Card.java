@@ -25,7 +25,7 @@ public class Card {
     private String media;
 
     @ManyToOne
-    @JoinColumn(name = "box_id")
+    @JoinColumn(name = "box_id", nullable = false)
     private Box box;
 
     @CreationTimestamp

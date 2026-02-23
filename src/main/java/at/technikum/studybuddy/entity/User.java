@@ -40,9 +40,14 @@ public class User {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Box> boxes;
-    @OneToMany(mappedBy = "author")
+
+    @OneToMany(mappedBy = "author",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<BoxComment> boxComments;
 
 
