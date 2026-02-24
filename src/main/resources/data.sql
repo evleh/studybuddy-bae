@@ -21,6 +21,7 @@ INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, count
     ('some_user', 'Kim', 'Kiss', 'fluid', 'somesome@example.com', 'LU', '$2a$10$IXI.nhRFIjqxHoEwgjS2d.SPLXtIv8Rshyuk8Nko63N5lEzdvWChi', false, NOW(), NOW(), NOW(), NULL);
 
 
+
 -- insert boxes to db
 INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description) VALUES
     ('Bezirke Wien', (SELECT id FROM studybuddy_user WHERE username='mini'), '2025-10-03 00:00:00+00', '2025-10-03 00:00:00+00', true, 'Mit dieser Kartei kann man die 23 Wiener Gemeindebezirke lernen.');
