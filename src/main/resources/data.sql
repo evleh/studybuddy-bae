@@ -1,21 +1,26 @@
 -- insert users to db
 INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, country, password, is_admin, created_at, updated_at, last_login, foto) VALUES
-    ('mini', 'Jasmin', 'Jason', 'weiblich', 'mini@example.com', 'AT', 'password', false, NOW(), NOW(), NOW(), NULL);
+    ('mini', 'Jasmin', 'Jason', 'weiblich', 'mini@example.com', 'AT', '$2a$10$.S9J.9rdrT3T1pip1PoeUOIhQnGIs8VWC0PgO0zW5oi/zd0tnJCPy', true, NOW(), NOW(), NOW(), NULL);
 
 INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, country, password, is_admin, created_at, updated_at, last_login, foto) VALUES
-    ('maxi', 'Maximilian', 'Malve', 'männlich', 'maxi@example.com', 'DE', 'password', false, NOW(), NOW(), NOW(), NULL);
+    ('maxi', 'Maximilian', 'Malve', 'männlich', 'maxi@example.com', 'DE', '$2a$10$IXI.nhRFIjqxHoEwgjS2d.SPLXtIv8Rshyuk8Nko63N5lEzdvWChi', false, NOW(), NOW(), NOW(), NULL);
 
 INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, country, password, is_admin, created_at, updated_at, last_login, foto) VALUES
-    ('justme', 'Alex', 'Allison', 'non binary', 'justme@example.com', 'CH', 'password', false, NOW(), NOW(), NOW(), NULL);
+    ('justme', 'Alex', 'Allison', 'non binary', 'justme@example.com', 'CH', '$2a$10$IXI.nhRFIjqxHoEwgjS2d.SPLXtIv8Rshyuk8Nko63N5lEzdvWChi', false, NOW(), NOW(), NOW(), NULL);
 
 INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, country, password, is_admin, created_at, updated_at, last_login, foto) VALUES
-    ('schwupsdiwups', 'Finja', 'Funkelstern', 'weiblich', 'schwupsdiwups@example.com', 'SE', 'password', false, NOW(), NOW(), NOW(), NULL);
+    ('schwupsdiwups', 'Finja', 'Funkelstern', 'weiblich', 'schwupsdiwups@example.com', 'SE', '$2a$10$IXI.nhRFIjqxHoEwgjS2d.SPLXtIv8Rshyuk8Nko63N5lEzdvWChi', false, NOW(), NOW(), NOW(), NULL);
 
 INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, country, password, is_admin, created_at, updated_at, last_login, foto) VALUES
-    ('freddy', 'Frederik', 'Feierabend', 'männlich', 'freddy@example.com', 'DE', 'password', false, NOW(), NOW(), NOW(), NULL);
+    ('freddy', 'Frederik', 'Feierabend', 'männlich', 'freddy@example.com', 'DE', '$2a$10$IXI.nhRFIjqxHoEwgjS2d.SPLXtIv8Rshyuk8Nko63N5lEzdvWChi', false, NOW(), NOW(), NOW(), NULL);
 
 INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, country, password, is_admin, created_at, updated_at, last_login, foto) VALUES
-    ('kimDragon', 'Kim', 'Kiss', 'fluid', 'kim@example.com', 'LU', 'password', false, NOW(), NOW(), NOW(), NULL);
+    ('kimDragon', 'Kim', 'Kiss', 'fluid', 'kim@example.com', 'LU', '$2a$10$IXI.nhRFIjqxHoEwgjS2d.SPLXtIv8Rshyuk8Nko63N5lEzdvWChi', false, NOW(), NOW(), NOW(), NULL);
+
+INSERT INTO studybuddy_user (username, firstname, lastname, gender, email, country, password, is_admin, created_at, updated_at, last_login, foto) VALUES
+    ('some_user', 'Kim', 'Kiss', 'fluid', 'somesome@example.com', 'LU', '$2a$10$IXI.nhRFIjqxHoEwgjS2d.SPLXtIv8Rshyuk8Nko63N5lEzdvWChi', false, NOW(), NOW(), NOW(), NULL);
+
+
 
 -- insert boxes to db
 INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description) VALUES

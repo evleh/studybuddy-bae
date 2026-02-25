@@ -20,7 +20,7 @@ public class BoxComment {
     private Box box;
 
     @ManyToOne
-    @JoinColumn(name = "author_id") //todo , nullable = false
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
     @CreationTimestamp
