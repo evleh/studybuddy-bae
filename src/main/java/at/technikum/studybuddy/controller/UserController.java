@@ -3,10 +3,13 @@ package at.technikum.studybuddy.controller;
 import at.technikum.studybuddy.dto.Registration;
 import at.technikum.studybuddy.dto.UserDto;
 import at.technikum.studybuddy.dto.UserDtoPrivilegedInfo;
+import at.technikum.studybuddy.dto.UserDtoPublicInfo;
+import at.technikum.studybuddy.security.UserPrincipal;
 import at.technikum.studybuddy.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,9 +33,14 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && principal.id.equals(#id))")
-    public UserDto read(@PathVariable Long id) {
-        return new UserDtoPrivilegedInfo(this.userService.read(id));
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_REGISTERED')")
+    public UserDto read(@PathVariable Long id,
+                        @AuthenticationPrincipal UserPrincipal requester) {
+        if (requester.getId().equals(id) || requester.isStudyBuddyAdmin()) {
+            return new UserDtoPrivilegedInfo(this.userService.read(id));
+        } else {
+            return new UserDtoPublicInfo(this.userService.read(id));
+        }
     }
 
     @PostMapping
