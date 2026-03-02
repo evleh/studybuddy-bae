@@ -5,12 +5,14 @@ import at.technikum.studybuddy.entity.Box;
 public class PublicBoxInfoDto {
     private String title;
     private String description;
+    private Long id;
 
     // TODO: when it exists perhaps the title image; requires File handling stuff I think
 
     public PublicBoxInfoDto(Box box) {
         this.title = box.getTitle();
         this.description = box.getDescription();
+        this.id = box.getId();
     }
 
     public String getTitle() {
@@ -29,6 +31,11 @@ public class PublicBoxInfoDto {
         this.description = description;
     }
 
+    public Long getId() {
+        return id;
+    }
 
-
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
