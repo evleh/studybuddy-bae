@@ -7,7 +7,6 @@ public class PublicBoxInfoDto {
     private String description;
     private Long id;
 
-    // TODO: when it exists perhaps the title image; requires File handling stuff I think
 
     public PublicBoxInfoDto(Box box) {
         this.title = box.getTitle();

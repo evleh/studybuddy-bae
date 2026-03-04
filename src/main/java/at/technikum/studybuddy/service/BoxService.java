@@ -38,7 +38,6 @@ public class BoxService {
 
 
     public Box create(BoxDto boxDto, UserPrincipal user) {
-        // todo remove ownerId from boxDto??
         Optional<User> owner = this.userRepository.findByUsername(user.getUsername());
         if(owner.isEmpty()){
             throw new ResourceNotFoundException();
