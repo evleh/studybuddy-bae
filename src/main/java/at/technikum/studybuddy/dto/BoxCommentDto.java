@@ -11,7 +11,7 @@ public class BoxCommentDto {
     private Long id;
 
     @NotBlank
-    @Size(min = 5, max = 2000) // to match the db-varchar length
+    @Size(min = 1, max = 2000) // to match the db-varchar length
     private String text;
 
     private Long boxId ;
