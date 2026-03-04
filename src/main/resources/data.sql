@@ -43,29 +43,29 @@ INSERT INTO box (title, owner_id, created_at, updated_at, is_public, description
 
 INSERT INTO card (box_id, question, answer, created_at, updated_at)
 VALUES
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '1.', 'Innere Stadt', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '2.', 'Leopoldstadt', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '3.', 'Landstraße', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '4.', 'Wieden', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '5.', 'Margarethen', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '6.', 'Mariahilf', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '7.', 'Neubau', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '8.', 'Josefstadt', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '9.', 'Alsergrund', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '10.', 'Favoriten', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '11.', 'Simmering', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '12.', 'Meidling', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '13.', 'Hietzing', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '14.', 'Penzing', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '15.', 'Rudolfsheim Fünfhaus', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '16.', 'Ottakring', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '17.', 'Hernals', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '18.', 'Währing', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '19.', 'Döbling', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '20.', 'Brigittenau', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '21.', 'Floridsdorf', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '22.', 'Donaustadt', now(), now()),
-    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), '23.', 'Liesing', now(), now());
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 1. Bezirk?', 'Innere Stadt', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 2. Bezirk?', 'Leopoldstadt', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 3. Bezirk?', 'Landstraße', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 4. Bezirk?', 'Wieden', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 5. Bezirk?', 'Margarethen', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 6. Bezirk?', 'Mariahilf', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 7. Bezirk?', 'Neubau', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 8. Bezirk?', 'Josefstadt', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 9. Bezirk?', 'Alsergrund', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 10. Bezirk?', 'Favoriten', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 11. Bezirk?', 'Simmering', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 12. Bezirk?', 'Meidling', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 13. Bezirk?', 'Hietzing', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 14. Bezirk?', 'Penzing', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 15. Bezirk?', 'Rudolfsheim Fünfhaus', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 16. Bezirk?', 'Ottakring', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 17. Bezirk?', 'Hernals', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 18. Bezirk?', 'Währing', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 19. Bezirk?', 'Döbling', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 20. Bezirk?', 'Brigittenau', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 21. Bezirk?', 'Floridsdorf', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 22. Bezirk?', 'Donaustadt', now(), now()),
+    ((SELECT id FROM box WHERE title = 'Bezirke Wien'), 'Wie heißt der 23. Bezirk?', 'Liesing', now(), now());
 
 -- ==============================
 -- GRIECHISCH
@@ -104,23 +104,24 @@ VALUES
         (SELECT id FROM box WHERE id = 2),
         '2024-01-10T10:15:00Z',
         '2024-01-10T10:15:00Z',
-        'Kommentar von mini'
+        'Poli oreia! Voll schöne Urlaubsvorfreudebeschäftigung! =)'
     ),
 
     (
         (SELECT id FROM studybuddy_user WHERE username = 'justme'),
-        (SELECT id FROM box WHERE id = 3),
+        (SELECT id FROM box WHERE id = 1),
         '2024-01-11T12:30:00Z',
         '2024-01-11T12:30:00Z',
-        'Kommentar von justme'
+        'Stabil! Geotest kann kommen.'
     ),
 
     (
         (SELECT id FROM studybuddy_user WHERE username = 'schwupsdiwups'),
-        (SELECT id FROM box WHERE id = 4),
+        (SELECT id FROM box WHERE id = 1),
         '2024-01-12T08:22:00Z',
         '2024-01-12T08:22:00Z',
-        'Kommentar von schwupsdiwups'
+        'Seit 20 Jahren wohn ich in Wien und dermerk mir die Bezirke einfach nicht. Mit dieser Kartei hatte ich sie in einer Woche intus - und Spaß gemacht hat es auch noch.👍'
+
     ),
 
     (
@@ -128,7 +129,7 @@ VALUES
         (SELECT id FROM box WHERE id = 5),
         '2024-01-13T18:00:00Z',
         '2024-01-13T18:00:00Z',
-        'Kommentar von kimDragon'
+        'Oh wie schön! Hätte nicht gedacht, dass ich zu so einem Nischenthema eine Kartei hier finde! Hilft mir sehr bei meiner Kräuterpädagogik-Ausbildung!'
     ),
 
     (
@@ -136,31 +137,31 @@ VALUES
         (SELECT id FROM box WHERE id = 6),
         '2024-01-14T09:10:00Z',
         '2024-01-14T09:10:00Z',
-        'Kommentar von freddy'
+        'LIFE SAVER für die English-Revision 😅'
     ),
 
     (
-        (SELECT id FROM studybuddy_user WHERE username = 'mini'),
+        (SELECT id FROM studybuddy_user WHERE username = 'maxi'),
         (SELECT id FROM box WHERE id = 2),
-        '2024-01-15T14:00:00Z',
-        '2024-01-15T14:00:00Z',
-        'Zweiter Kommentar von mini'
+        '2024-02-15T14:00:00Z',
+        '2024-02-15T14:00:00Z',
+        'Efcharistó! Freut mich, dass du dran Freude hast! Schönen Urlaub!🌞'
     ),
 
     (
         (SELECT id FROM studybuddy_user WHERE username = 'justme'),
-        (SELECT id FROM box WHERE id = 3),
+        (SELECT id FROM box WHERE id = 4),
         '2024-01-16T11:45:00Z',
         '2024-01-16T11:45:00Z',
-        'Zweiter Kommentar von justme'
+        'Noice. Werd ich mir für den Biotest reinziehen.'
     ),
 
     (
         (SELECT id FROM studybuddy_user WHERE username = 'schwupsdiwups'),
         (SELECT id FROM box WHERE id = 4),
-        '2024-01-17T16:30:00Z',
-        '2024-01-17T16:30:00Z',
-        'Zweiter Kommentar von schwupsdiwups'
+        '2024-02-17T16:30:00Z',
+        '2024-02-17T16:30:00Z',
+        'Viel Erfolg beim Test! Lass mich wissen, wenn du noch andere Karteien brauchst ;)'
     ),
 
     (
@@ -168,14 +169,14 @@ VALUES
         (SELECT id FROM box WHERE id = 5),
         '2024-01-18T19:20:00Z',
         '2024-01-18T19:20:00Z',
-        'Zweiter Kommentar von kimDragon'
+        'Heyo! Ich wollt mal fragen, ob du das mit den Bildern noch vorhast? Sonst kann ich gern eine eigene Kartei mit den Bildern machen. Wär sehr hilfreich!'
     ),
 
     (
         (SELECT id FROM studybuddy_user WHERE username = 'freddy'),
         (SELECT id FROM box WHERE id = 6),
-        '2024-01-19T07:50:00Z',
-        '2024-01-19T07:50:00Z',
-        'text'
+        '2024-02-19T07:50:00Z',
+        '2024-02-19T07:50:00Z',
+        'Ich schlag dir einen Deal vor: Du machst mir eine Kartei zu irregular verbs und ich füge die Bilder zu den Heilpflanzen hinzu. Wär das was?'
     );
 
