@@ -14,9 +14,6 @@ public class BoxCommentDto {
     @Size(min = 5, max = 2000) // to match the db-varchar length
     private String text;
 
-    // no user as of now
-    // t.odo: displaydate als string?
-
     private Long boxId ;
     private Long authorId;
 

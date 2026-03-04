@@ -22,9 +22,6 @@ public class AuthController {
 
     @PostMapping("/token")
     public Token token(@RequestBody @Valid TokenRequest tokenRequest) {
-        // Uncomment next 2 lines to test workings of the userService.isCurrentUserRegistered() method
-        // System.out.print("registered? -> ");
-        // System.out.println(userService.isCurrentUserRegistered());
         Token token = authService.createToken(tokenRequest);
         this.userService.updateLastLogin(tokenRequest.getUsername());
         return token;

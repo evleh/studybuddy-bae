@@ -14,7 +14,6 @@ public class BoxComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // doLater: comment is created by a user
     @ManyToOne
     @JoinColumn(name = "box_id", nullable = false)
     private Box box;
