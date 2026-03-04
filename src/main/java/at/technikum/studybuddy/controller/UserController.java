@@ -49,8 +49,6 @@ public class UserController {
         return new UserDtoPrivilegedInfo(this.userService.register(registration));
     }
 
-    // todo/to define only admin can change admin attribute
-    // todo/to define change password
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') || (hasRole('ROLE_REGISTERED') && principal.id.equals(#id))")
     public UserDto update(

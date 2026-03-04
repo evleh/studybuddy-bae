@@ -20,8 +20,6 @@ public class PublicController {
     };
 
     /**
-     * TODO: without further information the frontend has few options for sorting and/or prioritization of display. :-/
-     *       Sorting likely to be based on order-of-add or some other internal thing I suspect.
      * @return public box info of public boxes (list of dto)
      */
     @GetMapping("/boxes")

@@ -140,7 +140,7 @@ class CardServiceTest {
         card.setId(cardId);
         card.setBox(box);
         String preChangeAnswer = "Old Answer";
-        String postChangeAnswer = "New Answer"; // never checked, not sure if reasonable to try. research needed.
+        String postChangeAnswer = "New Answer"; // NOTE: never checked, not sure if reasonable to try. research needed.
         card.setAnswer(preChangeAnswer);
 
         // instruct the mock
@@ -157,9 +157,6 @@ class CardServiceTest {
         var updatedCard = cardService.update(cardId,updateCardDto,requester);
 
         // assert
-        //Mockito.verify(cardRepository, Mockito.times(1)).save(Mockito.any(Card.class));
-
-        //Mockito.verify(cardRepository).save(card);
         Mockito.verify(cardRepository).save(eq(card));
 
         assertEquals(postChangeAnswer, card.getAnswer());

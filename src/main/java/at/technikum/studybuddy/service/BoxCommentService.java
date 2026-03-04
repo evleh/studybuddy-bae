@@ -77,7 +77,6 @@ public class BoxCommentService {
             throw new PermissionDeniedException();
         }
 
-        // only visibility can be changed for box comments
         boxComment.setText(boxCommentDto.getText());
         return boxCommentRepository.save(boxComment);
     }

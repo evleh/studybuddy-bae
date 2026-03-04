@@ -95,7 +95,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         System.out.printf("[%s] logged in with authorities [%s]%n", authentication.getName(), authentication.getAuthorities() );
 
-        // hashTag findMeAgain #findmeagain also TODO
     }
 
 }

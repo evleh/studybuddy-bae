@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger.html").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
-                        // ToDo: here you can add role based protection to endpoints e.g.: admin page (request-level authorization)
+                        // NOTE: here you can add role based protection to endpoints e.g.: admin page (request-level authorization)
                         // .requestMatchers("/admin").hasRole("admin") it could look like this
                         .anyRequest().authenticated()
 
